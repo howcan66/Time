@@ -208,12 +208,13 @@
     <div id="loginModal" class="modal active">
         <div class="login-box">
             <h2>🔐 Time Project Login</h2>
-            <input type="text" id="loginUsername" placeholder="Username" onkeypress="if(event.key==='Enter') verifyLogin()">
-            <input type="password" id="loginPassword" placeholder="Password" onkeypress="if(event.key==='Enter') verifyLogin()">
+            <input type="text" id="loginUsername" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
+            <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" autocorrect="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
             <div class="login-error" id="loginError"></div>
             <div class="login-status" id="loginStatus"></div>
-            <button class="login-btn" id="loginBtn" onclick="verifyLogin()">Login</button>
-            <button class="login-btn" style="background: #6b7280; margin-top: 8px;" onclick="toggleDemoMode()" title="For testing only">Demo Mode</button>
+            <button class="login-btn" id="loginBtn" type="button" onclick="verifyLogin()">Login</button>
+            <button class="login-btn" style="background: #6b7280; margin-top: 8px;" type="button" onclick="toggleDemoMode()" title="For testing only">Demo Mode</button>
+            <button class="login-btn" style="background: #9333ea; margin-top: 8px; font-size: 12px; padding: 10px;" type="button" onclick="resetLoginLockout()" title="Clear lockout">🔓 Reset Lockout</button>
         </div>
     </div>
 
@@ -552,6 +553,8 @@
             const statusDiv = document.getElementById('loginStatus');
             const loginBtn = document.getElementById('loginBtn');
             
+            console.log(`📱 Login attempt: username="${username}" (length=${username.length}), password="${password.length > 0 ? '***' : ''}" (length=${password.length})`);
+            
             errorDiv.style.display = 'none';
             statusDiv.textContent = '';
             
@@ -602,13 +605,20 @@
                 }));
                 logLoginAttempt(username, 'SUCCESS', 0);
                 console.log(`✓ Login SUCCESS for ${username}`);
+                console.log(`✓ currentUser set to:`, currentUser);
                 document.getElementById('loginModal').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
                 document.getElementById('loginPassword').value = '';
                 loadTasks();
                 renderAllColumns();
                 attachDragListeners();
-                updateHeader();
+                
+                // Force header update
+                setTimeout(() => {
+                    updateHeader();
+                    console.log(`✓ Header updated with user: ${currentUser.username}`);
+                }, 100);
+                
                 statusDiv.textContent = `Welcome, ${user.username}! (${user.roles ? user.roles.join(', ') : user.role || ''})`;
                 statusDiv.style.color = '#059669';
             } else {
@@ -630,6 +640,20 @@
             }
         }
 
+        function resetLoginLockout() {
+            loginAttemptsByUser = {};
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginStatus').textContent = '✅ Lockout cleared! Try again.';
+            document.getElementById('loginStatus').style.color = '#059669';
+            document.getElementById('loginBtn').disabled = false;
+            console.log('✓ All login lockouts cleared');
+            setTimeout(() => {
+                document.getElementById('loginStatus').textContent = '';
+            }, 3000);
+        }
+
         function logLoginAttempt(username, status, attemptNum) {
             const timestamp = new Date().toLocaleString();
             const logEntry = `[${timestamp}] | ${username} | ${status} | Attempt #${attemptNum}`;
@@ -641,6 +665,7 @@
             // For testing: automatically log in as first user
             document.getElementById('loginUsername').value = 'R18';
             document.getElementById('loginPassword').value = 'R18';
+            console.log('📱 Demo Mode activated - attempting login with R18/R18');
             verifyLogin();
         }
 
@@ -1516,8 +1541,13 @@ ${projectUrl}`;
                         loadTasks();
                         renderAllColumns();
                         attachDragListeners();
-                        updateHeader();
-                        console.log('✓ Session restored for:', session.username);
+                        
+                        // Force header update with delay
+                        setTimeout(() => {
+                            updateHeader();
+                            console.log('✓ Session restored for:', session.username);
+                        }, 100);
+                        
                         return true;
                     } else {
                         console.log('User not found in validUsers, clearing corrupted session');
