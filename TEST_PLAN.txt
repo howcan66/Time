@@ -150,6 +150,212 @@ INT-004 | 4 | Reset lockout after showing password | Password hidden, toggle res
 INT-005 | 5 | Successful login, logout, login again | Password toggle state resets properly | | PENDING | Session handling
 INT-006 | 6 | Browser refresh during password shown | Password field resets to hidden | | PENDING | Page reload behavior
 
+================================================================================
+TEST PLAN - MOBILE/TABLET ENHANCEMENTS (GitHub Pages Deployment)
+================================================================================
+
+TEST_CATEGORY: Deployment & Cache Verification
+REF_FILE: kanban.html (commit db16686)
+KANBAN_ID: TPK-v1-RES-02-005, TPK-v1-RES-02-006, TPK-v1-RES-02-007
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+GIT_COMMIT: db16686 "Fix tablet login toggle and compact mobile/tablet UI"
+DEPLOYMENT: GitHub Pages (https://howcan66.github.io/Time/kanban.html)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+DEPLOY-001 | 1 | Open iPad Safari | Browser ready for testing | | PENDING | Device prep
+DEPLOY-002 | 2 | Go to Settings → Safari | Safari settings visible | | PENDING | Settings access
+DEPLOY-003 | 3 | Tap "Clear History and Website Data" | Confirmation dialog appears | | PENDING | Cache clearing
+DEPLOY-004 | 4 | Confirm "Clear History and Data" | All cache/cookies cleared | | PENDING | Complete wipe
+DEPLOY-005 | 5 | Wait 5-10 minutes after git push | GitHub Pages build completes | | PENDING | CDN propagation time
+DEPLOY-006 | 6 | Open GitHub Pages URL | Load kanban.html | | PENDING | URL access
+DEPLOY-007 | 7 | Check timestamp/version | Verify latest changes visible | | PENDING | Deployment verification
+DEPLOY-008 | 8 | Hard refresh (pull down to reload) | Forces fresh page load | | PENDING | Browser refresh
+DEPLOY-009 | 9 | Check mobile toolbar | Toolbar visible at top on mobile | | PENDING | Responsive layout active
+DEPLOY-010 | 10 | Compare local vs GitHub | Both versions should match | | PENDING | Sync confirmation
+
+TEST_CATEGORY: Tablet Login - Password Toggle Fix
+REF_FILE: kanban.html togglePasswordVisibility() function
+KANBAN_ID: NEW-LOGIN-PWD (Tablet Fix)
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: CRITICAL - FIX APPLIED, NEEDS VERIFICATION
+ISSUE: Password toggle broken on tablet (undefined event variable)
+FIX: Added event parameter to togglePasswordVisibility(evt)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+TAB-PWD-001 | 1 | Open GitHub Pages URL on iPad | Login modal displays | | PENDING | Initial load
+TAB-PWD-002 | 2 | Tap password field | Virtual keyboard appears | | PENDING | Input activation
+TAB-PWD-003 | 3 | Type test password: admin | Password masked with asterisks | | PENDING | Default masked state
+TAB-PWD-004 | 4 | Tap eye icon 👁️ next to password | Password becomes visible text | | PENDING | CRITICAL: Was broken before
+TAB-PWD-005 | 5 | Check icon change | Eye icon changes to 😨 | | PENDING | Visual feedback
+TAB-PWD-006 | 6 | Tap 😨 again | Password hides again | | PENDING | Toggle back works
+TAB-PWD-007 | 7 | Check icon | Icon returns to 👁️ | | PENDING | Icon state correct
+TAB-PWD-008 | 8 | Toggle multiple times | Each tap toggles show/hide | | PENDING | Reliable toggle
+TAB-PWD-009 | 9 | Enter valid credentials | R18 / R18 | | PENDING | Credential entry
+TAB-PWD-010 | 10 | Click [LOGIN] | Successfully logs into board | | PENDING | Login works on tablet
+
+TEST_CATEGORY: Tablet Compact View & Layout
+REF_FILE: kanban.html @media (max-width: 1024px) styles
+KANBAN_ID: TPK-v1-RES-02-005, TPK-v1-RES-02-006
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+CHANGES: Reduced spacing (6-8px gaps), smaller fonts (10-14px), compact padding
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+TAB-LAY-001 | 1 | After login, view board | Board displays in landscape/portrait | | PENDING | Responsive layout
+TAB-LAY-002 | 2 | Check column spacing | Columns have minimal gap (8px) | | PENDING | Reduced from 20px
+TAB-LAY-003 | 3 | Check column headers | Headers smaller, compact (14px font) | | PENDING | Was 18px before
+TAB-LAY-004 | 4 | Check task cards | Cards have reduced padding (8px) | | PENDING | Tighter layout
+TAB-LAY-005 | 5 | Check task fonts | Title 12px, description 11px | | PENDING | Smaller for tablet
+TAB-LAY-006 | 6 | Check task IDs | IDs split into 2 lines (e.g., "AI-" / "TD11") | | PENDING | Space-saving layout
+TAB-LAY-007 | 7 | Count visible columns | Can see more columns on screen | | PENDING | Better space utilization
+TAB-LAY-008 | 8 | Check readability | Text still readable, not cramped | | PENDING | Usability check
+TAB-LAY-009 | 9 | Scroll horizontally | Smooth swipe left/right across columns | | PENDING | Touch scrolling
+TAB-LAY-010 | 10 | Check edit/view icons | Icons visible and tappable (16px, opacity 1) | | PENDING | Icon visibility
+
+TEST_CATEGORY: Mobile Toolbar Features
+REF_FILE: kanban.html mobile-toolbar section
+KANBAN_ID: TPK-v1-RES-02-007
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+FEATURES: Project filter, column jump, quick add, compact toggle, export
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+MOB-TOOL-001 | 1 | View top of page | Mobile toolbar visible below header | | PENDING | Toolbar appears @media 1024px
+MOB-TOOL-002 | 2 | Check toolbar items | 5 items: dropdown, select, +, compact, export | | PENDING | All buttons present
+MOB-TOOL-003 | 3 | Tap project filter dropdown | Dropdown opens with all projects | | PENDING | Filter interaction
+MOB-TOOL-004 | 4 | Select "Time Project" | Board filters to Time Project tasks | | PENDING | Filter functionality
+MOB-TOOL-005 | 5 | Check sync with header | Syncs with main header dropdown | | PENDING | State synchronization
+MOB-TOOL-006 | 6 | Tap column selector | Dropdown shows all 7 columns | | PENDING | Column list
+MOB-TOOL-007 | 7 | Select "Testing (5)" | Board scrolls to Testing column | | PENDING | Scroll-to-column
+MOB-TOOL-008 | 8 | Tap [+] Quick Add | Quick add form appears | | PENDING | Quick task creation
+MOB-TOOL-009 | 9 | Tap 🧩 Compact button | Board switches to compact mode | | PENDING | Compact toggle
+MOB-TOOL-010 | 10 | Check localStorage | Compact preference saved | | PENDING | Persistence check
+
+TEST_CATEGORY: Compact Mode Toggle
+REF_FILE: kanban.html toggleCompactMode() function
+KANBAN_ID: TPK-v1-RES-02-005
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+FEATURE: Toggle between normal and compact card layout
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+COMPACT-001 | 1 | Board in normal mode | Cards have normal spacing | | PENDING | Default state
+COMPACT-002 | 2 | Tap 🧩 Compact in toolbar | Board switches to compact view | | PENDING | Toggle activation
+COMPACT-003 | 3 | Check card spacing | Padding reduced to 6px | | PENDING | Tighter cards
+COMPACT-004 | 4 | Check fonts | Title 10px, description 10px | | PENDING | Smaller text
+COMPACT-005 | 5 | Check margins | Card margin reduced to 6px | | PENDING | Minimal gaps
+COMPACT-006 | 6 | Count visible tasks per column | More tasks visible per screen | | PENDING | Increased density
+COMPACT-007 | 7 | Check readability | Still readable without squinting | | PENDING | Usability threshold
+COMPACT-008 | 8 | Tap 🧩 again | Returns to normal mode | | PENDING | Toggle off
+COMPACT-009 | 9 | Refresh page | Compact preference persists | | PENDING | localStorage working
+COMPACT-010 | 10 | Check button indicator | Button shows active state when on | | PENDING | Visual feedback
+
+TEST_CATEGORY: Horizontal Scrolling & Navigation
+REF_FILE: kanban.html container styles with overflow-x
+KANBAN_ID: TPK-v1-RES-02-006
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+FEATURE: Swipe horizontally to see all columns
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+SCROLL-001 | 1 | View board on tablet | Columns extend beyond viewport | | PENDING | Overflow layout
+SCROLL-002 | 2 | Swipe left on board | Columns scroll smoothly to left | | PENDING | Touch scroll enabled
+SCROLL-003 | 3 | Swipe right | Columns scroll back to right | | PENDING | Bidirectional scroll
+SCROLL-004 | 4 | Check scroll smoothness | Smooth momentum scrolling | | PENDING | -webkit-overflow-scrolling
+SCROLL-005 | 5 | Swipe to end | Reaches rightmost column (Cancelled) | | PENDING | Full scroll range
+SCROLL-006 | 6 | Use column selector | Scrolls to selected column | | PENDING | Programmatic scroll
+SCROLL-007 | 7 | Check snap behavior | Columns align naturally | | PENDING | Scroll snap (if enabled)
+SCROLL-008 | 8 | Scroll vertically in column | Vertical scroll independent | | PENDING | 2D scroll capability
+SCROLL-009 | 9 | Test in portrait mode | Horizontal scroll still works | | PENDING | Orientation test
+SCROLL-010 | 10 | Test in landscape mode | More columns visible, less scroll needed | | PENDING | Landscape optimization
+
+TEST_CATEGORY: Back-to-Top Button
+REF_FILE: kanban.html initMobileEnhancements() function
+KANBAN_ID: TPK-v1-RES-02-007
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+FEATURE: Floating button appears when scrolled down
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+BTT-001 | 1 | Load board, stay at top | Back-to-top button hidden | | PENDING | Initial hidden state
+BTT-002 | 2 | Scroll down 300px+ | Button fades in (bottom-right corner) | | PENDING | Scroll threshold
+BTT-003 | 3 | Check button style | Floating button, visible, styled | | PENDING | CSS active
+BTT-004 | 4 | Tap back-to-top button | Page scrolls smoothly to top | | PENDING | Smooth scroll
+BTT-005 | 5 | Check button state | Button fades out when at top | | PENDING | Auto-hide
+BTT-006 | 6 | Scroll down again | Button reappears | | PENDING | Repeated behavior
+BTT-007 | 7 | Check position | Doesn't block important UI | | PENDING | Placement check
+BTT-008 | 8 | Test in portrait | Button positioned correctly | | PENDING | Portrait mode
+BTT-009 | 9 | Test in landscape | Button positioned correctly | | PENDING | Landscape mode
+BTT-010 | 10 | Rapid scroll up/down | Button appears/hides reliably | | PENDING | Edge case test
+
+TEST_CATEGORY: Task ID Two-Line Display
+REF_FILE: kanban.html task card rendering (renderTask function)
+KANBAN_ID: TPK-v1-RES-02-005
+RESPONSIBLE: USER (Testing on iPad)
+STATUS: READY FOR TESTING
+FEATURE: Split task IDs at hyphen into 2 lines for space efficiency
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+TASKID-001 | 1 | View any task card | Check task ID display | | PENDING | Layout inspection
+TASKID-002 | 2 | Find task "AI-TD11" | ID displays as "AI-" (line 1) + "TD11" (line 2) | | PENDING | Hyphenated ID
+TASKID-003 | 3 | Find task "HJ-ID1RS5" | ID displays as "HJ-" (line 1) + "ID1RS5" (line 2) | | PENDING | Long ID split
+TASKID-004 | 4 | Find task "NEW-LOGIN-PWD" | ID displays as "NEW-" (line 1) + "LOGIN-PWD" (line 2) | | PENDING | Multi-hyphen ID
+TASKID-005 | 5 | Find task "EPIC-AUTH" | ID displays as "EPIC-" (line 1) + "AUTH" (line 2) | | PENDING | Short ID
+TASKID-006 | 6 | Check horizontal space | IDs take less horizontal width | | PENDING | Space saving verified
+TASKID-007 | 7 | Check readability | Still clearly identifies task | | PENDING | Usability maintained
+TASKID-008 | 8 | Check alignment | Lines aligned properly | | PENDING | CSS layout
+TASKID-009 | 9 | Test in compact mode | Two-line IDs work in compact view | | PENDING | Compact compatibility
+TASKID-010 | 10 | Non-hyphenated IDs | IDs without hyphen display normally | | PENDING | Fallback behavior
+
+================================================================================
+TESTING SESSION TRACKER
+================================================================================
+
+SESSION_ID: TEST-SESSION-001
+DATE_STARTED: 2026-01-29
+TESTER: USER (iPad)
+FOCUS: Mobile/Tablet GitHub Pages Deployment Verification
+DEVICE: iPad (Safari browser)
+URL: https://howcan66.github.io/Time/kanban.html
+GIT_COMMIT: db16686
+
+PRE-TEST CHECKLIST:
+[ ] Clear Safari cache on iPad (Settings → Safari → Clear History and Website Data)
+[ ] Wait 5-10 minutes after git push for GitHub Pages build
+[ ] Verify local file works correctly on iPad as baseline
+[ ] Note iPad model and iOS version for reference
+[ ] Ensure stable WiFi connection
+
+TEST SEQUENCE (RECOMMENDED ORDER):
+1. DEPLOY-001 to DEPLOY-010: Verify deployment and cache clearing
+2. TAB-PWD-001 to TAB-PWD-010: Test critical password toggle fix on tablet
+3. TAB-LAY-001 to TAB-LAY-010: Verify compact layout and spacing
+4. MOB-TOOL-001 to MOB-TOOL-010: Test mobile toolbar features
+5. COMPACT-001 to COMPACT-010: Test compact mode toggle
+6. SCROLL-001 to SCROLL-010: Test horizontal scrolling
+7. BTT-001 to BTT-010: Test back-to-top button
+8. TASKID-001 to TASKID-010: Verify task ID two-line display
+
+CRITICAL SUCCESS CRITERIA:
+✓ GitHub Pages version matches local file
+✓ Password toggle works on tablet (was broken, now fixed)
+✓ Login succeeds on tablet
+✓ Compact view reduces clutter without losing usability
+✓ Horizontal scroll smooth and natural on touch device
+✓ All mobile toolbar buttons functional
+
+NOTES_SECTION:
+(Space for tester to record observations, issues, or feedback)
+
 TEST_CATEGORY: Users Tab - Add New User
 REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 4), HJ-ID1RS7D_xlsx.txt (Add New User Form)
 KANBAN_ID: HJ-ID1RS7

@@ -47,6 +47,15 @@
             border-radius: 5px; cursor: pointer; font-size: 14px; transition: background 0.3s;
         }
         .nav-btn:hover { background: #5568d3; }
+        
+        /* HJ-ID1RS11: Show/hide button text based on screen size */
+        .btn-icon { display: none; }
+        .btn-text { display: inline; }
+        
+        @media (max-width: 1024px) {
+            .nav-btn .btn-text { display: none; }
+            .nav-btn .btn-icon { display: inline; }
+        }
 
         .mobile-toolbar {
             position: fixed;
@@ -156,12 +165,17 @@
         @media (max-width: 800px) {
             .header { height: 60px; padding: 10px 12px; }
             .header-left { gap: 10px; }
-            .project-title { font-size: 16px; }
-            .timestamp { display: none; }
+            .project-title { font-size: 14px; }
+            .timestamp { display: none !important; }
             .project-controls { gap: 6px; }
-            .project-select { font-size: 14px; padding: 8px; }
-            .project-btn { font-size: 13px; padding: 8px 10px; }
-            .nav-btn { font-size: 13px; padding: 8px 12px; }
+            .project-select { font-size: 12px; padding: 6px; }
+            .project-btn { font-size: 11px; padding: 6px 8px; }
+            .nav-btn { font-size: 11px; padding: 6px 10px; }
+            
+            /* HJ-ID1RS11: Mobile - icons only with tooltips */
+            .project-btn:not(.admin-btn)::before { content: attr(title); display: none; }
+            .nav-btn { min-width: auto; padding: 8px; }
+            .nav-btn::after { content: none; }
 
             .mobile-toolbar { display: flex; }
 
@@ -177,19 +191,22 @@
                 padding: 8px;
             }
 
-            .column-header { font-size: 12px; padding: 10px; }
-            .add-task-btn { padding: 8px; font-size: 12px; }
-            .task-card { cursor: default; padding: 6px; margin-bottom: 6px; }
-            .task-row1 { font-size: 10px; margin-bottom: 4px; }
-            .task-row2 { font-size: 12px; margin-bottom: 4px; }
-            .project-tag { font-size: 9px; padding: 1px 4px; }
-            .move-select { font-size: 12px; padding: 4px 6px; }
+            .column-header { font-size: 11px; padding: 8px; }
+            .add-task-btn { padding: 6px; font-size: 11px; }
+            .task-card { cursor: default; padding: 5px; margin-bottom: 5px; }
+            .task-row1 { font-size: 9px; margin-bottom: 3px; }
+            .task-row2 { font-size: 11px; margin-bottom: 3px; }
+            .project-tag { font-size: 8px; padding: 1px 3px; }
+            .move-select { font-size: 10px; padding: 3px 5px; }
             .delete-btn, .icon-btn, .priority-btn { min-height: 30px; min-width: 30px; }
             .column-content { -webkit-overflow-scrolling: touch; }
             .kanban-column { border-radius: 8px; }
         }
 
         @media (max-width: 1024px) and (min-width: 801px) {
+            /* HJ-ID1RS11: Tablet - hide timestamp */
+            .timestamp { display: none !important; }
+            
             .kanban-container {
                 display: flex;
                 flex-wrap: nowrap;
@@ -480,8 +497,8 @@
         </div>
         <div class="nav-buttons">
             <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;">⚙️ Admin</button>
-            <button class="nav-btn" onclick="exportAll()">📋 Export All</button>
-            <button class="nav-btn" onclick="refreshTimestamp()">🔄 Refresh</button>
+            <button class="nav-btn" onclick="exportAll()" title="Export all tasks to clipboard"><span class="btn-text">📋 Export All</span><span class="btn-icon">📋</span></button>
+            <button class="nav-btn" onclick="refreshTimestamp()" title="Refresh timestamp"><span class="btn-text">🔄 Refresh</span><span class="btn-icon">🔄</span></button>
         </div>
     </div>
 
@@ -497,9 +514,9 @@
             <option value="6">6 - Done</option>
             <option value="7">7 - Cancelled</option>
         </select>
-        <button class="mobile-btn" onclick="openAddModal(currentColumn || 1)">➕ Task</button>
-        <button class="mobile-btn ghost" onclick="toggleCompactMode()">🧩 Compact</button>
-        <button class="mobile-btn secondary" onclick="exportAll()">📋</button>
+        <button class="mobile-btn" onclick="openAddModal(currentColumn || 1)" title="Add new task">➕</button>
+        <button class="mobile-btn ghost" onclick="toggleCompactMode()" title="Toggle compact mode">🧩</button>
+        <button class="mobile-btn secondary" onclick="exportAll()" title="Export tasks">📋</button>
     </div>
 
     <button id="backToTop" class="back-to-top" onclick="scrollToTop()">⬆️ Top</button>
@@ -667,7 +684,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Reserved Requirement Placeholder', why: 'Next user-assigned requirement', how: 'Define scope and specs', who: 'USER', when: 'TBD', where: 'TBD', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
