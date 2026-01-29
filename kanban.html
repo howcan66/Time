@@ -567,6 +567,7 @@
             </div>
         </div>
         <div class="nav-buttons">
+            <button class="nav-btn" id="syncBtn" onclick="manualSync()" title="Sync with GitHub"><span class="btn-text">🔄 Sync</span><span class="btn-icon">🔄</span></button>
             <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span><span class="btn-icon">⚙️</span></button>
             <button class="nav-btn" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>
             <button class="nav-btn" onclick="exportAll()" title="Export all tasks to clipboard"><span class="btn-text">📋 Export All</span><span class="btn-icon">📋</span></button>
@@ -836,7 +837,7 @@
         let columnProjectFilters = { 1: 'all', 2: 'all', 3: 'all', 4: 'all', 5: 'all', 6: 'all', 7: 'all' };
 
         // ===== PASSWORD PROTECTION (HJ-ID1RS5) =====
-        function verifyLogin() {
+        async function verifyLogin() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
             const errorDiv = document.getElementById('loginError');
@@ -902,7 +903,7 @@
                 document.getElementById('loginModal').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
                 document.getElementById('loginPassword').value = '';
-                loadTasks();
+                await loadTasks();
                 renderAllColumns();
                 attachDragListeners();
                 
@@ -1727,13 +1728,160 @@ ${projectUrl}`;
             }
         }
 
-        // ===== TASK PERSISTENCE TO LOCALSTORAGE =====
+        // ===== GITHUB SYNC CONFIGURATION =====
+        const GITHUB_CONFIG = {
+            owner: 'howcan66',
+            repo: 'Time',
+            path: 'data/kanbanTasks.json',
+            branch: 'main'
+        };
+
+        // ===== GITHUB API FUNCTIONS =====
+        async function fetchFromGitHub() {
+            const token = localStorage.getItem('githubToken');
+            if (!token) {
+                console.log('⚠️ No GitHub token found. Skipping GitHub fetch.');
+                return null;
+            }
+
+            const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.log('⚠️ GitHub file not found. Will create on first save.');
+                        return null;
+                    }
+                    throw new Error(`GitHub API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const content = JSON.parse(atob(data.content));
+                console.log('✓ Tasks fetched from GitHub:', content.length);
+                return { tasks: content, sha: data.sha };
+            } catch (e) {
+                console.log('⚠️ GitHub fetch failed:', e.message);
+                return null;
+            }
+        }
+
+        async function pushToGitHub(tasksData) {
+            const token = localStorage.getItem('githubToken');
+            if (!token) {
+                console.log('⚠️ No GitHub token. Skipping GitHub push.');
+                return false;
+            }
+
+            const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
+            
+            try {
+                // Get current file SHA
+                let sha = localStorage.getItem('githubFileSha');
+                if (!sha) {
+                    const response = await fetch(url, {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        sha = data.sha;
+                    }
+                }
+
+                const content = btoa(JSON.stringify(tasksData, null, 2));
+                const payload = {
+                    message: `Update tasks - ${new Date().toISOString()}`,
+                    content: content,
+                    branch: GITHUB_CONFIG.branch
+                };
+                if (sha) payload.sha = sha;
+
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`GitHub push failed: ${response.status}`);
+                }
+
+                const result = await response.json();
+                localStorage.setItem('githubFileSha', result.content.sha);
+                console.log('✓ Tasks pushed to GitHub');
+                updateSyncStatus('synced');
+                return true;
+            } catch (e) {
+                console.log('⚠️ GitHub push failed:', e.message);
+                updateSyncStatus('error');
+                return false;
+            }
+        }
+
+        function updateSyncStatus(status) {
+            const btn = document.getElementById('syncBtn');
+            if (!btn) return;
+            
+            if (status === 'syncing') {
+                btn.textContent = '🔄';
+                btn.title = 'Syncing...';
+            } else if (status === 'synced') {
+                btn.textContent = '✓';
+                btn.title = 'Synced with GitHub';
+                setTimeout(() => {
+                    btn.textContent = '🔄';
+                    btn.title = 'Sync with GitHub';
+                }, 2000);
+            } else if (status === 'error') {
+                btn.textContent = '⚠️';
+                btn.title = 'Sync error - check console';
+                setTimeout(() => {
+                    btn.textContent = '🔄';
+                    btn.title = 'Sync with GitHub';
+                }, 3000);
+            }
+        }
+
+        // ===== TASK PERSISTENCE TO LOCALSTORAGE + GITHUB =====
         function saveTasks() {
             localStorage.setItem('timeProjectTasks', JSON.stringify(tasks));
             console.log('✓ Tasks saved to localStorage');
+            
+            // Push to GitHub asynchronously
+            pushToGitHub(tasks).catch(e => console.log('Background GitHub push failed:', e));
         }
 
-        function loadTasks() {
+        async function loadTasks() {
+            // Try GitHub first
+            const githubData = await fetchFromGitHub();
+            if (githubData && githubData.tasks) {
+                tasks = githubData.tasks;
+                localStorage.setItem('githubFileSha', githubData.sha);
+                localStorage.setItem('timeProjectTasks', JSON.stringify(tasks));
+                console.log('✓ Tasks loaded from GitHub:', tasks.length);
+                const deduped = dedupeTasksById(tasks);
+                if (deduped.length !== tasks.length) {
+                    tasks = deduped;
+                    saveTasks();
+                }
+                mergeMissingTasks();
+                return true;
+            }
+
+            // Fallback to localStorage
             const saved = localStorage.getItem('timeProjectTasks');
             if (saved) {
                 try {
@@ -1753,6 +1901,21 @@ ${projectUrl}`;
                 }
             }
             return false;
+        }
+
+        async function manualSync() {
+            updateSyncStatus('syncing');
+            const githubData = await fetchFromGitHub();
+            if (githubData && githubData.tasks) {
+                tasks = githubData.tasks;
+                localStorage.setItem('githubFileSha', githubData.sha);
+                localStorage.setItem('timeProjectTasks', JSON.stringify(tasks));
+                renderAllColumns();
+                updateSyncStatus('synced');
+                console.log('✓ Manual sync complete');
+            } else {
+                updateSyncStatus('error');
+            }
         }
 
         function getStatusIcon(status) {
@@ -1943,7 +2106,7 @@ ${projectUrl}`;
         }
         
         // RESTORE SESSION FROM LOCALSTORAGE ON PAGE LOAD
-        function restoreSession() {
+        async function restoreSession() {
             const savedSession = localStorage.getItem('timeProjectSession');
             if (savedSession) {
                 try {
@@ -1952,7 +2115,7 @@ ${projectUrl}`;
                     if (user) {
                         currentUser = user;
                         document.getElementById('loginModal').classList.remove('active');
-                        loadTasks();
+                        await loadTasks();
                         renderAllColumns();
                         attachDragListeners();
                         
@@ -1976,13 +2139,13 @@ ${projectUrl}`;
         }
         
         // RESET LOCKOUT STATE AND CHECK FOR EXISTING SESSION
-        function initializeLoginState() {
+        async function initializeLoginState() {
             // CLEAR ALL LOCKOUTS ON PAGE RELOAD - Fresh start for every user
             loginAttemptsByUser = {};
             console.log('✓ Page loaded: All user lockouts cleared');
             
             // Try to restore session
-            if (!restoreSession()) {
+            if (!await restoreSession()) {
                 // No session, show login modal
                 document.getElementById('loginModal').classList.add('active');
             }

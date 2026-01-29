@@ -1,0 +1,87 @@
+================================================================================
+GITHUB SYNC SETUP GUIDE
+================================================================================
+Date: January 29, 2026
+
+CROSS-DEVICE SYNCHRONIZATION FOR KANBAN BOARD
+Enable seamless data sync across Desktop, Mobile, Tablet, and Laptop
+
+================================================================================
+STEP 1: CREATE GITHUB PERSONAL ACCESS TOKEN
+================================================================================
+
+1. Go to: https://github.com/settings/tokens
+2. Click "Generate new token" → "Generate new token (classic)"
+3. Token name: "Time Kanban Sync"
+4. Expiration: No expiration (or 1 year)
+5. Select scopes:
+   ✅ repo (Full control of private repositories)
+   ✅ repo:status
+   ✅ public_repo (if using public repo)
+6. Click "Generate token"
+7. **COPY THE TOKEN IMMEDIATELY** (you won't see it again!)
+
+================================================================================
+STEP 2: ADD TOKEN TO KANBAN APPLICATION
+================================================================================
+
+1. Open kanban.html in browser
+2. Open browser console (F12)
+3. Run this command (replace YOUR_TOKEN with actual token):
+
+   localStorage.setItem('githubToken', 'YOUR_TOKEN_HERE');
+
+4. Refresh page
+5. Token is now saved for this browser/device
+
+================================================================================
+STEP 3: REPEAT FOR EACH DEVICE
+================================================================================
+
+Desktop: Set token once
+Mobile: Set token once (Safari/Chrome mobile)
+Tablet: Set token once
+Laptop: Set token once
+
+Each device needs the token set in its own browser.
+
+================================================================================
+HOW IT WORKS
+================================================================================
+
+AUTO-SYNC:
+- On page load: Fetches latest data from GitHub
+- On task save: Saves to localStorage + pushes to GitHub
+- Refresh button: Manually pulls latest from GitHub
+
+SYNC FLOW:
+1. Desktop: Create task → Saves to GitHub
+2. Mobile: Open app → Fetches from GitHub → See new task
+3. Mobile: Edit task → Saves to GitHub
+4. Desktop: Refresh → Fetches from GitHub → See edit
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Tasks not syncing?
+1. Check token is set: localStorage.getItem('githubToken')
+2. Check console for errors (F12)
+3. Verify internet connection
+4. Try manual refresh button
+
+Token expired?
+1. Generate new token (Step 1)
+2. Update on all devices (Step 2)
+
+================================================================================
+SECURITY NOTES
+================================================================================
+
+- Token grants full repo access
+- Don't share token publicly
+- Store securely
+- Can revoke anytime at: https://github.com/settings/tokens
+- Each device stores token in localStorage (browser-specific)
+
+================================================================================
