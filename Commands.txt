@@ -11,16 +11,26 @@ Time project workflow.
 CORE WORKFLOW COMMANDS
 ================================================================================
 
-PA = Please Analyze
-- AI analyzes task/idea without executing
+P2G = Publish to Git / Push to GitHub
+- Stage, commit, and push changes to GitHub
+- Example: "P2G" → git add, commit, push
+
+PA = Please Add / Please Analyze
+- Request to add feature or analyze task/idea
 - Provides detailed report on requirements, approach, dependencies
+- Example: "PA Feature 12" → Add new feature
 - Example: "AI TD15 PA" → Analyze Interactive Calendar task
 
-PE = Proceed Execute / PEX = Proceed Execute All
+PE = Please Execute / Proceed Execute
 - Execute after analysis approval
 - PE: Execute single item
 - PEX: Execute everything pending
 - Example: "PE HJ-ID1D4" → Implement design
+
+PWF = Propose Way Forward
+- AI proposes next steps or solution approach
+- Always included in responses when requested
+- Example: "Always Propose Way FWD"
 
 EX = Execute
 - Direct execution without prior analysis (use cautiously)
