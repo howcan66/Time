@@ -1797,7 +1797,7 @@ ${projectUrl}`;
                     }
                 }
 
-                const content = btoa(JSON.stringify(tasksData, null, 2));
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(tasksData, null, 2))));
                 const payload = {
                     message: `Update tasks - ${new Date().toISOString()}`,
                     content: content,
