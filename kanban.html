@@ -425,6 +425,12 @@
             </div>
             <div class="login-error" id="loginError"></div>
             <div class="login-status" id="loginStatus"></div>
+            
+            <!-- GitHub Sync Note -->
+            <div style="background: #dbeafe; border: 1px solid #0284c7; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #0c4a6e;">
+                <strong>💡 Tip:</strong> After login, click <strong>📖 Docs</strong> button to set up GitHub Token for cross-device sync. Your tasks will automatically sync across Desktop, Tablet, Mobile, and Laptop!
+            </div>
+            
             <button class="login-btn" id="loginBtn" type="button" onclick="verifyLogin()">Login</button>
             <button class="login-btn" style="background: #6b7280; margin-top: 8px;" type="button" onclick="toggleDemoMode()" title="For testing only">Demo Mode</button>
             <button class="login-btn" style="background: #9333ea; margin-top: 8px; font-size: 12px; padding: 10px;" type="button" onclick="resetLoginLockout()" title="Clear lockout">🔓 Reset Lockout</button>
@@ -464,6 +470,132 @@
                 <div style="background: #dbeafe; padding: 12px; border-radius: 4px; margin-top: 15px; font-size: 11px; color: #1e40af;">
                     <strong>Status:</strong> <span id="syncStatusText">Not configured</span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENTATION MODAL (Feature 15) -->
+    <div id="docModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">📖 Documentation & Setup Guide</div>
+            <div style="padding: 20px; font-size: 14px; line-height: 1.6;">
+                
+                <!-- GITHUB SYNC SETUP SECTION -->
+                <div style="margin-bottom: 30px;">
+                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔐 GitHub Token Setup (Feature 15)</h2>
+                    <p style="color: #666; margin-bottom: 15px;">
+                        Enable cross-device synchronization. Your tasks will automatically sync across Desktop, Mobile, Tablet, and Laptop.
+                    </p>
+
+                    <!-- RECOMMENDED METHOD -->
+                    <div style="background: #dbeafe; border-left: 4px solid #0284c7; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
+                        <h3 style="color: #0c4a6e; font-size: 14px; margin-bottom: 8px;">✅ RECOMMENDED - UI Button Method (Easiest)</h3>
+                        <ol style="margin: 0; padding-left: 20px; color: #0c4a6e;">
+                            <li style="margin-bottom: 6px;">Click <strong>🔐 Token</strong> button in top navigation</li>
+                            <li style="margin-bottom: 6px;">Click link: <a href="https://github.com/settings/tokens" target="_blank" style="color: #0284c7;">github.com/settings/tokens</a></li>
+                            <li style="margin-bottom: 6px;">Click "Generate new token (classic)"</li>
+                            <li style="margin-bottom: 6px;"><strong>Token name:</strong> "Time Kanban Sync"</li>
+                            <li style="margin-bottom: 6px;"><strong>Expiration:</strong> "No expiration"</li>
+                            <li style="margin-bottom: 6px;"><strong>Scope:</strong> Check ✅ <strong>repo</strong> only</li>
+                            <li style="margin-bottom: 6px;">Click "Generate token"</li>
+                            <li style="margin-bottom: 6px;"><strong>Copy token immediately</strong> (starts with ghp_)</li>
+                            <li style="margin-bottom: 6px;">Return here, click 🔐 Token button</li>
+                            <li style="margin-bottom: 6px;">Paste token in the text field</li>
+                            <li>Click <strong>✓ Save Token</strong></li>
+                        </ol>
+                        <p style="color: #0c4a6e; margin-top: 10px; font-size: 12px;">
+                            ⏱️ Time required: 2-3 minutes | 🔧 Difficulty: Easy | ✓ Recommended
+                        </p>
+                    </div>
+
+                    <!-- CONSOLE METHOD (for advanced users) -->
+                    <details style="background: #f3f4f6; padding: 12px; border-radius: 4px; margin-bottom: 15px; cursor: pointer;">
+                        <summary style="color: #374151; font-weight: bold; cursor: pointer;">
+                            🖥️ Advanced - Console Method (For developers)
+                        </summary>
+                        <div style="margin-top: 12px; color: #1f2937;">
+                            <ol style="padding-left: 20px;">
+                                <li style="margin-bottom: 8px;">Visit: <a href="https://github.com/settings/tokens" target="_blank" style="color: #0284c7;">github.com/settings/tokens</a></li>
+                                <li style="margin-bottom: 8px;">Generate token (steps same as above)</li>
+                                <li style="margin-bottom: 8px;">Open browser console (F12 → Console tab)</li>
+                                <li style="margin-bottom: 8px;">Type "allow pasting" and press Enter (if prompted)</li>
+                                <li style="margin-bottom: 8px;">Paste this command:<br>
+                                    <code style="background: #000; color: #0f0; padding: 8px; display: block; border-radius: 4px; font-family: monospace; font-size: 12px; margin-top: 6px;">localStorage.setItem('githubToken', 'ghp_YOUR_TOKEN_HERE');</code>
+                                </li>
+                                <li>Refresh page (F5)</li>
+                            </ol>
+                        </div>
+                    </details>
+
+                    <!-- REPEAT FOR EACH DEVICE -->
+                    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
+                        <h3 style="color: #92400e; font-size: 14px; margin-bottom: 8px;">📱 Setup on Multiple Devices</h3>
+                        <p style="color: #92400e; margin-bottom: 8px;">
+                            <strong>Same token works on all devices.</strong> Repeat setup on:
+                        </p>
+                        <ul style="margin: 0; padding-left: 20px; color: #92400e;">
+                            <li>✅ Desktop (Chrome/Edge/Safari)</li>
+                            <li>✅ Tablet (Chrome recommended)</li>
+                            <li>✅ Mobile phone (Chrome recommended)</li>
+                            <li>✅ iPad (Chrome recommended)</li>
+                            <li>✅ Laptop</li>
+                        </ul>
+                    </div>
+
+                    <!-- VERIFICATION -->
+                    <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 12px; border-radius: 4px;">
+                        <h3 style="color: #166534; font-size: 14px; margin-bottom: 8px;">✓ Verification</h3>
+                        <ol style="margin: 0; padding-left: 20px; color: #166534;">
+                            <li style="margin-bottom: 6px;">After saving token, <strong>refresh page</strong></li>
+                            <li style="margin-bottom: 6px;">Open browser console (F12)</li>
+                            <li style="margin-bottom: 6px;">Look for: <code style="background: #fff; padding: 2px 4px;">✓ Tasks fetched from GitHub: X</code></li>
+                            <li style="margin-bottom: 6px;">Click 🔐 Token button → status should show ✓ Configured</li>
+                            <li>Create a test task → console shows: <code style="background: #fff; padding: 2px 4px;">✓ Tasks pushed to GitHub</code></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- TROUBLESHOOTING -->
+                <div style="margin-bottom: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔧 Troubleshooting</h2>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #dc2626;">❌ "GitHub push failed: 401"</strong><br>
+                        <span style="color: #666;">Token invalid or expired. Create new token at <a href="https://github.com/settings/tokens" target="_blank" style="color: #0284c7;">github.com/settings/tokens</a></span>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #dc2626;">❌ "GitHub push failed: 403"</strong><br>
+                        <span style="color: #666;">Token lacks permissions. Verify ✅ <strong>repo</strong> scope is checked when creating token.</span>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: #dc2626;">❌ "No sync appearing"</strong><br>
+                        <span style="color: #666;">1) Hard refresh (Ctrl+Shift+R) → 2) Check token is saved: Click 🔐 Token button → should show ✓ Configured → 3) Check console (F12) for errors</span>
+                    </div>
+
+                    <div>
+                        <strong style="color: #dc2626;">❌ "Tasks different on different devices"</strong><br>
+                        <span style="color: #666;">Make sure token is set on ALL devices. Also clear browser cache if not syncing.</span>
+                    </div>
+                </div>
+
+                <!-- FEATURES & BENEFITS -->
+                <div style="border-top: 1px solid #ddd; padding-top: 20px;">
+                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">✨ What This Enables</h2>
+                    <ul style="padding-left: 20px; color: #666;">
+                        <li style="margin-bottom: 8px;">📱 Work on desktop → lunch break → update on mobile → tasks sync automatically</li>
+                        <li style="margin-bottom: 8px;">✏️ Edit on tablet → changes appear on laptop instantly</li>
+                        <li style="margin-bottom: 8px;">☁️ All devices have same data (no more mismatches)</li>
+                        <li style="margin-bottom: 8px;">🔄 Manual sync button (🔄) available in header</li>
+                        <li style="margin-bottom: 8px;">🛡️ Secure: Token stored in browser, only on YOUR device</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div style="padding: 15px; border-top: 1px solid #ddd; text-align: center;">
+                <button onclick="document.getElementById('docModal').classList.remove('active')" style="padding: 10px 20px; background: #6b7280; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
             </div>
         </div>
     </div>
@@ -604,6 +736,7 @@
             </div>
         </div>
         <div class="nav-buttons">
+            <button class="nav-btn" onclick="document.getElementById('docModal').classList.add('active')" title="Documentation & Setup"><span class="btn-text">📖 Docs</span><span class="btn-icon">📖</span></button>
             <button class="nav-btn" onclick="document.getElementById('tokenModal').classList.add('active')" title="GitHub Sync Settings"><span class="btn-text">🔐 Token</span><span class="btn-icon">🔐</span></button>
             <button class="nav-btn" id="syncBtn" onclick="manualSync()" title="Sync with GitHub"><span class="btn-text">🔄 Sync</span><span class="btn-icon">🔄</span></button>
             <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span><span class="btn-icon">⚙️</span></button>
