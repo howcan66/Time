@@ -1763,7 +1763,7 @@ ${projectUrl}`;
                 }
 
                 const data = await response.json();
-                const content = JSON.parse(atob(data.content));
+                const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
                 console.log('✓ Tasks fetched from GitHub:', content.length);
                 return { tasks: content, sha: data.sha };
             } catch (e) {
