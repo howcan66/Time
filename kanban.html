@@ -628,8 +628,28 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>What (Task Title) * - Detailed Description</label>
-                    <textarea id="taskWhat" placeholder="Describe the task in detail..." required rows="6" style="min-height: 120px;"></textarea>
+                    <label>What (Task Title) * - 2 rows</label>
+                    <textarea id="taskWhat" placeholder="Brief task title..." required rows="2" style="min-height: 50px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>What Description - 4 rows Scrollable</label>
+                    <textarea id="taskWhatDescription" placeholder="Detailed description of the task..." rows="4" style="min-height: 100px; overflow-y: auto;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Feature Descriptions (FD)</label>
+                    <textarea id="taskFD" placeholder="Feature descriptions..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>AI Analyse Summeries (AIS)</label>
+                    <textarea id="taskAIS" placeholder="AI analysis summaries..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Trouble Descriptions (TR)</label>
+                    <textarea id="taskTR" placeholder="Trouble descriptions..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>AI TR Analyses (AITRA)</label>
+                    <textarea id="taskAITRA" placeholder="AI trouble analysis..."></textarea>
                 </div>
                 <div class="form-group">
                     <label>Why (Reason/Purpose)</label>
@@ -720,7 +740,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form: Add Generate ID button, manual edit textform for ID, and detailed "what" description field with 6 rows. 7) Feature 8: Add task form navigation row (Min/Max toggle, Export, Print, Mail, Notification, Project dropdown). 8) Feature 9: Streamline all application gaps on row above and below text and buttons in top row for desktop, tablet and mobile - standardize padding/margins: header 60px desktop/58px tablet/55px mobile, reduce gaps between elements, mobile toolbar 32px button height, overall compact appearance. 9) Feature 10: Reduce all column gaps to 3px for desktop/tablet/mobile for best fit - tighter column spacing throughout app', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + add modal', priority: 2, status: 'In Progress', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form REVISED: Split What field - What (title 2 rows) + What Description (4 rows scrollable). 7) Feature 8: Add task form navigation row (Min/Max toggle, Export, Print, Mail, Notification, Project dropdown). 8) Feature 9: Streamline all application gaps on row above and below text and buttons in top row for desktop, tablet and mobile - standardize padding/margins: header 60px desktop/58px tablet/55px mobile, reduce gaps between elements, mobile toolbar 32px button height. 9) Feature 10: Reduce all column gaps to 3px for desktop/tablet/mobile. 10) Feature 11: Add 4 new textforms to task form - Feature Descriptions (FD), AI Analyse Summeries (AIS), Trouble Descriptions (TR), AI TR Analyses (AITRA)', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + modal form', priority: 2, status: 'In Progress', column: 4, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
@@ -1543,6 +1563,11 @@ ${projectUrl}`;
             document.getElementById('modalTitle').textContent = 'Edit Task';
             document.getElementById('taskId').value = task.id; /* Show existing ID for editing */
             document.getElementById('taskWhat').value = task.what;
+            document.getElementById('taskWhatDescription').value = task.whatDescription || '';
+            document.getElementById('taskFD').value = task.fd || '';
+            document.getElementById('taskAIS').value = task.ais || '';
+            document.getElementById('taskTR').value = task.tr || '';
+            document.getElementById('taskAITRA').value = task.aitra || '';
             document.getElementById('taskWhy').value = task.why || '';
             document.getElementById('taskHow').value = task.how || '';
             document.getElementById('taskWho').value = task.who || 'HJ';
@@ -1565,6 +1590,11 @@ ${projectUrl}`;
                 <div style="line-height:1.8;"><p><strong>ID:</strong> ${task.id}</p>
                 <p><strong>Project:</strong> ${getProjectName(task.projectId)}</p>
                 <p><strong>What:</strong> ${task.what}</p>
+                <p><strong>What Description:</strong> ${task.whatDescription || 'Not specified'}</p>
+                <p><strong>Feature Descriptions (FD):</strong> ${task.fd || 'Not specified'}</p>
+                <p><strong>AI Analyse Summeries (AIS):</strong> ${task.ais || 'Not specified'}</p>
+                <p><strong>Trouble Descriptions (TR):</strong> ${task.tr || 'Not specified'}</p>
+                <p><strong>AI TR Analyses (AITRA):</strong> ${task.aitra || 'Not specified'}</p>
                 <p><strong>Why:</strong> ${task.why || 'Not specified'}</p>
                 <p><strong>How:</strong> ${task.how || 'Not specified'}</p>
                 <p><strong>Who:</strong> ${task.who || 'HJ'}</p>
@@ -1587,6 +1617,11 @@ ${projectUrl}`;
             const taskData = {
                 id: editingTaskId || taskId,
                 what: document.getElementById('taskWhat').value,
+                whatDescription: document.getElementById('taskWhatDescription').value,
+                fd: document.getElementById('taskFD').value,
+                ais: document.getElementById('taskAIS').value,
+                tr: document.getElementById('taskTR').value,
+                aitra: document.getElementById('taskAITRA').value,
                 why: document.getElementById('taskWhy').value,
                 how: document.getElementById('taskHow').value,
                 who: document.getElementById('taskWho').value,
