@@ -1,0 +1,193 @@
+STEP-BY-STEP TESTING PLAN - TIME KANBAN PROJECT
+================================================================================
+Date: January 29, 2026
+Status: READY FOR SESSION START JANUARY 30, 2026
+Format: Tab-separated for Excel/XLS compatibility
+
+================================================================================
+PHASE 1: GITHUB SYNC VERIFICATION (2-3 hours)
+================================================================================
+
+TEST	DEVICE	ACTION	EXPECTED RESULT	CRITERIA	STATUS	NOTES
+1.1	DESKTOP	Hard refresh (Ctrl+Shift+R)	Page loads without cache	✓ Page fresh	☐ READY	Check console
+1.2	DESKTOP	Click 🔐 Token button	Modal opens with token input	✓ Modal visible	☐ READY	Should see "Not configured"
+1.3	DESKTOP	Paste token into field	Token field populated	✓ Token visible	☐ READY	[Use your personal GitHub token]
+1.4	DESKTOP	Click ✓ Save Token	Modal closes, status shows ✓ Configured	✓ Token saved	☐ READY	Status text updates
+1.5	DESKTOP	Refresh page (F5)	Console shows ✓ Tasks fetched from GitHub: X	✓ GitHub sync active	☐ READY	Watch console logs
+1.6	DESKTOP	Create test task "SYNC-TEST-001"	Task appears in Idea column	✓ Task created	☐ READY	Fill in What field only
+1.7	DESKTOP	Watch console	Message ✓ Tasks pushed to GitHub appears	✓ Push successful	☐ READY	Check browser console (F12)
+1.8	DESKTOP	Go to GitHub repo	Visit https://github.com/howcan66/Time/blob/main/data/kanbanTasks.json	✓ Task visible in JSON	☐ READY	Should see SYNC-TEST-001
+1.9	DESKTOP	Note timestamp	Record when file was last updated	✓ Recent update	☐ READY	Should be current time
+
+2.1	MOBILE	Open Chrome to https://howcan66.github.io/Time/kanban.html	Browser opens to login	✓ Page loads	☐ READY	Use Chrome for consistency
+2.2	MOBILE	Login with test credentials	Dashboard appears	✓ Logged in	☐ READY	Test user account
+2.3	MOBILE	Click 🔐 Token button	Token settings modal opens	✓ Modal visible	☐ READY	Check visibility on small screen
+2.4	MOBILE	Paste same token	Token field populated	✓ Token saved	☐ READY	Copy from desktop
+2.5	MOBILE	Refresh page	Console (F12): ✓ Tasks fetched from GitHub: X	✓ Sync active	☐ READY	Open dev tools first
+2.6	MOBILE	Verify SYNC-TEST-001 appears	Task "SYNC-TEST-001" visible in Idea	✓ Task synced	☐ READY	Should match desktop
+2.7	MOBILE	Move task to "Done"	Change task column via dropdown	✓ Task moved	☐ READY	Verify smooth animation
+2.8	MOBILE	Check console	✓ Tasks pushed to GitHub	✓ Push successful	☐ READY	Mobile should also sync
+
+3.1	TABLET	Open Chrome to kanban.html	Page loads	✓ Visible	☐ READY	iPad or Android tablet
+3.2	TABLET	Set token (same process)	Token configured	✓ Saved	☐ READY	Use 🔐 Token button
+3.3	TABLET	Refresh page	Fetch all tasks from GitHub	✓ Tasks appear	☐ READY	Should see SYNC-TEST-001 in Done
+3.4	TABLET	Create new task "SYNC-TEST-002"	Task appears in Idea	✓ Created	☐ READY	Tablet creation test
+3.5	TABLET	Watch console	✓ Tasks pushed to GitHub	✓ Synced	☐ READY	F12 to view console
+3.6	DESKTOP	Refresh page	SYNC-TEST-002 appears	✓ Desktop sees tablet changes	☐ READY	Bidirectional sync verified
+
+4.1	IPADOR-ANDROID	Set token (similar to tablet)	Token saved	✓ Configured	☐ READY	Use 🔐 Token button (easiest method)
+4.2	IPADOR-ANDROID	Refresh page	All tasks appear	✓ Synced	☐ READY	Should see SYNC-TEST-001 and SYNC-TEST-002
+
+================================================================================
+PHASE 2: MOBILE LAYOUT VERIFICATION (1 hour)
+================================================================================
+
+TEST	DEVICE	ACTION	EXPECTED RESULT	CRITERIA	STATUS	NOTES
+2.1	MOBILE	Check gap between filter and tasks	No visible gap	✓ Feature 14 verified	☐ READY	Filter row touches task area
+2.2	MOBILE	Verify button sizes	All buttons 32px height	✓ Uniform	☐ READY	Feature 13 verified
+2.3	MOBILE	Hover on buttons	Tooltip appears with text	✓ Tooltips work	☐ READY	Feature 12 verified
+2.4	MOBILE	Test icon visibility	All icons render correctly	✓ No broken icons	☐ READY	Check 🔐 📖 🔄 🚪 📋
+2.5	TABLET	Same layout checks	Responsive behavior correct	✓ Responsive	☐ READY	Breakpoint 1024px
+
+================================================================================
+PHASE 3: DOCUMENTATION VERIFICATION (30 min)
+================================================================================
+
+TEST	ACTION	EXPECTED RESULT	CRITERIA	STATUS	NOTES
+3.1	Click 📖 Docs button	Documentation modal opens	✓ Modal visible	☐ READY	All devices
+3.2	Scroll documentation	All sections readable	✓ Complete	☐ READY	Recommended + Advanced methods visible
+3.3	Check login modal	Setup tip displayed	✓ Visible	☐ READY	Below password input
+3.4	Verify files exist	FEATURES_DOCUMENTATION.txt readable	✓ Accessible	☐ READY	Desktop file access
+3.5	Test link in Docs	github.com/settings/tokens opens	✓ External link works	☐ READY	Test both desktop + mobile
+
+================================================================================
+FEATURE CHECKLIST - VERIFICATION
+================================================================================
+
+FEATURE	COMMIT	STATUS	TESTED	NOTES
+Feature 1-11	Various	✅ Done	☐ READY	Responsive design base
+Feature 12	2611ec2	✅ Done	☐ READY	Icon-only buttons, logout icon 🚪
+GitHub Sync	eae49c2	✅ Done	☐ READY	Token-based authentication
+Feature 13	ab084f1	✅ Done	☐ READY	Logout button uniform size
+Feature 14	ab084f1	✅ Done	☐ READY	Mobile filter-task gap eliminated
+Feature 15	5a30b86	✅ Done	☐ READY	Complete documentation
+Token UI	bf979d9	✅ Done	☐ READY	Token settings modal for all devices
+Unicode Fix	b760c77/6f95279	✅ Done	☐ READY	Emoji support in GitHub sync
+HJ-ID1RS11	2dbec7d	✅ Updated	☐ READY	Task tracking complete
+Documentation	21b1229/d63fc40	✅ Done	☐ READY	FEATURES_DOCUMENTATION.txt, PROPOSED_WAY_FORWARD.txt
+
+================================================================================
+SUCCESS CRITERIA - END OF DAY 1
+================================================================================
+
+MINIMUM ACCEPTABLE (4-5 hours)	CHECKBOX
+✓ GitHub sync verified on Desktop + Mobile	☐
+✓ Token setup working on 2+ devices	☐
+✓ No sync errors or data loss	☐
+✓ Testing report documented	☐
+
+OPTIMAL (6-7 hours)	CHECKBOX
+✓ GitHub sync verified on ALL devices	☐
+✓ Mobile layout optimized + tested	☐
+✓ Documentation reviewed + accurate	☐
+✓ All features working as specified	☐
+✓ Feature 8 implemented (if time permits)	☐
+
+MAXIMUM (8+ hours)	CHECKBOX
+✓ All above completed	☐
+✓ Performance benchmarked	☐
+✓ Accessibility audit completed	☐
+✓ Phase 2 features prioritized	☐
+
+================================================================================
+POTENTIAL ISSUES & CONTINGENCY
+================================================================================
+
+ISSUE	LIKELIHOOD	IF FOUND	ACTION	TIME IMPACT
+Sync fails on mobile	LOW	Check token scope (repo)	Regenerate token	+15 min
+Console errors	MEDIUM	Document error message	Fix + re-test	+30 min
+Layout breaks on tablet	LOW	Adjust breakpoint CSS	Test + commit	+20 min
+Token modal not visible	LOW	Check responsive CSS	Fix visibility	+10 min
+Documentation link broken	LOW	Verify URLs	Fix + test	+5 min
+
+================================================================================
+SESSION PREP CHECKLIST
+================================================================================
+
+BEFORE STARTING TOMORROW	STATUS
+✓ All GitHub commits successful	✅ DONE
+✓ No pending changes in working tree	✅ DONE
+✓ Documentation complete	✅ DONE
+✓ Testing plan created	✅ DONE (this file)
+✓ Credentials available	✅ DONE
+✓ Devices ready for testing	☐ TBD (user prep)
+✓ Network connection stable	☐ TBD (user prep)
+✓ Browser cache cleared	☐ TO DO (tomorrow)
+
+================================================================================
+DEVICES & ACCOUNTS NEEDED
+================================================================================
+
+DEVICE	BROWSER	TESTING	NOTES
+Desktop	Chrome/Edge/Firefox	Full testing	Set token once
+Mobile	Chrome	Full testing	Same token
+Tablet	Chrome	Full testing	Same token
+iPad	Chrome	Full testing	Same token
+
+LOGIN CREDENTIALS	USERNAME	PASSWORD	STATUS
+Test User	(Use from CMD.txt)	(Use from CMD.txt)	✅ Available
+
+GITHUB CREDENTIALS	TOKEN	STATUS
+Personal Access Token	[Use your personal token from gh settings]	✅ Created
+
+================================================================================
+COMMAND REFERENCE FOR TOMORROW
+================================================================================
+
+USE THESE COMMANDS	DESCRIPTION	ACTION
+START TESTING	Begin Phase 1 verification	Run tests 1.1-1.9
+UPDATE STATUS	Mark tests as complete	Check ☐ box in READY column
+ISSUES FOUND	If problems occur	Update ISSUE STATUS in contingency section
+PWF	If plan needs revision	Update PROPOSED_WAY_FORWARD.txt
+PA RESULTS	Analyze findings	Create TESTING_RESULTS.txt
+PE FEATURE 8	Proceed with Feature 8	Start implementation
+
+================================================================================
+FILE DEPENDENCIES & VERIFICATION
+================================================================================
+
+FILE	PURPOSE	STATUS	LAST UPDATED
+kanban.html	Main application	✅ Ready	Commit 2dbec7d
+FEATURES_DOCUMENTATION.txt	Feature reference	✅ Ready	Commit 21b1229
+PROPOSED_WAY_FORWARD.txt	Roadmap	✅ Ready	Commit d63fc40
+GITHUB_SYNC_SETUP.txt	Setup guide	✅ Ready	Earlier commits
+Commands.txt	Command reference	✅ Updated	Commit 21b1229
+TESTING_PLAN.xlsx/txt	This file	✅ Ready	TODAY
+data/kanbanTasks.json	GitHub storage	✅ Ready	GitHub repo
+
+================================================================================
+READY FOR TOMORROW - SUMMARY
+================================================================================
+
+✅ ALL SYSTEMS GO
+
+Phase 1: GitHub Sync Verification - READY
+Phase 2: Mobile Layout Check - READY
+Phase 3: Documentation Review - READY
+Feature Checklist - READY
+Success Criteria - DEFINED
+Contingency Plans - PREPARED
+
+ESTIMATED TIME: 4-7 hours (depending on issues found)
+
+START TOMORROW WITH:
+1. Hard refresh desktop
+2. Set token via 🔐 Token button
+3. Follow testing plan step-by-step
+4. Document findings
+
+COMMAND TO START: "START TESTING" or "TEST PHASE 1"
+
+================================================================================
+END OF TESTING PLAN
+================================================================================

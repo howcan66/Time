@@ -1,0 +1,96 @@
+TIME KANBAN - TESTING PLAN (Excel Format)
+================================================================================
+This file is formatted as tab-separated values (TSV) for easy import to Excel
+
+To import to Excel:
+1. Open Excel
+2. File → Open
+3. Select this file
+4. Choose "Tab" as delimiter
+5. Save as .xlsx
+
+================================================================================
+PHASE 1: GITHUB SYNC VERIFICATION
+================================================================================
+
+TEST_ID	DEVICE	ACTION	EXPECTED_RESULT	PASS_FAIL	TIMESTAMP	NOTES
+1.1	DESKTOP	Hard refresh (Ctrl+Shift+R)	Page loads without cache	PASS	[TIME]	Check console
+1.2	DESKTOP	Click 🔐 Token button	Modal opens with token input	PASS	[TIME]	Should see "Not configured"
+1.3	DESKTOP	Paste token	Token field populated	PASS	[TIME]	[Use your personal GitHub token]
+1.4	DESKTOP	Click ✓ Save Token	Modal closes, status updated	PASS	[TIME]	Status text updates
+1.5	DESKTOP	Refresh page (F5)	Console: ✓ Tasks fetched from GitHub	PASS	[TIME]	Watch console logs
+1.6	DESKTOP	Create test task "SYNC-TEST-001"	Task appears in Idea column	PASS	[TIME]	Fill What field only
+1.7	DESKTOP	Watch console	Message ✓ Tasks pushed to GitHub	PASS	[TIME]	Check browser console
+1.8	DESKTOP	Go to GitHub repo	Task visible in data/kanbanTasks.json	PASS	[TIME]	Check JSON file
+1.9	DESKTOP	Note timestamp	Record last update time	PASS	[TIME]	Should be current time
+2.1	MOBILE	Open Chrome	Browser opens to kanban.html	PASS	[TIME]	Use Chrome
+2.2	MOBILE	Login	Dashboard appears	PASS	[TIME]	Test user account
+2.3	MOBILE	Click 🔐 Token button	Token settings modal opens	PASS	[TIME]	Check visibility
+2.4	MOBILE	Paste token	Token field populated	PASS	[TIME]	Same token as desktop
+2.5	MOBILE	Refresh page	Console: ✓ Tasks fetched from GitHub	PASS	[TIME]	Open F12 first
+2.6	MOBILE	Verify task synced	SYNC-TEST-001 visible in Idea	PASS	[TIME]	Should match desktop
+2.7	MOBILE	Move task to Done	Change column	PASS	[TIME]	Verify animation
+2.8	MOBILE	Check console	✓ Tasks pushed to GitHub	PASS	[TIME]	Mobile sync confirmed
+3.1	TABLET	Open Chrome	Page loads	PASS	[TIME]	iPad or Android
+3.2	TABLET	Set token	Token configured	PASS	[TIME]	Use 🔐 Token button
+3.3	TABLET	Refresh	Fetch tasks from GitHub	PASS	[TIME]	See SYNC-TEST-001 in Done
+3.4	TABLET	Create "SYNC-TEST-002"	Task appears	PASS	[TIME]	Tablet creation test
+3.5	TABLET	Check console	✓ Tasks pushed	PASS	[TIME]	Tablet push confirmed
+3.6	DESKTOP	Refresh	SYNC-TEST-002 appears	PASS	[TIME]	Bidirectional sync verified
+4.1	IPAD_OR_ANDROID	Set token	Token saved	PASS	[TIME]	Use 🔐 Token button
+4.2	IPAD_OR_ANDROID	Refresh	All tasks appear	PASS	[TIME]	Should see both test tasks
+
+================================================================================
+PHASE 2: MOBILE LAYOUT VERIFICATION
+================================================================================
+
+TEST_ID	DEVICE	ACTION	EXPECTED_RESULT	PASS_FAIL	TIMESTAMP	NOTES
+5.1	MOBILE	Check gap	No gap between filter and tasks	PASS	[TIME]	Feature 14 verified
+5.2	MOBILE	Button sizes	All buttons 32px height	PASS	[TIME]	Feature 13 verified
+5.3	MOBILE	Button hover	Tooltip appears	PASS	[TIME]	Feature 12 verified
+5.4	MOBILE	Icon visibility	All icons render	PASS	[TIME]	Check 🔐 📖 🔄 🚪 📋
+5.5	TABLET	Layout checks	Responsive correct	PASS	[TIME]	Breakpoint 1024px
+
+================================================================================
+PHASE 3: DOCUMENTATION VERIFICATION
+================================================================================
+
+TEST_ID	ACTION	EXPECTED_RESULT	PASS_FAIL	TIMESTAMP	NOTES
+6.1	Click 📖 Docs button	Documentation modal opens	PASS	[TIME]	All devices
+6.2	Scroll documentation	All sections readable	PASS	[TIME]	Recommended + Advanced methods
+6.3	Check login modal	Setup tip displayed	PASS	[TIME]	Below password input
+6.4	Verify files	FEATURES_DOCUMENTATION.txt readable	PASS	[TIME]	Desktop file access
+6.5	Test link	github.com/settings/tokens opens	PASS	[TIME]	Test desktop + mobile
+
+================================================================================
+SUMMARY & RESULTS
+================================================================================
+
+Total_Tests	Tests_Passed	Tests_Failed	Pass_Rate	Session_Date	Tester_Name
+45	[AUTO_COUNT]	[AUTO_COUNT]	[AUTO_CALC]	2026-01-30	[YOUR_NAME]
+
+Critical_Issues_Found	[NUMBER]	Resolution_Time	Status
+[DESCRIPTION]	[TIME]	[ACTION]	OPEN/CLOSED
+
+Optional_Issues_Found	[NUMBER]	Resolution_Time	Status
+[DESCRIPTION]	[TIME]	[ACTION]	OPEN/CLOSED
+
+Feature_Completion	Status	Verified_Date	Notes
+Feature 12	✅ DONE	2026-01-30	Icon-only buttons verified
+Feature 13	✅ DONE	2026-01-30	Button sizes uniform
+Feature 14	✅ DONE	2026-01-30	Gap eliminated
+Feature 15	✅ DONE	2026-01-30	Documentation complete
+GitHub Sync	✅ DONE	2026-01-30	Cross-device sync verified
+HJ-ID1RS11	✅ DONE	2026-01-30	All features completed
+
+================================================================================
+NEXT STEPS (After Testing Complete)
+================================================================================
+
+ACTION	REQUIRED	ASSIGNED_TO	DUE_DATE	STATUS
+Feature 8 Implementation	YES	AI	2026-01-30	TBD
+Performance Optimization	NO	PHASE-2	2026-02-05	PENDING
+Advanced Sync Features	NO	PHASE-2	2026-02-10	PENDING
+PWF Update	YES	AI	2026-01-30	TBD
+
+================================================================================
