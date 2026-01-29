@@ -601,7 +601,10 @@
             if (user) {
                 currentUser = user;
                 userLockout.attempts = 0;
+                userLockout.locked = false;
+                userLockout.lockUntil = null;
                 user.lastLogin = new Date().toISOString();
+                loginBtn.disabled = false;
                 // PERSIST SESSION TO LOCALSTORAGE
                 localStorage.setItem('timeProjectSession', JSON.stringify({
                     username: user.username,

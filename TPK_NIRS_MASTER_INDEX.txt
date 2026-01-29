@@ -1,0 +1,248 @@
+================================================================================
+TPK-NIRS MASTER INDEX - TIME PROJECT KANBAN FEATURES & REQUIREMENTS
+================================================================================
+Generated: 2026-01-29
+System: TPK-NIRS (Time Project Kanban - New Identification Requirement Specification)
+Format: TPK-v[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE]
+
+================================================================================
+ACTIVE FEATURES - TPK-v1 (VERSION 1)
+================================================================================
+
+SECURITY FEATURES (TPK-SEC)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-SEC-01-001 | HJ-ID0R1 | Session Persistence | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Save session to localStorage
+2 | TPK-v1-SEC-01-002 | HJ-ID0R2 | Per-User Lockout Tracking | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Track lockout per user, not global
+3 | TPK-v1-SEC-01-003 | HJ-ID0R3 | Invalid Credentials Recovery | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Clear corrupted sessions
+4 | TPK-v1-SEC-01-005 | HJ-ID1RS5 | Password Protection & Login | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Login modal, 3-strike lockout (NOW 5-strike)
+5 | TPK-v1-SEC-01-011 | NEW-LOGIN-PWD | Password Visibility Toggle | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Eye icon to show/hide password
+6 | TPK-v1-SEC-01-012 | NEW-LOGIN-ATTEMPTS | Lockout Threshold (5 Strikes) | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Increased from 3 to 5 failed attempts
+
+
+ADMINISTRATION FEATURES (TPK-ADM)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-ADM-01-007 | HJ-ID1RS7 | Admin User Management Panel | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Dashboard with Users/Logs/Sessions/Invitations tabs
+2 | TPK-v1-ADM-01-010 | HJ-ID1RS10 | Admin User Invitations | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | Generate temp credentials, email delivery, tracking
+
+
+CORE FEATURES (TPK-CORE)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-CORE-01-001 | HJ-ID0R1 | Session Persistence | 01-CRITICAL | COMPLETED | 100% | AI | 2026-01-29 | localStorage integration
+
+
+DOCUMENTATION FEATURES (TPK-DOC)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-DOC-02-004 | HJ-ID0R4 | Update All Documentation | 02-HIGH | COMPLETED | 100% | AI | 2026-01-29 | Created Documentation.csv master index
+2 | TPK-v1-DOC-02-005 | HJ-ID0R5 | Design Phase Prep | 02-HIGH | COMPLETED | 100% | AI | 2026-01-29 | Design specs for HJ-ID1RS7, HJ-ID1RS10
+
+
+RESPONSIVE FEATURES (TPK-RES)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-RES-02-003 | HJ-ID1RS3 | Adaptive Kanban Device Detection | 02-HIGH | IN_PROGRESS | 80% | AI | 2026-02-01 | Desktop drag-drop, mobile dropdowns, needs real device testing
+
+
+ORGANIZATION FEATURES (TPK-ORG)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-ORG-02-004 | HJ-ID1RS4 | Multi-Project Kanban | 02-HIGH | NEW | 0% | TBD | 2026-02-15 | Project dropdown filter, create new project
+
+
+EXPORT FEATURES (TPK-EXP)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-EXP-02-008 | HJ-ID1RS8 | Print Kanban Board | 02-HIGH | DESIGN | 30% | TBD | 2026-02-05 | Full board landscape, column portrait, metadata footer
+
+
+COMMUNICATION FEATURES (TPK-COM)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-COM-02-009 | HJ-ID1RS9 | Email Column Group | 02-HIGH | DESIGN | 20% | TBD | 2026-02-10 | Email button per column, recipient selection, template
+
+
+TASK MANAGEMENT FEATURES (TPK-TSK)
+────────────────────────────────────────────────────────────────
+
+# | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
+--|--------|--------|--------------|----------|--------|------------|-------|----------|-------
+1 | TPK-v1-TSK-03-006 | HJ-ID1RS6 | User Role Assignment to Tasks | 03-MEDIUM | NEW | 0% | TBD | 2026-02-20 | Assignee dropdown, display on card, My Tasks filter
+
+
+================================================================================
+BUG REPORTS (TPK-BUG) - Issues Found During Testing
+================================================================================
+
+# | TPK_ID | DATE_FOUND | SEVERITY | STATUS | DESCRIPTION | NOTES
+--|--------|-----------|----------|--------|-------------|-------
+1 | TPK-v1-BUG-01-001 | 2026-01-29 | CRITICAL | RESOLVED | Login attempt counter not resetting after successful login | User locked even after correct password due to locked flag not being reset
+
+
+================================================================================
+BUG FIXES (TPK-FIX) - Solutions Applied
+================================================================================
+
+# | TPK_ID | BUG_ID | DATE_FIXED | FIX_TYPE | STATUS | DESCRIPTION | COMMIT | NOTES
+--|--------|--------|-----------|----------|--------|-------------|--------|-------
+1 | TPK-v1-FIX-01-001 | TPK-v1-BUG-01-001 | 2026-01-29 | Code | COMPLETED | Reset locked flag on successful login | [PENDING] | Added: attempts=0, locked=false, lockUntil=null reset
+
+
+================================================================================
+TESTING (TPK-TEST) - Test Cases & Test Plans
+================================================================================
+
+# | TPK_ID | TEST_TYPE | FEATURE | STATUS | TEST_CASES | DATE | NOTES
+--|--------|-----------|---------|--------|-----------|------|-------
+1 | TPK-v1-TEST-02-001 | Unit Tests | TPK-v1-SEC-01-011 | READY | PWD-001 to PWD-012 | 2026-01-30 | Password toggle testing
+2 | TPK-v1-TEST-02-002 | Unit Tests | TPK-v1-SEC-01-012 | READY | LOCK-001 to LOCK-012 | 2026-01-30 | Lockout threshold testing
+3 | TPK-v1-TEST-02-003 | Integration | PWD + LOCK | READY | INT-001 to INT-006 | 2026-01-30 | Feature interaction testing
+4 | TPK-v1-TEST-02-004 | Integration | Admin Panel | READY | DASH-001+ | 2026-01-31 | Admin dashboard testing
+
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+
+TOTAL FEATURES: 15
+
+By Category:
+  Security (SEC): 6 features
+  Administration (ADM): 2 features
+  Core (CORE): 1 feature
+  Documentation (DOC): 2 features
+  Responsive (RES): 1 feature
+  Organization (ORG): 1 feature
+  Export (EXP): 1 feature
+  Communication (COM): 1 feature
+  Task Management (TSK): 1 feature
+
+By Priority:
+  CRITICAL (01): 8 features → 62%
+  HIGH (02): 6 features → 40%
+  MEDIUM (03): 1 feature → 7%
+
+By Status:
+  COMPLETED: 8 features (53%)
+  IN_PROGRESS: 1 feature (7%)
+  DESIGN: 2 features (13%)
+  NEW: 4 features (27%)
+
+By Completion:
+  100%: 8 features (COMPLETED)
+  80%: 1 feature (DESIGN/IN_PROGRESS)
+  30%: 1 feature (DESIGN phase)
+  20%: 1 feature (DESIGN phase)
+  0%: 4 features (NEW/NOT STARTED)
+
+Estimated Hours:
+  Completed: 20 hours
+  Remaining: 23-30 hours
+  Total Project: ~50 hours
+
+
+================================================================================
+NEXT TPK-IDs TO ASSIGN (Pipeline)
+================================================================================
+
+When implementing new features, use next available numbers:
+
+Security (SEC): Next = 013
+  TPK-v1-SEC-01-013 = [Next critical security feature]
+  TPK-v1-SEC-02-001 = [High priority security enhancement]
+
+Administration (ADM): Next = 011
+  TPK-v1-ADM-01-011 = [Next critical admin feature]
+
+Export (EXP): Next = 009
+  TPK-v1-EXP-02-009 = [Next high priority export feature]
+
+Bug Reports (BUG): Next = 002
+  TPK-v1-BUG-01-002 = [Next critical bug]
+
+Fixes (FIX): Next = 002
+  TPK-v1-FIX-01-002 = [Next critical fix]
+
+Testing (TEST): Next = 005
+  TPK-v1-TEST-02-005 = [Next test plan/test cases]
+
+
+================================================================================
+CHANGE LOG
+================================================================================
+
+Date | Change | Details
+-----|--------|----------
+2026-01-29 | Created | TPK-NIRS Master Index initialized with all current features
+2026-01-29 | Added | Bug TPK-v1-BUG-01-001 (login counter not resetting)
+2026-01-29 | Added | Fix TPK-v1-FIX-01-001 (reset lockout flags on successful login)
+2026-01-29 | Updated | Security features now include password toggle & 5-strike threshold
+
+
+================================================================================
+USEFUL QUERIES
+================================================================================
+
+Find all CRITICAL priority items:
+  Filter: PRIORITY = "01-CRITICAL"
+  Count: 8 items
+  Expected Time: ~20+ hours
+
+Find all IN_PROGRESS or NEW items:
+  Filter: STATUS = "IN_PROGRESS" OR STATUS = "NEW"
+  Count: 5 items
+  Expected Time: ~25+ hours
+
+Find all Security features:
+  Filter: CATEGORY = "SEC"
+  Count: 6 items
+  Status: 6 COMPLETED
+
+Find all completed work:
+  Filter: STATUS = "COMPLETED"
+  Count: 8 items
+  Completion: 100% each
+
+Find items due soon (before 2026-02-05):
+  Filter: DUE_DATE < "2026-02-05" AND STATUS != "COMPLETED"
+  Count: 2 items
+  Urgency: HIGH
+
+================================================================================
+USAGE INSTRUCTIONS
+================================================================================
+
+1. REFERENCE: Use TPK-ID when discussing features
+   Example: "TPK-v1-SEC-01-011 is complete"
+
+2. TRACKING: Update status column when work progresses
+   Example: NEW → DESIGN → IN_PROGRESS → TESTING → COMPLETED
+
+3. LINKING: Reference TPK-ID in commit messages
+   Example: "Implement TPK-v1-EXP-02-008: Print Kanban Board"
+
+4. REPORTING: Generate reports by filtering on category/priority
+   Example: List all HIGH priority items not yet started
+
+5. DOCUMENTATION: Create RS (Requirement Specification) for each TPK-ID
+   Example: TPK-v1-SEC-01-011_Password_Visibility_Toggle_RS.txt
+
+================================================================================

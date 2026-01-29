@@ -1,0 +1,400 @@
+================================================================================
+TIME PROJECT KANBAN (TPK) - NEW IDENTIFICATION REQUIREMENT SPECIFICATION (NIRS)
+================================================================================
+Date: 2026-01-29
+Purpose: Propose comprehensive ID system for TPK features and requirements
+Scope: Feature identification, requirement tracking, specification documentation
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+This document proposes a unified identification and requirement specification system
+for the Time Project Kanban (TPK) that integrates:
+  ✓ Feature identification (unique IDs)
+  ✓ Requirement specification (detailed specs)
+  ✓ Category classification (feature type)
+  ✓ Version tracking (release management)
+  ✓ Status tracking (development lifecycle)
+  ✓ Priority indication (urgency level)
+
+Current Pain Points:
+  ❌ HJ-ID1RSn format doesn't indicate feature category
+  ❌ Sequential numbering has gaps (5, 7, 8, 10)
+  ❌ No clear connection between ID and requirement spec
+  ❌ Bug fixes and tests lack proper ID structure
+  ❌ Hard to sort/filter by category or priority
+
+Proposed Solution: TPK-NIRS Format
+
+================================================================================
+PROPOSED: TPK-NIRS FORMAT
+================================================================================
+
+Structure: TPK-[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE]
+
+Example: TPK-v1-SEC-01-001
+  TPK = Time Project Kanban (prefix)
+  v1 = Version 1
+  SEC = Security (category)
+  01 = Priority 1 (Critical)
+  001 = Sequential number (001, 002, 003...)
+
+Full Format Breakdown:
+────────────────────────────────────────────────────────────────
+
+1. PREFIX: TPK
+   Meaning: Time Project Kanban
+   Purpose: Identify project
+   Fixed: Yes
+
+2. VERSION: v1, v2, v3...
+   Meaning: Release version
+   Examples: v1 (current), v2 (next major), v3 (future)
+   Current: v1
+
+3. CATEGORY: 3-4 letter code
+   Meaning: Feature type/category
+   Examples: SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX
+   Purpose: Quick identification of feature type
+
+4. PRIORITY: 01-99 (numeric)
+   Meaning: Priority level (01=Critical, 02=High, 03=Medium, 04=Low)
+   Mapped to:
+     01 = CRITICAL (security, auth, core functionality)
+     02 = HIGH (major features, user-facing)
+     03 = MEDIUM (enhancements, improvements)
+     04 = LOW (nice-to-have, minor fixes)
+
+5. SEQUENCE: 001-999 (numeric)
+   Meaning: Sequential number within category-priority
+   Examples: 001 (first critical security), 002 (second critical security)
+   Purpose: Unique identifier within classification
+
+================================================================================
+CATEGORY DEFINITIONS
+================================================================================
+
+CODE | CATEGORY_NAME | DESCRIPTION | EXAMPLES
+-----|----------------|-------------|----------
+SEC | Security | Login, auth, permissions, lockout | HJ-ID1RS5, HJ-ID0R2, HJ-ID0R3
+ADM | Administration | User management, admin panel | HJ-ID1RS7, HJ-ID1RS10
+EXP | Export | Print, download, file export | HJ-ID1RS8
+COM | Communication | Email, notifications, messaging | HJ-ID1RS9
+RES | Responsive | Device detection, layouts, mobile | HJ-ID1RS3
+ORG | Organization | Multi-project, filtering, sorting | HJ-ID1RS4
+TSK | Task Management | Task assignment, ownership, filtering | HJ-ID1RS6
+DOC | Documentation | Docs, specs, guides, records | HJ-ID0R4, HJ-ID0R5
+CORE | Core | Session, data, persistence, caching | HJ-ID0R1
+TEST | Testing | Test cases, test execution, test plan | NEW CATEGORY
+BUG | Bug Report | Defects found during testing | NEW CATEGORY
+FIX | Bug Fix | Fixes applied to defects | NEW CATEGORY
+REQ | Requirement | Feature requirement specifications | NEW CATEGORY
+
+================================================================================
+PRIORITY LEVELS
+================================================================================
+
+PRIORITY | NUMERIC | URGENCY | DESCRIPTION | IMPACT
+---------|---------|---------|-------------|--------
+CRITICAL | 01 | Immediate | Blocking issues, security holes, must fix now | HIGH
+HIGH | 02 | Very Soon | Major features, important for users | MEDIUM-HIGH
+MEDIUM | 03 | This Sprint | Enhancements, improvements, nice features | MEDIUM
+LOW | 04 | Later | Minor fixes, documentation, future ideas | LOW
+
+Examples:
+  TPK-v1-SEC-01-001 = CRITICAL security issue (password lockout bug)
+  TPK-v1-EXP-02-001 = HIGH priority export feature (print board)
+  TPK-v1-DOC-03-001 = MEDIUM priority documentation task
+
+================================================================================
+MIGRATION: OLD IDs TO TPK-NIRS FORMAT
+================================================================================
+
+OLD_ID | CATEGORY | PRIORITY | NEW_TPK_NIRS_ID | FEATURE_NAME
+--------|----------|----------|-----------------|---------------
+HJ-ID1RS5 | SEC | 01 | TPK-v1-SEC-01-005 | Password Protection & Login
+HJ-ID1RS7 | ADM | 01 | TPK-v1-ADM-01-007 | Admin User Management Panel
+HJ-ID1RS10 | ADM | 01 | TPK-v1-ADM-01-010 | Admin User Invitations
+HJ-ID1RS8 | EXP | 02 | TPK-v1-EXP-02-008 | Print Kanban Board
+HJ-ID1RS9 | COM | 02 | TPK-v1-COM-02-009 | Email Column Group
+HJ-ID1RS3 | RES | 02 | TPK-v1-RES-02-003 | Adaptive Kanban Device Detection
+HJ-ID1RS4 | ORG | 02 | TPK-v1-ORG-02-004 | Multi-Project Kanban
+HJ-ID1RS6 | TSK | 03 | TPK-v1-TSK-03-006 | User Role Assignment to Tasks
+HJ-ID0R1 | CORE | 01 | TPK-v1-CORE-01-001 | Session Persistence
+HJ-ID0R2 | SEC | 01 | TPK-v1-SEC-01-002 | Per-User Lockout Tracking
+HJ-ID0R3 | SEC | 01 | TPK-v1-SEC-01-003 | Invalid Credentials Recovery
+HJ-ID0R4 | DOC | 02 | TPK-v1-DOC-02-004 | Update All Documentation
+HJ-ID0R5 | DOC | 02 | TPK-v1-DOC-02-005 | Design Phase Prep
+
+NEW ENTRIES for Recent Work:
+NEW-LOGIN-PWD | SEC | 01 | TPK-v1-SEC-01-011 | Password Visibility Toggle
+NEW-LOGIN-ATTEMPTS | SEC | 01 | TPK-v1-SEC-01-012 | Lockout Threshold to 5 Strikes
+BUG-LOGIN-LOCKOUT | BUG | 01 | TPK-v1-BUG-01-001 | Login Attempt Counter Not Resetting
+FIX-LOGIN-LOCKOUT | FIX | 01 | TPK-v1-FIX-01-001 | Fix: Reset locked flag on successful login
+
+================================================================================
+REQUIREMENT SPECIFICATION (RS) COMPONENTS
+================================================================================
+
+Each TPK-NIRS ID requires a Requirement Specification document with:
+
+1. HEADER SECTION
+   - Feature ID: TPK-v1-SEC-01-011
+   - Feature Name: Password Visibility Toggle
+   - Category: Security
+   - Priority: Critical (01)
+   - Status: COMPLETED / IN_PROGRESS / PENDING / ON_HOLD
+   - Version: v1
+   - Created: 2026-01-29
+   - Owner: AI
+   - Deadline: 2026-01-30
+
+2. DESCRIPTION SECTION
+   - Executive Summary (1-2 sentences)
+   - Detailed Description (paragraph)
+   - User Stories (format: "As a [role], I want [action], so [benefit]")
+   - Acceptance Criteria (checklist)
+
+3. TECHNICAL SECTION
+   - Technical Requirements
+   - Architecture/Design
+   - Dependencies
+   - Implementation Notes
+   - Test Coverage
+
+4. STATUS TRACKING SECTION
+   - Current Status
+   - Progress Percentage
+   - Blockers
+   - Next Steps
+   - Commit Reference (if implemented)
+
+5. DOCUMENTATION SECTION
+   - Related Files
+   - Test Cases
+   - Design Documents
+   - References to other specs
+
+================================================================================
+FILE NAMING CONVENTION FOR REQUIREMENT SPECS
+================================================================================
+
+Requirement specs should be named following pattern:
+[TPK-ID]_[FEATURE-NAME]_RS.txt
+
+Examples:
+  TPK-v1-SEC-01-011_Password_Visibility_Toggle_RS.txt
+  TPK-v1-SEC-01-012_Lockout_Threshold_RS.txt
+  TPK-v1-EXP-02-008_Print_Kanban_Board_RS.txt
+  TPK-v1-ADM-01-007_Admin_User_Management_RS.txt
+
+Location: Store in main project folder with other documentation
+
+================================================================================
+TRACKING SPREADSHEET: TPK-NIRS Master Index
+================================================================================
+
+Recommended columns for tracking spreadsheet:
+  TPK_ID | FEATURE_NAME | CATEGORY | PRIORITY | STATUS | OWNER | DUE_DATE | PROGRESS | FILE_REFERENCE
+
+Can be stored in:
+  - CSV file: TPK_NIRS_Master_Index.csv
+  - Excel file: TPK_NIRS_Master_Index.xlsx
+  - HTML table: TPK_NIRS_Master_Index.html
+  - Or integrated into existing Project_Status.csv with TPK-NIRS column
+
+================================================================================
+BENEFITS OF TPK-NIRS SYSTEM
+================================================================================
+
+✅ CLARITY
+   - ID tells you: project + version + category + priority + sequence
+   - Example: TPK-v1-SEC-01-005 = Security, Critical, 5th in this priority
+
+✅ SORTABILITY
+   - Sort by category: All SEC issues together
+   - Sort by priority: See critical issues first
+   - Sort by version: Track v1 vs v2 features
+
+✅ SCALABILITY
+   - Can handle hundreds of features
+   - Supports multiple versions (v1, v2, v3)
+   - Extensible category list
+
+✅ TRACEABILITY
+   - Clear connection to requirement specifications
+   - Version tracking for auditing
+   - Requirement-to-implementation mapping
+
+✅ TEAM COMMUNICATION
+   - Everyone understands: TPK-v1-SEC-01-005 is a CRITICAL SECURITY issue
+   - No ambiguity about priority or type
+   - Easier sprint planning and prioritization
+
+✅ REPORTING
+   - Generate reports by category
+   - Track progress by priority
+   - Version release planning
+
+================================================================================
+IMPLEMENTATION ROADMAP
+================================================================================
+
+PHASE 1: Adopt TPK-NIRS (Immediate)
+- Start using new IDs for new features/bugs
+- Create TPK_NIRS_Master_Index.csv
+- Document this spec in project wiki
+
+PHASE 2: Migrate Existing IDs (Optional)
+- Convert HJ-ID1RS* to TPK-v1-* format
+- Update all documentation references
+- Update kanban.html task IDs
+- Timeline: v2.0 release
+
+PHASE 3: Requirement Specifications (Progressive)
+- Create RS document for each TPK-ID
+- Link specs in master index
+- Maintain throughout development lifecycle
+
+================================================================================
+EXAMPLES: Full TPK-NIRS with Requirement Spec
+================================================================================
+
+EXAMPLE 1: Recently Completed Feature
+─────────────────────────────────────────
+
+ID: TPK-v1-SEC-01-011
+Name: Password Visibility Toggle (NEW-LOGIN-PWD)
+Category: Security
+Priority: 01 (CRITICAL)
+Status: COMPLETED
+Created: 2026-01-29
+Implemented: YES (Commit ac07612)
+
+Description:
+  Users can toggle password visibility with an eye icon button,
+  allowing them to verify their password entry before login.
+
+Acceptance Criteria:
+  ✓ Eye icon visible next to password field
+  ✓ Click eye → password shown as text
+  ✓ Click again → password hidden with asterisks
+  ✓ Icon changes (👁️ ↔ 😨) on toggle
+  ✓ Tooltip shows "Show/Hide Password"
+  ✓ Works on desktop, tablet, mobile
+  ✓ No breaking changes to existing functionality
+
+Test Cases: PWD-001 to PWD-012 (12 test cases)
+Reference: LOGIN_IMPROVEMENTS_IMPLEMENTATION.txt
+Commit: ac07612
+
+
+EXAMPLE 2: Bug Found and Fixed
+─────────────────────────────────────────
+
+ID (Bug): TPK-v1-BUG-01-001
+Name: Login Attempt Counter Not Resetting
+Category: Bug
+Priority: 01 (CRITICAL)
+Status: RESOLVED
+Found: 2026-01-29
+Reported by: USER
+Fixed by: AI
+
+Description:
+  After entering wrong password, user cannot login with correct
+  password even on next attempt. System still shows "locked" state.
+
+Root Cause:
+  On successful login, code reset attempts=0 but didn't reset
+  locked=false and lockUntil=null flags.
+
+Fix ID: TPK-v1-FIX-01-001
+Fix Description: Reset all lockout flags (attempts, locked, lockUntil)
+                 on successful login credential match
+Fix Commit: [To be committed]
+Fix Verification: Test LOCK-011 passes
+
+Impact: CRITICAL - Users unable to recover from mistyped password
+
+
+EXAMPLE 3: Upcoming Feature
+─────────────────────────────────────────
+
+ID: TPK-v1-EXP-02-008
+Name: Print Kanban Board (HJ-ID1RS8)
+Category: Export
+Priority: 02 (HIGH)
+Status: PENDING
+Due Date: 2026-02-05
+Owner: AI
+
+Description:
+  Users can print the Kanban board in two modes:
+  1. Full Board (landscape) - all 7 columns
+  2. Single Column (portrait) - detailed view of one column
+
+Acceptance Criteria:
+  ✓ Print button in header
+  ✓ Print button per column
+  ✓ Full board landscape layout
+  ✓ Single column portrait layout
+  ✓ Metadata footer (timestamp, user, filter status)
+  ✓ CSS @media print rules applied
+  ✓ No buttons/controls visible in print
+  ✓ Works on modern browsers
+
+Estimated Effort: 4-6 hours
+Related Docs: DESIGN_PREP.txt (HJ-ID1RS8 section)
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+ACTION | TIMELINE | OWNER | STATUS
+--------|----------|-------|--------
+Approve TPK-NIRS format | 2026-01-29 | USER | PENDING
+Create TPK_NIRS_Master_Index.csv | 2026-01-30 | AI | PENDING
+Start using TPK-IDs for new work | 2026-01-30 | TEAM | PENDING
+Create requirement specs (Phase 3) | 2026-02-01 | AI | PENDING
+Migrate existing HJ-IDs (Phase 2) | 2026-02-15 | AI | PENDING
+
+================================================================================
+APPENDIX: TPK-NIRS Quick Reference
+================================================================================
+
+Quick Decision Tree:
+  1. Is it new work? → Use TPK-v1-[CATEGORY]-[PRIORITY]-[SEQUENCE]
+  2. Is it a bug? → Use TPK-v1-BUG-[PRIORITY]-[SEQUENCE]
+  3. Is it a fix? → Use TPK-v1-FIX-[PRIORITY]-[SEQUENCE]
+  4. Is it documentation? → Use TPK-v1-DOC-[PRIORITY]-[SEQUENCE]
+
+Example ID Generation:
+  New password toggle feature (security, critical):
+    → TPK-v1-SEC-01-011 ✓
+
+  Bug found in login (bug, critical):
+    → TPK-v1-BUG-01-001 ✓
+
+  Fix for login bug (fix, critical):
+    → TPK-v1-FIX-01-001 ✓
+
+  Test plan documentation (documentation, medium):
+    → TPK-v1-DOC-03-001 ✓
+
+================================================================================
+DOCUMENT INFORMATION
+================================================================================
+
+File: TPK_NIRS_PROPOSAL.txt
+Created: 2026-01-29
+Version: 1.0
+Author: AI Assistant
+Status: PROPOSAL - AWAITING APPROVAL
+Purpose: Define new identification and requirement specification system
+         for Time Project Kanban (TPK)
+
+Next: Schedule review meeting to approve or suggest modifications
+
+================================================================================
