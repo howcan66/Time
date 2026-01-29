@@ -596,6 +596,7 @@
                 document.getElementById('loginModal').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
                 document.getElementById('loginPassword').value = '';
+                loadTasks();
                 renderAllColumns();
                 attachDragListeners();
                 updateHeader();
@@ -1286,6 +1287,7 @@ ${projectUrl}`;
             } else {
                 tasks.push(taskData);
             }
+            saveTasks();
             renderAllColumns();
             closeModal();
         });
@@ -1294,6 +1296,7 @@ ${projectUrl}`;
             const task = tasks.find(t => t.id === taskId);
             if (task) {
                 task.priority = task.priority === 3 ? 1 : task.priority + 1;
+                saveTasks();
                 renderColumn(task.column);
             }
         }
@@ -1303,6 +1306,7 @@ ${projectUrl}`;
             if (task) {
                 const statuses = ['Not Started', 'Executing', 'Progressing', 'Done'];
                 task.status = statuses[(statuses.indexOf(task.status) + 1) % statuses.length];
+                saveTasks();
                 renderColumn(task.column);
             }
         }
@@ -1312,6 +1316,7 @@ ${projectUrl}`;
             if (task) {
                 const oldColumn = task.column;
                 task.column = parseInt(newColumn);
+                saveTasks();
                 renderColumn(oldColumn);
                 renderColumn(newColumn);
             }
@@ -1321,8 +1326,31 @@ ${projectUrl}`;
             if (confirm('Delete this task permanently?')) {
                 const column = tasks.find(t => t.id === taskId).column;
                 tasks = tasks.filter(t => t.id !== taskId);
+                saveTasks();
                 renderColumn(column);
             }
+        }
+
+        // ===== TASK PERSISTENCE TO LOCALSTORAGE =====
+        function saveTasks() {
+            localStorage.setItem('timeProjectTasks', JSON.stringify(tasks));
+            console.log('✓ Tasks saved to localStorage');
+        }
+
+        function loadTasks() {
+            const saved = localStorage.getItem('timeProjectTasks');
+            if (saved) {
+                try {
+                    tasks = JSON.parse(saved);
+                    console.log('✓ Tasks loaded from localStorage:', tasks.length);
+                    return true;
+                } catch (e) {
+                    console.log('Failed to load tasks:', e);
+                    localStorage.removeItem('timeProjectTasks');
+                    return false;
+                }
+            }
+            return false;
         }
 
         function getStatusIcon(status) {
@@ -1476,6 +1504,7 @@ ${projectUrl}`;
                     if (user) {
                         currentUser = user;
                         document.getElementById('loginModal').classList.remove('active');
+                        loadTasks();
                         renderAllColumns();
                         attachDragListeners();
                         updateHeader();
