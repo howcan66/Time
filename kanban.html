@@ -171,6 +171,7 @@
         .add-task-btn:hover { background: #5568d3; }
 
         @media (max-width: 800px) {
+            /* HJ-ID1RS11 Feature 12: Icon-only buttons, shorter selects, logout icon */
             .header { height: 55px; padding: 8px 10px; }
             .header-left { gap: 8px; }
             .project-title { font-size: 14px; }
@@ -178,14 +179,32 @@
             .title-short { display: inline; }
             .timestamp { display: none !important; }
             .project-controls { gap: 4px; }
-            .project-select { font-size: 11px; padding: 4px 6px; height: 32px; }
-            .project-btn { font-size: 10px; padding: 4px 6px; height: 32px; }
-            .nav-btn { font-size: 10px; padding: 4px 8px; height: 32px; }
+            .project-select { 
+                font-size: 11px; 
+                padding: 4px 6px; 
+                height: 32px; 
+                max-width: 80px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .project-btn { 
+                font-size: 16px; 
+                padding: 4px 8px; 
+                height: 32px; 
+                min-width: 32px;
+            }
+            .nav-btn { 
+                font-size: 16px; 
+                padding: 4px 8px; 
+                height: 32px;
+                min-width: 32px;
+            }
             
-            /* HJ-ID1RS11: Mobile - icons only with tooltips */
-            .project-btn:not(.admin-btn)::before { content: attr(title); display: none; }
-            .nav-btn { min-width: auto; padding: 8px; }
-            .nav-btn::after { content: none; }
+            /* Icon-only buttons with hover text */
+            .project-btn .btn-text,
+            .nav-btn .btn-text { display: none; }
+            .project-btn .btn-icon,
+            .nav-btn .btn-icon { display: inline; }
 
             .mobile-toolbar { display: flex; }
 
@@ -225,9 +244,12 @@
             }
             .project-filter select { 
                 width: 100%;
-                font-size: 11px;
-                padding: 4px 6px;
-                height: 28px;
+                max-width: 180px;
+                font-size: 10px;
+                padding: 3px 4px;
+                height: 26px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .project-filter .project-btn { display: none; }
             .column-content { 
@@ -541,11 +563,12 @@
             <div class="timestamp" id="timestamp">Loading...</div>
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
-                <button class="project-btn" onclick="createProjectFlow()">➕ Project</button>
+                <button class="project-btn" onclick="createProjectFlow()" title="Add new project"><span class="btn-text">➕ Project</span><span class="btn-icon">➕</span></button>
             </div>
         </div>
         <div class="nav-buttons">
-            <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;">⚙️ Admin</button>
+            <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span><span class="btn-icon">⚙️</span></button>
+            <button class="nav-btn" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>
             <button class="nav-btn" onclick="exportAll()" title="Export all tasks to clipboard"><span class="btn-text">📋 Export All</span><span class="btn-icon">📋</span></button>
             <button class="nav-btn" onclick="refreshTimestamp()" title="Refresh timestamp"><span class="btn-text">🔄 Refresh</span><span class="btn-icon">🔄</span></button>
         </div>
@@ -763,7 +786,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form REVISED: Split What field - What (title 2 rows) + What Description (4 rows scrollable). 7) Feature 8: Add task form navigation row (Min/Max toggle, Export, Print, Mail, Notification, Project dropdown). 8) Feature 9: Streamline all application gaps on row above and below text and buttons in top row for desktop, tablet and mobile - standardize padding/margins: header 60px desktop/58px tablet/55px mobile, reduce gaps between elements, mobile toolbar 32px button height. 9) Feature 10: Reduce all column gaps to 3px for desktop/tablet/mobile. 10) Feature 11: Add 4 new textforms to task form - Feature Descriptions (FD), AI Analyse Summeries (AIS), Trouble Descriptions (TR), AI TR Analyses (AITRA)', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + modal form', priority: 2, status: 'In Progress', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form REVISED: Split What field - What (title 2 rows) + What Description (4 rows scrollable). 7) Feature 8: Add task form navigation row (Min/Max toggle, Export, Print, Mail, Notification, Project dropdown). 8) Feature 9: Streamline all application gaps on row above and below text and buttons in top row for desktop, tablet and mobile - standardize padding/margins: header 60px desktop/58px tablet/55px mobile, reduce gaps between elements, mobile toolbar 32px button height. 9) Feature 10: Reduce all column gaps to 3px for desktop/tablet/mobile. 10) Feature 11: Add 4 new textforms to task form - Feature Descriptions (FD), AI Analyse Summeries (AIS), Trouble Descriptions (TR), AI TR Analyses (AITRA). 11) Feature 12: Mobile - All buttons icon-only with hover tooltips, shorter project selects (max-width 80px), shorter filter selects (max-width 180px, height 26px), Logout button with exit icon 🚪', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + modal form', priority: 2, status: 'In Progress', column: 4, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
