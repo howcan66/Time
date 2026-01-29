@@ -6,6 +6,113 @@ DESIGN - READY FOR IMPLEMENTATION
 DESIGN - Ongoing Below
 ================================================================================
 
+HJ-ID1RS7D - Admin User Management Panel
+================================================================================
+DESIGN APPROACH OVERVIEW:
+
+1. ADMIN DASHBOARD MODAL
+   - Triggered by "🔐 Admin" button in header (only visible to admin role)
+   - Tabbed interface: Users | Logs | Sessions | Invitations
+
+2. USERS TAB
+   - User management table: Username | Email | Roles | Last Login | Actions
+   - Actions: Edit (role/email), Delete, Force Logout
+   - Add User button → Modal for creating new user with temp password
+   - Role assignment: Multi-select checkboxes (Admin, Project Manager, Developer, Reviewer)
+
+3. LOGS TAB
+   - Login_Log.txt viewer with filtering
+   - Display: Timestamp | Username | Status (Success/Failed) | IP/Session
+   - Search/filter by username or date range
+
+4. SESSIONS TAB
+   - Currently logged-in users (simulated from currentUser tracking)
+   - Display: Username | Login Time | Last Activity | Force Logout button
+   - Real-time session list
+
+5. INVITATIONS TAB (HJ-ID1RS10 integrated)
+   - Generate Invitation form: Email | Message | Expiration Days
+   - Invitations table: Email | Date Sent | Status | Expiration | Actions (Send/Resend/Revoke)
+   - Show generated temp credentials (copy to clipboard)
+
+6. LOGGING
+   - All admin actions logged to Admin_Log.txt format:
+   - [YYYY-MM-DD HH:MM:SS] | ADMIN_ACTION | [admin_username] | [action] | [details]
+   - Actions: USER_CREATED, USER_UPDATED, USER_DELETED, PASSWORD_RESET, INVITATION_SENT
+
+7. SECURITY
+   - isAdmin() check: Only render if currentUser.roles includes 'Admin'
+   - Password reset requires confirmation
+   - Deletion requires confirmation
+   - All changes logged with admin identity
+
+TECHNOLOGIES: HTML5, CSS3, Vanilla JavaScript, localStorage
+FILES TO MODIFY: kanban.html (add admin modal + functions)
+STATUS: DESIGN COMPLETE → READY FOR IMPLEMENTATION
+
+TIMESTAMP: 2026-01-29
+
+================================================================================
+
+HJ-ID1RS10D - Admin User Invitations System
+================================================================================
+DESIGN APPROACH OVERVIEW:
+
+1. INVITATION GENERATION
+   - Form fields: Recipient Email | Custom Message | Expiration Days (default: 7)
+   - Auto-generate: temp_username (user_YYYYMMDD_###) + temp_password (8 random chars)
+   - Display credentials in modal with "Copy to Clipboard" button
+
+2. INVITATION DATA STRUCTURE
+   clientInvitations[] = [
+     {
+       id: unique_id,
+       email: 'recipient@domain.com',
+       tempUsername: 'user_20260129_001',
+       tempPassword: 'AbCd1234',
+       status: 'Sent' | 'Viewed' | 'Accepted' | 'Expired' | 'Revoked',
+       dateSent: timestamp,
+       dateExpires: timestamp,
+       dateAccepted: null,
+       requirePasswordChange: true
+     }
+   ]
+
+3. EMAIL COMPOSITION
+   - Primary: mailto: link with pre-filled subject + body
+   - Fallback: Copy formatted email text to clipboard
+   - Template includes: greeting, login URL, temp credentials, expiration date, instructions
+
+4. FIRST-LOGIN EXPERIENCE
+   - Detect temp user on login (flag: requirePasswordChange)
+   - Show modal: "Change Password on First Login"
+   - Force user to set new password before accessing board
+   - Update user.password in validUsers[]
+   - Mark invitation as 'Accepted' in invitations log
+
+5. EXPIRATION LOGIC
+   - Check on each login: if dateExpires < now() → mark status 'Expired'
+   - Prevent login with expired temp credentials
+   - Admin can extend or revoke invitation
+
+6. ADMIN INVITATIONS TAB UI
+   - Generate button → Modal form (email, message, days)
+   - Send button → mailto: or clipboard
+   - Invitations table with status, expiration, actions
+   - Revoke: Delete and log action
+
+7. LOGGING TO INVITATIONS_LOG.TXT
+   - Format: [YYYY-MM-DD HH:MM:SS] | EVENT | [email] | [admin_username] | [details]
+   - Events: INVITATION_SENT, INVITATION_VIEWED, INVITATION_ACCEPTED, INVITATION_EXPIRED, INVITATION_REVOKED
+
+TECHNOLOGIES: HTML5, CSS3, Vanilla JavaScript, localStorage, mailto API
+FILES TO MODIFY: kanban.html (add invitations tab + functions)
+STATUS: DESIGN COMPLETE → READY FOR IMPLEMENTATION
+
+TIMESTAMP: 2026-01-29
+
+================================================================================
+
 HJ ID1D4 - Multi-Project Kanban (Idea/Project Groups)
 ================================================================================
 DESIGN APPROACH OVERVIEW:

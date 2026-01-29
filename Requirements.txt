@@ -233,7 +233,7 @@ COMPLETED:
 
 [HJ-ID1RS7RS] Setup Time Project Admin Functionality
 Date: 2026-01-29
-Status: NEW → AWAITING DESIGN
+Status: NEW → DESIGN (APPROVED)
 
 USER REQUIREMENTS:
 1. Admin user role with elevated permissions (beyond Project Manager)
@@ -294,7 +294,7 @@ NEXT STEPS:
 
 [HJ-ID1RS10RS] Admin User Invitations - Send Join Requests
 Date: 2026-01-29
-Status: NEW → READY FOR DESIGN
+Status: NEW → DESIGN (APPROVED)
 
 USER REQUIREMENTS:
 1. Admin can generate invitation links with temporary credentials
