@@ -649,6 +649,8 @@
 
         function logout() {
             currentUser = null;
+            // Clear session from localStorage
+            localStorage.removeItem('timeProjectSession');
             // Don't reset other users' lockout status - only clear current session
             document.getElementById('loginModal').classList.add('active');
             const userDisplay = document.getElementById('userDisplay');
@@ -1472,6 +1474,9 @@ ${projectUrl}`;
                         updateHeader();
                         console.log('✓ Session restored for:', session.username);
                         return true;
+                    } else {
+                        console.log('User not found in validUsers, clearing corrupted session');
+                        localStorage.removeItem('timeProjectSession');
                     }
                 } catch (e) {
                     console.log('Session restore failed:', e);
