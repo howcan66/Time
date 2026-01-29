@@ -163,6 +163,9 @@
         .login-box .login-error { color: #dc2626; font-size: 12px; margin: 10px 0; display: none; }
         .login-box .login-status { color: #059669; font-size: 12px; margin: 10px 0; }
         .login-btn { width: 100%; padding: 14px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: 600; margin-top: 15px; touch-action: manipulation; -webkit-appearance: none; box-sizing: border-box; }
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .password-wrapper input { flex: 1; padding-right: 40px; }
+        .toggle-password-btn { position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 16px; padding: 5px; color: #667eea; }
         .login-btn:hover { background: #5568d3; }
         .login-btn:active { background: #4a54b8; }
         .login-btn:disabled { background: #ccc; cursor: not-allowed; }
@@ -209,7 +212,10 @@
         <div class="login-box">
             <h2>🔐 Time Project Login</h2>
             <input type="text" id="loginUsername" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
-            <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" autocorrect="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
+            <div class="password-wrapper">
+                <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" autocorrect="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
+                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility()" title="Show/Hide Password">👁️</button>
+            </div>
             <div class="login-error" id="loginError"></div>
             <div class="login-status" id="loginStatus"></div>
             <button class="login-btn" id="loginBtn" type="button" onclick="verifyLogin()">Login</button>
@@ -624,9 +630,9 @@
             } else {
                 userLockout.attempts++;
                 logLoginAttempt(username, 'FAILED', userLockout.attempts);
-                console.log(`❌ Login FAILED for ${username}: attempt ${userLockout.attempts}/3`);
+                console.log(`❌ Login FAILED for ${username}: attempt ${userLockout.attempts}/5`);
                 
-                if (userLockout.attempts >= 3) {
+                if (userLockout.attempts >= 5) {
                     userLockout.locked = true;
                     userLockout.lockUntil = Date.now() + (5 * 60 * 1000); // 5 min lockout
                     errorDiv.textContent = 'Too many failed attempts. Account locked for 5 minutes.';
@@ -634,9 +640,23 @@
                     logLoginAttempt(username, 'LOCKED', userLockout.attempts);
                     console.log(`🔒 User ${username} LOCKED for 5 minutes`);
                 } else {
-                    errorDiv.textContent = `Invalid credentials. Attempt ${userLockout.attempts}/3`;
+                    errorDiv.textContent = `Invalid credentials. Attempt ${userLockout.attempts}/5`;
                 }
                 errorDiv.style.display = 'block';
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('loginPassword');
+            const btn = event.target;
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                btn.textContent = '😨'; // Closed eye = password now visible
+                btn.title = 'Hide Password';
+            } else {
+                pwdInput.type = 'password';
+                btn.textContent = '👁️'; // Open eye = password hidden
+                btn.title = 'Show Password';
             }
         }
 
@@ -644,6 +664,12 @@
             loginAttemptsByUser = {};
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
+            const pwdToggle = document.querySelector('.toggle-password-btn');
+            if (pwdToggle) {
+                pwdToggle.textContent = '👁️';
+                pwdToggle.title = 'Show Password';
+                document.getElementById('loginPassword').type = 'password';
+            }
             document.getElementById('loginError').style.display = 'none';
             document.getElementById('loginStatus').textContent = '✅ Lockout cleared! Try again.';
             document.getElementById('loginStatus').style.color = '#059669';

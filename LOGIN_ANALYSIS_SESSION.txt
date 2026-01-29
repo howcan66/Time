@@ -1,0 +1,311 @@
+================================================================================
+LOGIN ANALYSIS & IMPROVEMENT SESSION - TIME PROJECT (TP)
+================================================================================
+Date: 2026-01-29
+Session Type: Problem Analysis & Design (NO KANBAN)
+Scope: Login System Issues, ID Numbering, Password UX
+
+================================================================================
+SECTION 1: CURRENT LOGIN SYSTEM ANALYSIS
+================================================================================
+
+CURRENT STATE:
+────────────────────────────────────────────────────────────────
+✓ Authentication: Username/Password hardcoded in validUsers array
+✓ Lockout Mechanism: Per-user tracking (users object)
+✓ Lockout Threshold: 3 FAILED ATTEMPTS
+✓ Lockout Duration: 5 minutes
+✓ Password Field: type="password" (no visibility toggle)
+✓ Session Persistence: localStorage saving enabled
+✓ Valid Credentials: admin/admin, R18/R18, Maximus/Maximus, Joel/Joel
+
+IDENTIFIED ISSUES:
+────────────────────────────────────────────────────────────────
+1. ❌ PASSWORD VISIBILITY
+   Problem: No way to see what you're typing
+   User Pain: Typos not visible, can't verify correct password entered
+   Location: Line 212 in kanban.html
+
+2. ❌ LOCKOUT THRESHOLD (3 strikes)
+   Problem: Too strict for users (accidental caps lock, typos)
+   User Request: Change to 5 failed attempts before lockout
+   Current Code: Line 627 - userLockout.attempts >= 3
+
+3. ✓ IDENTIFIER FORMAT (HJ-ID1RSn)
+   Current: HJ-ID1RS5, HJ-ID1RS7, HJ-ID1RS10, HJ-ID1RS8, HJ-ID1RS9, HJ-ID1RS3, HJ-ID1RS4, HJ-ID1RS6
+   Pattern: HJ-ID (prefix) | 1RS (release series) | n (feature number)
+   Status: Working but needs versioning strategy
+
+================================================================================
+SECTION 2: PROPOSED IMPROVEMENTS
+================================================================================
+
+IMPROVEMENT 1: PASSWORD VISIBILITY TOGGLE
+────────────────────────────────────────────────────────────────
+Feature ID: NEW-LOGIN-PWD (Proposed)
+Priority: HIGH
+Effort: 0.5 hours
+Description:
+  - Add eye icon button next to password field
+  - Click to toggle between type="password" and type="text"
+  - Show/hide asterisk display
+  - Add tooltip: "Show/Hide Password"
+
+Design:
+  <div style="position: relative;">
+    <input type="password" id="loginPassword" ... >
+    <button id="togglePwdBtn" onclick="togglePasswordVisibility()">👁️</button>
+  </div>
+
+Code Addition:
+  function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('loginPassword');
+      const isPassword = pwdInput.type === 'password';
+      pwdInput.type = isPassword ? 'text' : 'password';
+      const btn = document.getElementById('togglePwdBtn');
+      btn.textContent = isPassword ? '👁️‍🗨️' : '👁️'; // Different icon for each state
+  }
+
+Impact: User can verify password before clicking Login
+
+
+IMPROVEMENT 2: INCREASE LOCKOUT THRESHOLD (3 → 5)
+────────────────────────────────────────────────────────────────
+Feature ID: NEW-LOGIN-ATTEMPTS (Proposed)
+Priority: MEDIUM
+Effort: 0.2 hours
+Changes Required:
+  1. Line 627: Change "userLockout.attempts >= 3" to "userLockout.attempts >= 5"
+  2. Line 627: Update error message "Attempt ${attempts}/3" to "/5"
+  3. Update console logs to show /5 instead of /3
+
+Current Code (Line 627):
+  if (userLockout.attempts >= 3) {
+      userLockout.locked = true;
+      errorDiv.textContent = 'Too many failed attempts...';
+  } else {
+      errorDiv.textContent = `Invalid credentials. Attempt ${userLockout.attempts}/3`;
+  }
+
+Proposed Code:
+  if (userLockout.attempts >= 5) {
+      userLockout.locked = true;
+      errorDiv.textContent = 'Too many failed attempts. Account locked for 5 minutes.';
+  } else {
+      errorDiv.textContent = `Invalid credentials. Attempt ${userLockout.attempts}/5`;
+  }
+
+Impact: User-friendly, allows for typos/caps lock accidents
+
+================================================================================
+SECTION 3: PROPOSED ID NUMBERING SYSTEMS
+================================================================================
+
+OPTION 1: CURRENT SYSTEM (HJ-ID1RSn)
+────────────────────────────────────────────────────────────────
+Format: HJ-ID[Version]RS[Series]
+Example: HJ-ID1RS5, HJ-ID1RS7, HJ-ID1RS8
+Breakdown:
+  HJ = Howcan66 (repository owner initial) OR Time Project Initial
+  ID = Identifier
+  1 = Release/Version number (currently "1")
+  RS = Release Series
+  n = Feature Sequential Number
+
+Issues:
+  ✓ Unique within Version
+  ✓ Readable
+  ✗ No category/type indication
+  ✗ Sequential number gaps (5, 7, 8, 10 - not 1,2,3,4)
+  ✗ Cannot easily identify feature type from ID
+
+Current Features Using This:
+  HJ-ID1RS3 = Adaptive Kanban Device Detection (Responsive)
+  HJ-ID1RS4 = Multi-Project Kanban (Organization)
+  HJ-ID1RS5 = Password Protection (Security) ← CURRENT FOCUS
+  HJ-ID1RS6 = User Role Assignment (Task Mgmt)
+  HJ-ID1RS7 = Admin User Management (Admin)
+  HJ-ID1RS8 = Print Kanban Board (Export)
+  HJ-ID1RS9 = Email Column Group (Communication)
+  HJ-ID1RS10 = Admin User Invitations (Admin)
+  HJ-ID0R1 = Session Persistence (Core)
+  HJ-ID0R2 = Per-User Lockout (Security)
+  HJ-ID0R3 = Invalid Credentials Recovery (Security)
+  HJ-ID0R4 = Update Documentation (Documentation)
+  HJ-ID0R5 = Design Phase Prep (Documentation)
+
+
+OPTION 2: PROPOSED NEW ID (PNI) - Enhanced Version
+────────────────────────────────────────────────────────────────
+Feature: Propose New ID no = PNI
+Purpose: Improved feature identification
+
+Proposed Format: [CATEGORY]-[VERSION]-[SEQUENCE]
+Examples:
+  SEC-v1-005 = Security feature, Version 1, Number 5
+  ADM-v1-007 = Admin feature, Version 1, Number 7
+  EXP-v1-008 = Export feature, Version 1, Number 8
+  COM-v1-009 = Communication feature, Version 1, Number 9
+  RES-v1-003 = Responsive feature, Version 1, Number 3
+  ORG-v1-004 = Organization feature, Version 1, Number 4
+  TSK-v1-006 = Task Management feature, Version 1, Number 6
+  DOC-v1-014 = Documentation feature, Version 1, Number 14
+  CORE-v1-001 = Core feature, Version 1, Number 1
+
+Advantages:
+  ✓ Category visible in ID
+  ✓ Version clear
+  ✓ Sequential numbering
+  ✓ Easier to sort/filter
+  ✓ Better for reporting
+
+Mapping Categories (from Project_Status.csv):
+  SEC = Security (HJ-ID1RS5, HJ-ID0R2, HJ-ID0R3)
+  ADM = Administration (HJ-ID1RS7, HJ-ID1RS10)
+  EXP = Export (HJ-ID1RS8)
+  COM = Communication (HJ-ID1RS9)
+  RES = Responsive (HJ-ID1RS3)
+  ORG = Organization (HJ-ID1RS4)
+  TSK = Task Management (HJ-ID1RS6)
+  DOC = Documentation (HJ-ID0R4, HJ-ID0R5)
+  CORE = Core (HJ-ID0R1)
+
+
+OPTION 3: PROPOSED NEW COMBINED ID/RS (PNIR)
+────────────────────────────────────────────────────────────────
+Feature: Propose New ID and RS no = PNIR
+Purpose: Keep HJ-ID format but reorganize RS numbering
+
+Proposed Format: HJ-ID[VERSION][CATEGORY_CODE]-[SEQUENCE]
+Examples:
+  HJ-ID1-SEC-05 = HJ Identifier, Version 1, Security, Feature 5
+  HJ-ID1-ADM-07 = HJ Identifier, Version 1, Admin, Feature 7
+  HJ-ID1-EXP-08 = HJ Identifier, Version 1, Export, Feature 8
+
+Advantages:
+  ✓ Maintains HJ-ID prefix (brand consistency)
+  ✓ Adds category visibility
+  ✓ Sequential within category
+  ✓ Version clear
+  ✓ Still unique globally
+
+Migration from Current to PNIR:
+  OLD                   NEW (PNIR)
+  HJ-ID1RS5       →     HJ-ID1-SEC-05
+  HJ-ID1RS7       →     HJ-ID1-ADM-07
+  HJ-ID1RS8       →     HJ-ID1-EXP-08
+  HJ-ID1RS9       →     HJ-ID1-COM-09
+  HJ-ID1RS3       →     HJ-ID1-RES-03
+  HJ-ID1RS4       →     HJ-ID1-ORG-04
+  HJ-ID1RS6       →     HJ-ID1-TSK-06
+  HJ-ID0R1       →     HJ-ID1-CORE-01 (renumber to v1)
+  HJ-ID0R2       →     HJ-ID1-SEC-02
+  HJ-ID0R3       →     HJ-ID1-SEC-03
+  HJ-ID0R4       →     HJ-ID1-DOC-04
+  HJ-ID0R5       →     HJ-ID1-DOC-05
+
+================================================================================
+SECTION 4: LOGIN SESSION RECOMMENDATIONS
+================================================================================
+
+IMMEDIATE CHANGES (Today):
+────────────────────────────────────────────────────────────────
+1. Add password visibility toggle (0.5 hrs)
+   ✓ Improves UX
+   ✓ No breaking changes
+   ✓ Low risk
+
+2. Increase lockout threshold to 5 (0.2 hrs)
+   ✓ User-friendly
+   ✓ Same codebase
+   ✓ No breaking changes
+
+These changes should be implemented as:
+  Feature ID: NEW-LOGIN-IMPROVEMENTS (or PNI: SEC-v1-011 under new system)
+  Priority: HIGH
+  Status: Ready for Implementation
+  Effort: ~0.7 hours total
+
+FUTURE IMPROVEMENTS (Next Phase):
+────────────────────────────────────────────────────────────────
+1. ID Numbering System Migration (when next features ready)
+   Recommend: PNIR format (Option 3)
+   Reason: Maintains brand while adding clarity
+
+2. Password strength indicator
+   3. User account lockout dashboard in Admin Panel
+   4. Session timeout warnings
+   5. Password expiration policy
+
+================================================================================
+SECTION 5: DECISION MATRIX
+================================================================================
+
+DECISION 1: Lockout Threshold
+Options:        3      vs    5
+Risk:           LOW          LOW
+User Friendly:  ❌ Strict   ✅ Better
+Code Change:    Minimal     Minimal
+Recommendation: ✅ CHOOSE 5
+
+DECISION 2: Password Toggle
+Options:        No Toggle      vs    Add Toggle
+Risk:           None           Minimal
+User Friendly:  ❌ Frustrating ✅ Better UX
+Code Change:    -              0.5 hrs
+Recommendation: ✅ ADD TOGGLE
+
+DECISION 3: ID System
+Options:        Current (HJ-ID1RSn)  vs  PNI (SEC-v1-005)  vs  PNIR (HJ-ID1-SEC-05)
+Readability:    ⭐⭐             ⭐⭐⭐          ⭐⭐⭐
+Category Clear: ❌               ✅            ✅
+Current Brand:  ✅               ❌            ✅
+Migration Cost: -                HIGH          MEDIUM
+Recommendation: ✅ KEEP CURRENT for now, MIGRATE to PNIR at v2.0
+
+================================================================================
+SECTION 6: ACTION ITEMS
+================================================================================
+
+TODO 1: Implement Password Visibility Toggle (NEW-LOGIN-PWD)
+Status: Ready for Development
+Effort: 0.5 hours
+Changes:
+  - Add eye icon button next to password field
+  - Add togglePasswordVisibility() function
+  - Add CSS for button styling
+  - Test on desktop/mobile
+
+TODO 2: Change Lockout Threshold to 5 (NEW-LOGIN-ATTEMPTS)
+Status: Ready for Development
+Effort: 0.2 hours
+Changes:
+  - Replace "3" with "5" in verifyLogin() function (3 occurrences)
+  - Update error messages
+  - Test lockout mechanism
+
+TODO 3: Document ID Numbering Strategy
+Status: Ready
+Decision: Keep HJ-ID1RSn current; plan PNIR migration for v2.0
+Action: Add this decision to DESIGN_PREP.txt or new ID_STRATEGY.txt
+
+================================================================================
+SUMMARY & RECOMMENDATIONS
+================================================================================
+
+✅ LOGIN PROBLEMS IDENTIFIED:
+1. Password visibility issue → ADD TOGGLE BUTTON
+2. Lockout too strict (3) → INCREASE TO 5
+3. ID numbering unclear → MAINTAIN CURRENT; PLAN PNIR FOR V2
+
+✅ PROPOSED NEW IDs FOR LOGIN IMPROVEMENTS:
+NEW-LOGIN-PWD: Add password visibility toggle
+NEW-LOGIN-ATTEMPTS: Increase failed attempts from 3 to 5
+
+✅ RECOMMENDED NEXT STEP:
+Implement both login improvements (total 0.7 hours)
+Then return to Phase 2 features (Print, Email, Multi-project)
+
+DECISION: Should we implement these login improvements now before Phase 2?
+
+================================================================================
