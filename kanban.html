@@ -17,7 +17,7 @@
 
         .header {
             background: rgba(255, 255, 255, 0.95);
-            padding: 15px 30px;
+            padding: 10px 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
@@ -27,26 +27,26 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            height: 70px;
+            height: 60px;
         }
 
-        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
         .project-title { font-size: 24px; font-weight: bold; color: #667eea; }
         .title-short { display: none; }
         .title-full { display: inline; }
-        .timestamp { font-size: 14px; color: #666; padding: 5px 15px; background: #f0f0f0; border-radius: 5px; }
-        .project-controls { display: flex; align-items: center; gap: 8px; }
-        .project-select { padding: 6px 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; height: 36px; box-sizing: border-box; }
+        .timestamp { font-size: 14px; color: #666; padding: 4px 10px; background: #f0f0f0; border-radius: 5px; }
+        .project-controls { display: flex; align-items: center; gap: 6px; }
+        .project-select { padding: 5px 8px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; height: 36px; box-sizing: border-box; }
         .project-btn {
-            padding: 6px 10px; background: #10b981; color: white; border: none;
+            padding: 5px 8px; background: #10b981; color: white; border: none;
             border-radius: 5px; cursor: pointer; font-size: 12px; transition: background 0.3s;
             height: 36px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
         }
         .project-btn:hover { background: #0e9f6e; }
         .project-btn.small { padding: 4px 6px; font-size: 11px; }
-        .nav-buttons { display: flex; gap: 10px; }
+        .nav-buttons { display: flex; gap: 6px; }
         .nav-btn {
-            padding: 8px 20px; background: #667eea; color: white; border: none;
+            padding: 5px 12px; background: #667eea; color: white; border: none;
             border-radius: 5px; cursor: pointer; font-size: 14px; transition: background 0.3s;
             height: 36px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
         }
@@ -63,33 +63,35 @@
 
         .mobile-toolbar {
             position: fixed;
-            top: 70px;
+            top: 60px;
             left: 0;
             right: 0;
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            padding: 8px 12px;
+            padding: 6px 10px;
             display: none;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             z-index: 999;
         }
         .mobile-toolbar select {
             flex: 1;
-            padding: 8px 10px;
-            font-size: 14px;
+            padding: 6px 8px;
+            font-size: 13px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 5px;
             background: #fff;
+            height: 32px;
         }
         .mobile-btn {
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: #667eea;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 5px;
+            font-size: 13px;
             cursor: pointer;
+            height: 32px;
         }
         .mobile-btn.secondary { background: #10b981; }
         .mobile-btn.ghost { background: #6b7280; }
@@ -114,10 +116,10 @@
         .kanban-container {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 15px;
-            padding: 20px;
-            height: calc(100vh - 70px);
-            margin-top: 70px;
+            gap: 12px;
+            padding: 12px;
+            height: calc(100vh - 60px);
+            margin-top: 60px;
             overflow-x: scroll;
             overflow-y: hidden;
             scroll-snap-type: x proximity;
@@ -167,16 +169,16 @@
         .add-task-btn:hover { background: #5568d3; }
 
         @media (max-width: 800px) {
-            .header { height: 60px; padding: 10px 12px; }
-            .header-left { gap: 10px; }
+            .header { height: 55px; padding: 8px 10px; }
+            .header-left { gap: 8px; }
             .project-title { font-size: 14px; }
             .title-full { display: none; }
             .title-short { display: inline; }
             .timestamp { display: none !important; }
-            .project-controls { gap: 6px; }
-            .project-select { font-size: 12px; padding: 6px; }
-            .project-btn { font-size: 11px; padding: 6px 8px; }
-            .nav-btn { font-size: 11px; padding: 6px 10px; }
+            .project-controls { gap: 4px; }
+            .project-select { font-size: 11px; padding: 4px 6px; height: 32px; }
+            .project-btn { font-size: 10px; padding: 4px 6px; height: 32px; }
+            .nav-btn { font-size: 10px; padding: 4px 8px; height: 32px; }
             
             /* HJ-ID1RS11: Mobile - icons only with tooltips */
             .project-btn:not(.admin-btn)::before { content: attr(title); display: none; }
@@ -186,15 +188,16 @@
             .mobile-toolbar { display: flex; }
 
             .kanban-container {
-                margin-top: 120px;
-                height: calc(100vh - 120px);
+                margin-top: 105px;
+                height: calc(100vh - 105px);
                 display: flex;
                 flex-wrap: nowrap;
                 grid-template-columns: none;
                 overflow-x: scroll;
-                gap: 6px;
+                gap: 5px;
                 -webkit-overflow-scrolling: touch;
-                padding: 8px;\n                box-sizing: border-box;
+                padding: 6px;
+                box-sizing: border-box;
             }
 
             .kanban-column { 
@@ -206,13 +209,13 @@
                 flex: 1;
                 min-height: 0;
             }
-            .column-header { font-size: 11px; padding: 8px; }
+            .column-header { font-size: 11px; padding: 6px; }
             .add-task-btn { display: none !important; } /* Hide - use mobile toolbar ➕ instead */
-            .project-filter { margin: 0 8px 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+            .project-filter { margin: 0 6px 6px; display: flex; gap: 4px; flex-wrap: wrap; }
             .project-filter select { flex: 1; min-width: 100%; }
             .project-filter .project-btn { display: none; } /* Hide small ➕ - use mobile toolbar */
-            .column-content { -webkit-overflow-scrolling: touch; flex: 1; overflow-y: auto; padding: 8px; }
-            .task-card { cursor: default; padding: 5px; margin-bottom: 5px; }
+            .column-content { -webkit-overflow-scrolling: touch; flex: 1; overflow-y: auto; padding: 6px; }
+            .task-card { cursor: default; padding: 4px; margin-bottom: 4px; }
             .task-row1 { font-size: 9px; margin-bottom: 3px; }
             .task-row2 { font-size: 11px; margin-bottom: 3px; }
             .project-tag { font-size: 8px; padding: 1px 3px; }
@@ -221,7 +224,11 @@
         }
 
         @media (max-width: 1024px) and (min-width: 801px) {
-            /* HJ-ID1RS11: Tablet - hide timestamp, show short title */
+            /* HJ-ID1RS11: Feature 9 - Tablet - hide timestamp, show short title, streamline gaps */
+            .header { height: 58px; padding: 9px 15px; }
+            .header-left { gap: 10px; }
+            .project-controls { gap: 5px; }
+            .nav-buttons { gap: 5px; }
             .timestamp { display: none !important; }
             .title-full { display: none; }
             .title-short { display: inline; }
@@ -233,11 +240,11 @@
                 overflow-x: scroll;
                 -webkit-overflow-scrolling: touch;
                 gap: 8px;
-                padding: 10px;
+                padding: 8px;
             }
             .kanban-column { min-width: 240px; }
-            .column-header { font-size: 12px; padding: 10px; }
-            .add-task-btn { padding: 8px; font-size: 12px; }
+            .column-header { font-size: 12px; padding: 8px; }
+            .add-task-btn { padding: 6px; font-size: 12px; }
             .task-card { padding: 6px; margin-bottom: 6px; }
             .task-row1 { font-size: 10px; margin-bottom: 4px; }
             .task-row2 { font-size: 12px; margin-bottom: 4px; }
@@ -713,7 +720,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form: Add Generate ID button, manual edit textform for ID, and detailed "what" description field with 6 rows', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + add modal', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form: Add Generate ID button, manual edit textform for ID, and detailed "what" description field with 6 rows. 7) Feature 8: Add task form navigation row (Min/Max toggle, Export, Print, Mail, Notification, Project dropdown). 8) Feature 9: Streamline all application gaps on row above and below text and buttons in top row for desktop, tablet and mobile - standardize padding/margins: header 60px desktop/58px tablet/55px mobile, reduce gaps between elements, mobile toolbar 32px button height, overall compact appearance', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + add modal', priority: 2, status: 'In Progress', column: 4, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
