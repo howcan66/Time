@@ -522,9 +522,8 @@
             { username: 'admin', password: 'admin', email: 'admin@time.local', roles: ['Admin'], active: true, lastLogin: null }
         ];
         let currentUser = null;
-        let loginAttempts = 0;
-        let sessionLocked = false;
-        let sessionLockUntil = null;
+        // PER-USER LOCKOUT TRACKING (FIX: Was global, now per-username)
+        let loginAttemptsByUser = {}; // { username: { attempts: 0, locked: false, lockUntil: null } }
         let currentColumn = 1;
         let editingTaskId = null;
         let deviceInfo = {};
@@ -547,16 +546,25 @@
             errorDiv.style.display = 'none';
             statusDiv.textContent = '';
             
-            // Check if session is locked
-            if (sessionLocked && sessionLockUntil > Date.now()) {
-                const minutesLeft = Math.ceil((sessionLockUntil - Date.now()) / 60000);
+            // Initialize user lockout tracking if not exists
+            if (!loginAttemptsByUser[username]) {
+                loginAttemptsByUser[username] = { attempts: 0, locked: false, lockUntil: null };
+            }
+            const userLockout = loginAttemptsByUser[username];
+            
+            // Check if THIS USER is locked
+            if (userLockout.locked && userLockout.lockUntil > Date.now()) {
+                const minutesLeft = Math.ceil((userLockout.lockUntil - Date.now()) / 60000);
                 errorDiv.textContent = `Account locked. Try again in ${minutesLeft} minute(s).`;
                 errorDiv.style.display = 'block';
                 loginBtn.disabled = true;
                 return;
-            } else if (sessionLocked) {
-                sessionLocked = false;
-                loginAttempts = 0;
+            } else if (userLockout.locked && userLockout.lockUntil <= Date.now()) {
+                // Lockout expired, reset for this user
+                userLockout.locked = false;
+                userLockout.attempts = 0;
+                userLockout.lockUntil = null;
+                loginBtn.disabled = false;
             }
             
             // Validate input
@@ -570,7 +578,7 @@
             const user = validUsers.find(u => u.username === username && u.password === password);
             if (user) {
                 currentUser = user;
-                loginAttempts = 0;
+                userLockout.attempts = 0;
                 user.lastLogin = new Date().toISOString();
                 // PERSIST SESSION TO LOCALSTORAGE
                 localStorage.setItem('timeProjectSession', JSON.stringify({
@@ -579,7 +587,7 @@
                     email: user.email,
                     lastLogin: user.lastLogin
                 }));
-                logLoginAttempt(username, 'SUCCESS', loginAttempts);
+                logLoginAttempt(username, 'SUCCESS', 0);
                 document.getElementById('loginModal').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
                 document.getElementById('loginPassword').value = '';
@@ -589,17 +597,17 @@
                 statusDiv.textContent = `Welcome, ${user.username}! (${user.roles ? user.roles.join(', ') : user.role || ''})`;
                 statusDiv.style.color = '#059669';
             } else {
-                loginAttempts++;
-                logLoginAttempt(username, 'FAILED', loginAttempts);
+                userLockout.attempts++;
+                logLoginAttempt(username, 'FAILED', userLockout.attempts);
                 
-                if (loginAttempts >= 3) {
-                    sessionLocked = true;
-                    sessionLockUntil = Date.now() + (5 * 60 * 1000); // 5 min lockout
+                if (userLockout.attempts >= 3) {
+                    userLockout.locked = true;
+                    userLockout.lockUntil = Date.now() + (5 * 60 * 1000); // 5 min lockout
                     errorDiv.textContent = 'Too many failed attempts. Account locked for 5 minutes.';
                     loginBtn.disabled = true;
-                    logLoginAttempt(username, 'LOCKED', loginAttempts);
+                    logLoginAttempt(username, 'LOCKED', userLockout.attempts);
                 } else {
-                    errorDiv.textContent = `Invalid credentials. Attempt ${loginAttempts}/3`;
+                    errorDiv.textContent = `Invalid credentials. Attempt ${userLockout.attempts}/3`;
                 }
                 errorDiv.style.display = 'block';
             }
@@ -641,10 +649,7 @@
 
         function logout() {
             currentUser = null;
-            loginAttempts = 0;
-            sessionLocked = false;
-            // CLEAR SESSION FROM LOCALSTORAGE
-            localStorage.removeItem('timeProjectSession');
+            // Don't reset other users' lockout status - only clear current session
             document.getElementById('loginModal').classList.add('active');
             const userDisplay = document.getElementById('userDisplay');
             if (userDisplay) userDisplay.remove();
@@ -1461,6 +1466,7 @@ ${projectUrl}`;
                     const user = validUsers.find(u => u.username === session.username);
                     if (user) {
                         currentUser = user;
+                        document.getElementById('loginModal').classList.remove('active');
                         renderAllColumns();
                         attachDragListeners();
                         updateHeader();
@@ -1469,18 +1475,26 @@ ${projectUrl}`;
                     }
                 } catch (e) {
                     console.log('Session restore failed:', e);
+                    localStorage.removeItem('timeProjectSession');
                 }
             }
             return false;
         }
         
-        // Check for existing session before showing login
-        document.addEventListener('DOMContentLoaded', () => {
+        // RESET LOCKOUT STATE AND CHECK FOR EXISTING SESSION
+        function initializeLoginState() {
+            // Clear all per-user lockouts on page reload (fresh start)
+            loginAttemptsByUser = {};
+            
+            // Try to restore session
             if (!restoreSession()) {
                 // No session, show login modal
                 document.getElementById('loginModal').classList.add('active');
             }
-        });
+        }
+        
+        // Check for existing session before showing login
+        document.addEventListener('DOMContentLoaded', initializeLoginState);
         
         // Initialize
         detectDevice();
