@@ -602,9 +602,19 @@
         <div class="modal-content">
             <div class="modal-header" id="modalTitle">Add New Task</div>
             <form id="taskForm">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Task ID *</label>
+                        <input type="text" id="taskId" placeholder="Auto-generated or enter manually" required>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" onclick="generateTaskId()" style="height: 36px; width: 100%; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">🔄 Generate</button>
+                    </div>
+                </div>
                 <div class="form-group">
-                    <label>What (Task Title) *</label>
-                    <input type="text" id="taskWhat" placeholder="Describe the task..." required>
+                    <label>What (Task Title) * - Detailed Description</label>
+                    <textarea id="taskWhat" placeholder="Describe the task in detail..." required rows="6" style="min-height: 120px;"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Why (Reason/Purpose)</label>
@@ -695,7 +705,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban". 5) The Project, Logout (Admin), Export buttons shall all have the same vertical size. 6) Task form: Add Generate ID button, manual edit textform for ID, and detailed "what" description field with 6 rows', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries + add modal', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
@@ -1479,12 +1489,21 @@ ${projectUrl}`;
             return deduped;
         }
 
+        function generateTaskId() {
+            const prefixes = ['AI-TD', 'TPK-v1', 'HJ-ID1RS', 'NEW', 'EPIC'];
+            const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const randomNum = Math.floor(Math.random() * 1000);
+            const newId = `${randomPrefix}${randomNum}`;
+            document.getElementById('taskId').value = newId;
+        }
+
         function openAddModal(column) {
             currentColumn = column;
             editingTaskId = null;
             document.getElementById('modalTitle').textContent = 'Add New Task';
             document.getElementById('taskForm').reset();
             document.getElementById('taskWho').value = 'HJ';
+            generateTaskId(); /* Auto-generate ID for new task */
             const taskProjectSelect = document.getElementById('taskProject');
             const columnFilter = columnProjectFilters[column] || 'all';
             const preferredProject = columnFilter !== 'all'
@@ -1507,6 +1526,7 @@ ${projectUrl}`;
             editingTaskId = taskId;
             currentColumn = task.column;
             document.getElementById('modalTitle').textContent = 'Edit Task';
+            document.getElementById('taskId').value = task.id; /* Show existing ID for editing */
             document.getElementById('taskWhat').value = task.what;
             document.getElementById('taskWhy').value = task.why || '';
             document.getElementById('taskHow').value = task.how || '';
@@ -1548,8 +1568,9 @@ ${projectUrl}`;
 
         document.getElementById('taskForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const taskId = document.getElementById('taskId').value || `HJ TD${taskIdCounter++}`;
             const taskData = {
-                id: editingTaskId || `HJ TD${taskIdCounter++}`,
+                id: editingTaskId || taskId,
                 what: document.getElementById('taskWhat').value,
                 why: document.getElementById('taskWhy').value,
                 how: document.getElementById('taskHow').value,
