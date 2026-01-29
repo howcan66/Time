@@ -79,6 +79,24 @@
             cursor: pointer;
         }
         .mobile-btn.secondary { background: #10b981; }
+        .mobile-btn.ghost { background: #6b7280; }
+
+        .back-to-top {
+            position: fixed;
+            right: 16px;
+            bottom: 18px;
+            background: #667eea;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1001;
+        }
+        .back-to-top.show { display: inline-flex; align-items: center; gap: 6px; }
 
         .kanban-container {
             display: grid;
@@ -87,7 +105,11 @@
             padding: 20px;
             height: calc(100vh - 70px);
             margin-top: 70px;
-            overflow-x: auto;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scroll-snap-type: x proximity;
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
         }
 
         .kanban-column {
@@ -96,8 +118,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            min-width: 200px;
+            min-width: 240px;
             overflow: hidden;
+            scroll-snap-align: start;
         }
 
         .column-header {
@@ -145,13 +168,47 @@
             .kanban-container {
                 margin-top: 120px;
                 height: calc(100vh - 120px);
-                grid-template-columns: repeat(7, minmax(240px, 1fr));
+                display: flex;
+                flex-wrap: nowrap;
+                grid-template-columns: none;
+                overflow-x: scroll;
+                gap: 6px;
+                -webkit-overflow-scrolling: touch;
+                padding: 8px;
             }
 
-            .add-task-btn { padding: 10px; font-size: 14px; }
-            .task-card { cursor: default; }
-            .move-select { font-size: 14px; padding: 6px 8px; }
-            .delete-btn, .icon-btn, .priority-btn { min-height: 32px; min-width: 32px; }
+            .column-header { font-size: 12px; padding: 10px; }
+            .add-task-btn { padding: 8px; font-size: 12px; }
+            .task-card { cursor: default; padding: 6px; margin-bottom: 6px; }
+            .task-row1 { font-size: 10px; margin-bottom: 4px; }
+            .task-row2 { font-size: 12px; margin-bottom: 4px; }
+            .project-tag { font-size: 9px; padding: 1px 4px; }
+            .move-select { font-size: 12px; padding: 4px 6px; }
+            .delete-btn, .icon-btn, .priority-btn { min-height: 30px; min-width: 30px; }
+            .column-content { -webkit-overflow-scrolling: touch; }
+            .kanban-column { border-radius: 8px; }
+        }
+
+        @media (max-width: 1024px) and (min-width: 801px) {
+            .kanban-container {
+                display: flex;
+                flex-wrap: nowrap;
+                grid-template-columns: none;
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+                padding: 10px;
+            }
+            .kanban-column { min-width: 240px; }
+            .column-header { font-size: 12px; padding: 10px; }
+            .add-task-btn { padding: 8px; font-size: 12px; }
+            .task-card { padding: 6px; margin-bottom: 6px; }
+            .task-row1 { font-size: 10px; margin-bottom: 4px; }
+            .task-row2 { font-size: 12px; margin-bottom: 4px; }
+            .project-tag { font-size: 9px; padding: 1px 4px; }
+            .icon-btn { opacity: 1; font-size: 16px; padding: 4px; }
+            .action-buttons { gap: 4px; }
+            .move-select { font-size: 11px; padding: 4px 6px; }
         }
 
         .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; }
@@ -176,8 +233,14 @@
         .task-card.dragging { opacity: 0.5; }
         .column-content.drag-over { background: rgba(102, 126, 234, 0.1); }
 
+        .compact-mode .task-card { padding: 6px; margin-bottom: 6px; }
+        .compact-mode .task-row1 { font-size: 10px; margin-bottom: 4px; }
+        .compact-mode .task-row2 { font-size: 12px; margin-bottom: 4px; }
+        .compact-mode .task-row3 { gap: 4px; }
+
         .task-row1 { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; font-size: 11px; }
-        .task-id { color: #888; font-weight: bold; flex-shrink: 0; }
+        .task-id { color: #888; font-weight: bold; flex-shrink: 0; line-height: 1.1; }
+        .task-id-line { display: block; }
         .project-tag { font-size: 10px; color: #555; background: #f3f4f6; padding: 2px 6px; border-radius: 10px; }
         .priority-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; }
         .priority-1 { background: #22c55e; }
@@ -270,7 +333,7 @@
             <input type="text" id="loginUsername" placeholder="Username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
             <div class="password-wrapper">
                 <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" autocorrect="off" spellcheck="false" onkeypress="if(event.key==='Enter') verifyLogin()">
-                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility()" title="Show/Hide Password">👁️</button>
+                <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility(event)" title="Show/Hide Password">👁️</button>
             </div>
             <div class="login-error" id="loginError"></div>
             <div class="login-status" id="loginStatus"></div>
@@ -423,6 +486,7 @@
     </div>
 
     <div class="mobile-toolbar">
+        <select id="mobileProjectFilter" onchange="setGlobalProjectFilter(this.value)"></select>
         <select id="mobileColumnSelect" onchange="scrollToColumn(this.value)">
             <option value="">Jump to column...</option>
             <option value="1">1 - Idea</option>
@@ -434,8 +498,11 @@
             <option value="7">7 - Cancelled</option>
         </select>
         <button class="mobile-btn" onclick="openAddModal(currentColumn || 1)">➕ Task</button>
+        <button class="mobile-btn ghost" onclick="toggleCompactMode()">🧩 Compact</button>
         <button class="mobile-btn secondary" onclick="exportAll()">📋</button>
     </div>
+
+    <button id="backToTop" class="back-to-top" onclick="scrollToTop()">⬆️ Top</button>
 
     <div class="kanban-container">
         <div class="kanban-column idea" data-column="1">
@@ -747,9 +814,10 @@
             }
         }
 
-        function togglePasswordVisibility() {
+        function togglePasswordVisibility(evt) {
             const pwdInput = document.getElementById('loginPassword');
-            const btn = event.target;
+            const btn = evt ? evt.currentTarget : document.querySelector('.toggle-password-btn');
+            if (!pwdInput || !btn) return;
             if (pwdInput.type === 'password') {
                 pwdInput.type = 'text';
                 btn.textContent = '😨'; // Closed eye = password now visible
@@ -1310,6 +1378,12 @@ ${projectUrl}`;
                 headerSelect.value = globalProjectFilter;
             }
 
+            const mobileProjectSelect = document.getElementById('mobileProjectFilter');
+            if (mobileProjectSelect) {
+                mobileProjectSelect.innerHTML = getProjectOptions(true);
+                mobileProjectSelect.value = globalProjectFilter;
+            }
+
             for (let i = 1; i <= 7; i++) {
                 const select = document.getElementById(`project-filter-${i}`);
                 if (select) {
@@ -1327,6 +1401,10 @@ ${projectUrl}`;
         function setGlobalProjectFilter(projectId) {
             globalProjectFilter = projectId;
             renderAllColumns();
+            const headerSelect = document.getElementById('projectFilter');
+            if (headerSelect && headerSelect.value !== projectId) headerSelect.value = projectId;
+            const mobileProjectSelect = document.getElementById('mobileProjectFilter');
+            if (mobileProjectSelect && mobileProjectSelect.value !== projectId) mobileProjectSelect.value = projectId;
         }
 
         function setColumnProjectFilter(columnNum, projectId) {
@@ -1386,6 +1464,13 @@ ${projectUrl}`;
                 : (globalProjectFilter !== 'all' ? globalProjectFilter : projects[0].id);
             if (taskProjectSelect) taskProjectSelect.value = preferredProject;
             document.getElementById('taskModal').classList.add('active');
+            const shouldFocus = (deviceInfo && (deviceInfo.isMobile || deviceInfo.isTablet)) || window.innerWidth <= 800;
+            if (shouldFocus) {
+                setTimeout(() => {
+                    const taskWhat = document.getElementById('taskWhat');
+                    if (taskWhat) taskWhat.focus();
+                }, 50);
+            }
         }
 
         function editTask(taskId) {
@@ -1592,10 +1677,14 @@ ${projectUrl}`;
         function renderTaskCard(task) {
             const creator = task.id.startsWith('HJ') ? 'HJ' : 'AI';
             const projectName = getProjectName(task.projectId);
+            const idParts = task.id.includes('-') ? task.id.split('-', 2) : [task.id, ''];
+            const idDisplay = idParts[1]
+                ? `<span class="task-id-line">${idParts[0]}-</span><span class="task-id-line">${task.id.substring(idParts[0].length + 1)}</span>`
+                : `<span class="task-id-line">${task.id}</span>`;
             return `
                 <div class="task-card" data-task-id="${task.id}" data-creator="${creator}" draggable="${deviceInfo.isDesktop || deviceInfo.isTablet}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <div class="task-row1">
-                        <span class="task-id">${task.id}</span>
+                        <span class="task-id">${idDisplay}</span>
                         <span class="project-tag">${projectName}</span>
                         <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
                         <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
@@ -1675,6 +1764,38 @@ ${projectUrl}`;
                 target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
             }
         }
+
+        function scrollToTop() {
+            const container = document.querySelector('.kanban-container');
+            if (container) container.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleCompactMode() {
+            const current = localStorage.getItem('compactMode') === 'true';
+            const next = !current;
+            localStorage.setItem('compactMode', String(next));
+            document.body.classList.toggle('compact-mode', next);
+        }
+
+        function initMobileEnhancements() {
+            const container = document.querySelector('.kanban-container');
+            const backToTop = document.getElementById('backToTop');
+            if (!container || !backToTop) return;
+
+            const updateBackToTop = () => {
+                if (container.scrollTop > 200) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            };
+
+            container.addEventListener('scroll', updateBackToTop, { passive: true });
+            updateBackToTop();
+
+            const compactEnabled = localStorage.getItem('compactMode') === 'true';
+            document.body.classList.toggle('compact-mode', compactEnabled);
+        }
         
         // RESTORE SESSION FROM LOCALSTORAGE ON PAGE LOAD
         function restoreSession() {
@@ -1724,6 +1845,7 @@ ${projectUrl}`;
         
         // Check for existing session before showing login
         document.addEventListener('DOMContentLoaded', initializeLoginState);
+        document.addEventListener('DOMContentLoaded', initMobileEnhancements);
         
         // Initialize
         detectDevice();
