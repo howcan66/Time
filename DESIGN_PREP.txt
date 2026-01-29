@@ -1,0 +1,339 @@
+================================================================================
+FEATURE DESIGN PREPARATION - NEXT IMPLEMENTATIONS
+================================================================================
+Date: 2026-01-29
+Purpose: Prepare designs and templates for upcoming features
+
+================================================================================
+HJ-ID1RS8 - PRINT KANBAN BOARD DESIGN PREP
+================================================================================
+
+PRIORITY: HIGH
+ESTIMATED EFFORT: 4-6 hours
+TARGET STATUS: Design → Implementation
+
+KEY DESIGN DECISIONS:
+────────────────────────────────────────────────────────────────
+
+1. PRINT MODES
+   Mode 1: Full Board (All 7 columns)
+   - Landscape orientation (fit 7 columns)
+   - Print button location: Top header, right side
+   - Include: All tasks, colors, metadata
+
+   Mode 2: Single Column
+   - Portrait orientation (detailed view)
+   - Print button per column header
+   - Include: Column name, all tasks, metadata
+
+   Mode 3: Single Task (Optional)
+   - Portrait orientation
+   - Modal with print option when viewing task
+   - Include: Full task details, timestamps
+
+2. CSS @MEDIA PRINT RULES NEEDED
+   - Hide all buttons, dropdowns, controls
+   - Hide login modal (if visible)
+   - Hide admin dashboard (if open)
+   - Hide scroll bars
+   - Optimize for 8.5x11" paper
+
+3. METADATA FOOTER
+   - Timestamp: when printed
+   - Username: who printed it
+   - Project name
+   - Print mode: "Full Board" or "Column: {name}"
+   - Filter status: "Filtered by: {project/user}" (if applicable)
+
+4. RESPONSIVE PRINT
+   - Desktop: Full UI + Print buttons visible
+   - Mobile: Hide print buttons, auto-show print dialog
+   - Tablet: Show print options in column dropdown
+
+5. IMPLEMENTATION CHECKLIST
+   ☐ Add "🖨️ Print Board" button to header
+   ☐ Add "🖨️ Print" button to each column header
+   ☐ Create CSS @media print rules
+   ☐ Create printable layout styling
+   ☐ Add metadata footer on print
+   ☐ Test on Chrome, Firefox, Safari
+   ☐ Test print preview before sending to printer
+   ☐ Mobile print handling
+
+================================================================================
+HJ-ID1RS9 - EMAIL COLUMN GROUP DESIGN PREP
+================================================================================
+
+PRIORITY: HIGH
+ESTIMATED EFFORT: 5-8 hours
+TARGET STATUS: Design → Implementation
+
+KEY DESIGN DECISIONS:
+────────────────────────────────────────────────────────────────
+
+1. EMAIL BUTTON PLACEMENT
+   - Location: Column header (right side, next to print button)
+   - Icon: "📧 Email"
+   - Mobile: Hidden from header, appears in column dropdown
+
+2. EMAIL MODAL STRUCTURE
+   Section 1: Recipient Selection
+   - Dropdown: Select from validUsers (shows username + email)
+   - Text field: Manual email entry (for external contacts)
+   - Note: Manual entries not saved to validUsers
+
+   Section 2: Email Content
+   - Subject field: Pre-filled template (editable)
+   - Body field: Pre-populated with column tasks (editable)
+   - Message template: [see below]
+
+   Section 3: Actions
+   - "✉️ Send Email" → Generate mailto: link
+   - "📋 Copy Text" → Copy to clipboard fallback
+   - "Cancel" button
+
+3. EMAIL TEMPLATE FORMAT
+   Subject: "Time Project Kanban - {Column Name} Status [{Date}]"
+   
+   Body:
+   ────────────────────────────────────
+   Hi,
+
+   Here's the current status of the {Column Name} column in our Time Project Kanban board.
+
+   PROJECT: {Project Name}
+   GENERATED: {Date/Time}
+   COLUMN: {Column Name}
+   TOTAL TASKS: {Count}
+
+   TASKS:
+   ────────────────────────────────────
+   {For each task:}
+   {ID} | {Priority} | {Title}
+   Status: {Status}
+   Owner: {Assignee}
+   ────────────────────────────────────
+
+   {Optional custom message from sender}
+
+   ────────────────────────────────────
+   Questions? Contact your project admin.
+   ────────────────────────────────────
+
+4. LOGGING REQUIREMENTS
+   Log Format: [YYYY-MM-DD HH:MM:SS] | {EVENT_TYPE} | {FROM_USER} | {TO_EMAIL} | {TASK_IDS} | {DETAILS}
+   
+   Events to Track:
+   EMAIL_SENT - Manually sent to user
+   EMAIL_COPIED - Copied to clipboard
+   TASK_ASSIGNED - Task assigned to user
+   TASK_MOVED - Task moved between columns (log source → destination)
+
+5. VALIDUSERS EXTENSION
+   Current: { username, password, email, roles, active, lastLogin }
+   No changes needed! Email field already exists.
+
+6. TASK EXTENSION (Optional)
+   Add optional fields:
+   { ...existing, assignee, assigneeEmail, assignedDate }
+
+7. EMAIL_LOG.TXT TEMPLATE
+   [2026-01-29 14:30:45] | EMAIL_SENT | admin | user@example.com | HJ-ID1,AI-TD15 | Sent column status
+   [2026-01-29 14:31:12] | EMAIL_COPIED | admin | N/A | N/A | Invitation copied to clipboard
+   [2026-01-29 14:32:00] | TASK_ASSIGNED | admin | joel@time.local | HJ-ID1RS8 | Assigned task to Joel
+
+8. IMPLEMENTATION CHECKLIST
+   ☐ Add "📧 Email" button to column headers
+   ☐ Create email modal with recipient selection
+   ☐ Add validUsers dropdown to task modal (assignee field)
+   ☐ Create email template generation
+   ☐ Implement mailto: link generation
+   ☐ Implement clipboard.writeText() fallback
+   ☐ Create Email_Log.txt logger
+   ☐ Test mailto: with various email clients
+   ☐ Test clipboard functionality
+   ☐ Mobile responsive email modal
+
+================================================================================
+HJ-ID1RS3 - DEVICE DETECTION & ADAPTIVE UI TESTING PREP
+================================================================================
+
+PRIORITY: MEDIUM
+ESTIMATED EFFORT: 2-4 hours (mostly testing)
+TARGET STATUS: Implementation exists → Need full testing
+
+CURRENT IMPLEMENTATION STATUS:
+✅ Device detection function exists
+✅ Drag-drop implemented for desktop
+✅ Dropdown fallback for mobile
+✅ Breakpoint: 800px
+
+TESTING MATRIX:
+────────────────────────────────────────────────────────────────
+
+Device Type          | Width  | Touch | Expected Behavior
+─────────────────────┼────────┼───────┼──────────────────────────
+Desktop (Chrome)     | 1920px | No    | Drag-drop enabled, dropdowns visible
+Desktop (Firefox)    | 1440px | No    | Drag-drop enabled, dropdowns visible
+Laptop               | 1024px | No    | Drag-drop enabled, dropdowns visible
+Tablet (iPad)        | 768px  | Yes   | Dropdowns primary, drag disabled
+Mobile (iPhone)      | 375px  | Yes   | Dropdowns only, drag disabled
+Mobile (Android)     | 412px  | Yes   | Dropdowns only, drag disabled
+Tablet Landscape     | 1024px | Yes   | Check hybrid mode
+
+GOLD BORDER VERIFICATION:
+✓ Check HJ ID# tasks have 3px solid gold left border
+✓ Check AI TD# tasks use default border
+✓ Verify on different screen sizes
+✓ Test in both light and dark print modes
+
+RESPONSIVE BREAKPOINTS:
+- Desktop: > 800px, no touch
+- Tablet: > 800px, with touch
+- Mobile: ≤ 800px
+
+ACTION ITEMS:
+☐ Test drag-drop on Chrome desktop
+☐ Test drag-drop on Firefox desktop
+☐ Test dropdowns on mobile
+☐ Test on actual iPad/tablet
+☐ Test on iOS Safari
+☐ Test on Android Chrome
+☐ Verify gold borders visible
+☐ Check responsive transitions (window resize)
+☐ Verify no console errors
+
+================================================================================
+HJ-ID1RS4 - MULTI-PROJECT KANBAN DESIGN PREP
+================================================================================
+
+PRIORITY: MEDIUM
+ESTIMATED EFFORT: 3-5 hours
+TARGET STATUS: Requirements → Design → Implementation
+
+KEY DESIGN DECISIONS:
+────────────────────────────────────────────────────────────────
+
+1. PROJECT DATA STRUCTURE
+   let projects = [
+     { id: 'proj-1', name: 'Time Project Kanban', priority: 1 },
+     { id: 'proj-2', name: 'Time Website Features', priority: 2 }
+   ]
+
+2. HEADER FILTER
+   - Location: Top left, after project title
+   - Dropdown: All | Project 1 | Project 2 | [+ Add Project]
+   - Default: "All" (show all tasks across projects)
+   - Select → Filters all 7 columns by project
+
+3. COLUMN FILTER
+   - Location: Column header, dropdown (with other filters)
+   - Overrides global filter for that column only
+   - Option to return to "All" for that column
+
+4. CREATE NEW PROJECT
+   - Button: "+ New Project" in header dropdown
+   - Modal form: Project name, priority (1-10)
+   - Validation: Unique names
+   - Auto-assign to tasks when created
+
+5. TASK ASSIGNMENT
+   - Extend task modal with Project selector
+   - Dropdown: Select from projects[]
+   - Already implemented: projectId field in tasks
+
+6. SORTING LOGIC
+   - Primary sort: Project Priority (ascending)
+   - Secondary sort: Task Priority (ascending)
+   - Within each project: maintain task priority order
+
+7. IMPLEMENTATION CHECKLIST
+   ☐ Add projects dropdown to header
+   ☐ Implement global project filter
+   ☐ Add column-level project filters
+   ☐ Create "Add Project" modal
+   ☐ Extend task modal with project selector
+   ☐ Update renderColumn() sorting logic
+   ☐ Test multi-project filtering
+   ☐ Test task reassignment to projects
+   ☐ Mobile dropdown handling
+
+================================================================================
+HJ-ID1RS6 - USER/ROLE ASSIGNMENT TO TASKS
+================================================================================
+
+PRIORITY: LOW
+ESTIMATED EFFORT: 3-4 hours
+TARGET STATUS: Requirements → Design → Implementation
+
+DESIGN DECISIONS:
+────────────────────────────────────────────────────────────────
+
+1. TASK EXTENSION
+   Add to task object:
+   {
+     ...existing,
+     assignee: "username",
+     assigneeEmail: "user@time.local",
+     assignedDate: "2026-01-29T14:30:00Z",
+     assignedBy: "admin"
+   }
+
+2. TASK MODAL UPDATES
+   Add new section: "Assignment"
+   - Dropdown: Select from validUsers (show name + email)
+   - Show: Assigned to {username} by {assignedBy} on {date}
+   - Button: "Change Assignee"
+   - Button: "Remove Assignment"
+
+3. TASK CARD DISPLAY
+   Add line: "👤 Assigned to: {username}"
+   - Only show if assigned
+   - Clickable to open task modal
+
+4. FILTERING
+   Add column filter: "Show tasks assigned to me"
+   - Only show tasks where assignee === currentUser.username
+
+5. LOGGING
+   Log to: Admin_Log.txt
+   Format: [timestamp] | ASSIGN_TASK | {admin} | Task {id} assigned to {user}
+
+6. IMPLEMENTATION CHECKLIST
+   ☐ Extend task data structure
+   ☐ Add assignment section to task modal
+   ☐ Add assignee display to task card
+   ☐ Create "My Tasks" filter option
+   ☐ Implement assignment logging
+   ☐ Test assignment changes
+   ☐ Test on mobile
+
+================================================================================
+IMPLEMENTATION PRIORITY RANKING
+================================================================================
+
+URGENT (This Week):
+1. HJ-ID1RS8 - Print Kanban (High value for exporting)
+2. HJ-ID1RS9 - Email Columns (High value for sharing)
+
+IMPORTANT (Next Week):
+3. HJ-ID1RS3 - Device Detection (Complete testing)
+4. HJ-ID1RS4 - Multi-Project (Better organization)
+
+NICE-TO-HAVE (Later):
+5. HJ-ID1RS6 - Task Assignment (Nice feature)
+
+================================================================================
+TIMELINE PROJECTION
+================================================================================
+
+HJ-ID1RS8 Design:      4-6 hours  → Ready for implementation
+HJ-ID1RS9 Design:      5-8 hours  → Ready for implementation
+HJ-ID1RS8 Implementation: 4-5 hours
+HJ-ID1RS9 Implementation: 5-6 hours
+
+Estimated Total Phase 2: 20-25 hours
+
+================================================================================
+END OF DESIGN PREP
+================================================================================

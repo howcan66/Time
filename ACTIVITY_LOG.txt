@@ -1,0 +1,252 @@
+================================================================================
+MASTER ACTIVITY LOG - TIME PROJECT KANBAN
+================================================================================
+Generated: 2026-01-29
+Updated: 2026-01-29
+
+This document tracks all development activities, commits, and feature implementations.
+
+================================================================================
+SESSION 1: 2026-01-29 - INITIAL SETUP & ADMIN IMPLEMENTATION
+================================================================================
+
+ACTIVITIES COMPLETED:
+────────────────────────────────────────────────────────────────
+
+1. [UAD AQ] - Update All Documentation + CSV Conversion
+   Commit: 47ebc50
+   Time: Session Start
+   Status: ✅ COMPLETED
+   Description: 
+   - Created Documentation.csv consolidating all project files
+   - 40+ entries with metadata (ID, category, type, status, dates)
+   - Updated GitHub repository with master documentation index
+   
+2. [DESIGN PHASE] - HJ-ID1RS7 & HJ-ID1RS10 Design Documents
+   Commit: 02e831e
+   Time: +30 min
+   Status: ✅ COMPLETED
+   Description:
+   - HJ-ID1RS7D: Admin User Management Panel design specs
+   - HJ-ID1RS10D: Admin User Invitations design specs
+   - Both moved from "NEW" → "DESIGN (APPROVED)" status
+   - Full technical specifications documented
+   
+3. [UKB - UPDATE KANBAN] - Move Tasks to Planning
+   Commit: f185d8b
+   Time: +15 min
+   Status: ✅ COMPLETED
+   Description:
+   - Removed duplicate HJ-ID1RS7 entry (was appearing twice)
+   - Moved HJ-ID1RS7 & HJ-ID1RS10 to Column 3 (Design)
+   - Fixed duplicate task list in kanban.html
+
+4. [FEATURE] - Session Persistence (localStorage)
+   Commit: b935c46
+   Time: +45 min
+   Status: ✅ COMPLETED
+   Description:
+   - Added localStorage session saving on login
+   - Session restored automatically on page refresh
+   - Users stay logged in without re-entering credentials
+   - Logout properly clears localStorage
+
+5. [BUG FIX] - LFC (Login Failed Completely)
+   Commit: 1c17222
+   Time: +30 min
+   Status: ✅ COMPLETED
+   Issues Fixed:
+   - Account lockout was GLOBAL (all users locked if one failed)
+   - Fixed to PER-USER lockout tracking (loginAttemptsByUser{})
+   - Each user gets own 3-strike limit
+   - Lockout resets on page reload
+   
+6. [BUG FIX] - Invalid Credentials in Login
+   Commit: ec24c5a
+   Time: +20 min
+   Status: ✅ COMPLETED
+   Issues Fixed:
+   - Corrupted session in localStorage causing login failures
+   - Added localStorage.removeItem() to logout function
+   - Session validation to detect & clear corrupted entries
+   - Better error handling for session restoration
+
+7. [FEATURE] - Admin Dashboard (HJ-ID1RS7)
+   Commit: 92f2075
+   Time: +60 min
+   Status: ✅ IMPLEMENTED & TESTED
+   Features:
+   - Admin dashboard modal with 4 tabs (Users | Logs | Sessions | Invitations)
+   - User management: CRUD operations (Create, Read, Update, Delete)
+   - Role assignment with multi-select checkboxes
+   - Password reset functionality
+   - Login log viewer with filtering
+   - Session list display
+   - Admin activity logging to Admin_Log.txt format
+   - Only visible to users with 'Admin' role
+
+8. [FEATURE] - Invitations System (HJ-ID1RS10)
+   Commit: 92f2075
+   Time: +60 min (combined with HJ-ID1RS7)
+   Status: ✅ IMPLEMENTED & TESTED
+   Features:
+   - Invitations tab in admin dashboard
+   - Generate temporary credentials (random username + 8-char password)
+   - Email modal with recipient, message, expiration days
+   - Send via mailto: link (opens email client)
+   - Copy to Clipboard fallback for webmail
+   - Invitation tracking: Sent | Accepted | Revoked | Expired
+   - Pre-assign roles to invitees
+   - Force password change on first login option
+   - Invitations_Log.txt audit trail
+
+9. [KANBAN UPDATE] - Move Completed Tasks
+   Commit: 92f2075
+   Time: +10 min
+   Status: ✅ COMPLETED
+   Description:
+   - HJ-ID1RS7 moved from Column 3 (Design) → Column 6 (Done)
+   - HJ-ID1RS10 moved from Column 3 (Design) → Column 6 (Done)
+   - Both marked as "Done" status in kanban board
+
+================================================================================
+CURRENT STATUS - FEATURES IMPLEMENTED
+================================================================================
+
+COMPLETED & LIVE:
+✅ HJ-ID1RS5 - Password Protection & Login
+✅ HJ-ID1RS7 - Admin User Management Dashboard
+✅ HJ-ID1RS10 - Admin User Invitations System
+
+IN DEVELOPMENT:
+⏳ HJ-ID1RS3 - Adaptive Kanban (Device Detection)
+⏳ HJ-ID1RS4 - Multi-Project Kanban (Groups)
+⏳ HJ-ID1RS8 - Print Kanban Board (Column Export)
+⏳ HJ-ID1RS9 - Email Column Group (Send to Users)
+
+NOT STARTED:
+⭕ HJ-ID1RS6 - User/Role Assignment to Tasks
+
+================================================================================
+GITHUB PAGES PUBLICATION
+================================================================================
+
+Repository: https://github.com/howcan66/Time
+Status: AWAITING PUBLIC REPOSITORY
+Live URL (once public): https://howcan66.github.io/Time/kanban.html
+
+Current Issue:
+- Repository created as PRIVATE via GitHub Desktop
+- Need to make PUBLIC to enable GitHub Pages
+- Steps: Settings → Danger Zone → Make Public → Then Pages Settings
+
+================================================================================
+TEST RESULTS
+================================================================================
+
+LOGIN SYSTEM:
+✓ Credentials work: admin/admin, R18/R18, Maximus/Maximus, Joel/Joel
+✓ Session persists after page refresh
+✓ Per-user lockout working (3 strikes per user)
+✓ Lockout resets on page reload
+✓ Logout clears session properly
+
+ADMIN DASHBOARD:
+✓ Admin button appears only for admin role
+✓ User CRUD operations functional
+✓ Password reset working
+✓ Login logs displayable
+✓ Session list shows current users
+
+INVITATIONS:
+✓ Generate temp credentials working
+✓ Email template formatting correct
+✓ Mailto: link generation functional
+✓ Copy to clipboard working
+✓ Invitation status tracking operational
+
+================================================================================
+PENDING ACTIVITIES
+================================================================================
+
+NEXT DESIGN PHASE:
+1. HJ-ID1RS8 - Print Kanban Board
+   - Print buttons in header + column headers
+   - Landscape for full board, portrait for columns
+   - CSS @media print styles
+
+2. HJ-ID1RS9 - Email Column Group
+   - Email button per column
+   - User assignment with dropdown
+   - Email_Log.txt tracking
+
+3. HJ-ID1RS3 - Adaptive Kanban Device Detection
+   - Already partially implemented
+   - Needs testing on mobile/tablet
+   - Gold border for HJ ID# tasks
+
+4. HJ-ID1RS4 - Multi-Project Kanban
+   - Project dropdown filtering
+   - Project CRUD in header
+   - Filter by project per column
+
+5. HJ-ID1RS6 - User/Role Assignment to Tasks
+   - Assignee dropdown in task modal
+   - Show assigned user on task card
+   - Track assignments in log
+
+================================================================================
+DOCUMENTATION CONVERSION
+================================================================================
+
+TXT Files (Current):
+- Requirements.txt (comprehensive specs)
+- Design.txt (technical designs)
+- Planning.txt (roadmap)
+- CMD.txt (command reference)
+- Legend.txt (abbreviations)
+
+XLSX Files (To Create):
+- Project_Specifications.xlsx (Requirements → structured table)
+- Implementation_Roadmap.xlsx (Design phases with timeline)
+- Abbreviations_Reference.xlsx (CMD reference with usage)
+- Activity_Timeline.xlsx (This log in spreadsheet format)
+
+================================================================================
+GIT COMMITS SUMMARY
+================================================================================
+
+Total Commits This Session: 9
+
+47ebc50 - UAD AQ: Update all documentation - Create Documentation.csv
+02e831e - Design Phase: HJ-ID1RS7 & HJ-ID1RS10 - Design Complete
+f185d8b - Fix: Remove duplicate HJ-ID1RS7 entry, clean up task list
+b935c46 - Feature: Add session persistence to localStorage
+1c17222 - Fix: Per-user lockout tracking - Each user gets own 3-strike limit
+ec24c5a - Fix: Invalid credentials - Clear corrupted sessions
+e892db9 - Kanban: Move HJ-ID1RS7 & HJ-ID1RS10 to Column 4
+92f2075 - Kanban: Move HJ-ID1RS7 & HJ-ID1RS10 to Column 6 (Done)
+
+================================================================================
+NEXT SESSION PLAN
+================================================================================
+
+1. Enable GitHub Pages (make repo public first)
+2. Test live application at https://howcan66.github.io/Time/kanban.html
+3. Create XLSX documentation from TXT files
+4. Begin HJ-ID1RS8 (Print Kanban) design & implementation
+5. Begin HJ-ID1RS9 (Email Columns) design & implementation
+6. Prepare HJ-ID1RS3 (Device Detection) testing
+
+================================================================================
+END OF SESSION LOG
+================================================================================
+Session Date: 2026-01-29
+Total Duration: ~4 hours
+Commits: 9
+Features Implemented: 3 (HJ-ID1RS5, 7, 10)
+Bugs Fixed: 2 (LFC, Invalid Credentials)
+Status: READY FOR GITHUB PAGES PUBLICATION
+
+Next update: After GitHub Pages is live
+================================================================================
