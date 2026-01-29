@@ -431,6 +431,43 @@
         </div>
     </div>
 
+    <!-- GITHUB TOKEN SETTINGS MODAL -->
+    <div id="tokenModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">🔐 GitHub Sync Settings</div>
+            <div style="padding: 20px; font-size: 14px;">
+                <p style="margin-bottom: 15px; color: #666;">
+                    <strong>Cross-Device Synchronization</strong><br>
+                    Enter your GitHub Personal Access Token to enable task sync across devices.
+                </p>
+                
+                <div style="background: #f3f4f6; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 12px; color: #555;">
+                    <strong>How to get a token:</strong><br>
+                    1. Visit: <a href="https://github.com/settings/tokens" target="_blank" style="color: #0066cc;">github.com/settings/tokens</a><br>
+                    2. Click "Generate new token (classic)"<br>
+                    3. Select scope: ✅ repo<br>
+                    4. Copy token (starts with ghp_)
+                </div>
+
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">GitHub Personal Access Token:</label>
+                <input type="password" id="tokenInput" placeholder="ghp_..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 12px; box-sizing: border-box; margin-bottom: 15px;">
+                
+                <div id="tokenStatus" style="margin-bottom: 15px; padding: 10px; border-radius: 4px; display: none; font-size: 12px;"></div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="saveGithubToken()" style="flex: 1; padding: 10px; background: #059669; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">✓ Save Token</button>
+                    <button onclick="document.getElementById('tokenModal').classList.remove('active')" style="flex: 1; padding: 10px; background: #6b7280; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+                </div>
+                
+                <button onclick="clearGithubToken()" style="width: 100%; padding: 8px; margin-top: 10px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">🗑️ Clear Token</button>
+
+                <div style="background: #dbeafe; padding: 12px; border-radius: 4px; margin-top: 15px; font-size: 11px; color: #1e40af;">
+                    <strong>Status:</strong> <span id="syncStatusText">Not configured</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ADMIN PANEL MODAL (HJ-ID1RS7) -->
     <div id="adminModal" class="modal admin-modal">
         <div class="modal-content">
@@ -567,6 +604,7 @@
             </div>
         </div>
         <div class="nav-buttons">
+            <button class="nav-btn" onclick="document.getElementById('tokenModal').classList.add('active')" title="GitHub Sync Settings"><span class="btn-text">🔐 Token</span><span class="btn-icon">🔐</span></button>
             <button class="nav-btn" id="syncBtn" onclick="manualSync()" title="Sync with GitHub"><span class="btn-text">🔄 Sync</span><span class="btn-icon">🔄</span></button>
             <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span><span class="btn-icon">⚙️</span></button>
             <button class="nav-btn" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>
@@ -1854,6 +1892,77 @@ ${projectUrl}`;
                 }, 3000);
             }
         }
+
+        // ===== GITHUB TOKEN SETTINGS =====
+        function saveGithubToken() {
+            const token = document.getElementById('tokenInput').value.trim();
+            const statusDiv = document.getElementById('tokenStatus');
+            
+            if (!token) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.textContent = '❌ Please enter a token';
+                return;
+            }
+
+            if (!token.startsWith('ghp_')) {
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.textContent = '❌ Token should start with ghp_';
+                return;
+            }
+
+            localStorage.setItem('githubToken', token);
+            
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = '#dcfce7';
+            statusDiv.style.color = '#166534';
+            statusDiv.textContent = '✓ Token saved! Syncing will activate on refresh.';
+            
+            updateTokenStatus();
+            
+            setTimeout(() => {
+                document.getElementById('tokenModal').classList.remove('active');
+            }, 2000);
+        }
+
+        function clearGithubToken() {
+            if (confirm('Remove GitHub token? Sync will be disabled.')) {
+                localStorage.removeItem('githubToken');
+                localStorage.removeItem('githubFileSha');
+                document.getElementById('tokenInput').value = '';
+                updateTokenStatus();
+                const statusDiv = document.getElementById('tokenStatus');
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                statusDiv.textContent = '✓ Token cleared';
+            }
+        }
+
+        function updateTokenStatus() {
+            const token = localStorage.getItem('githubToken');
+            const statusText = document.getElementById('syncStatusText');
+            if (!statusText) return;
+            
+            if (token) {
+                const masked = token.substring(0, 10) + '...' + token.substring(token.length - 4);
+                statusText.textContent = `✓ Configured (${masked})`;
+                statusText.parentElement.style.background = '#dcfce7';
+                statusText.parentElement.style.color = '#166534';
+            } else {
+                statusText.textContent = '⚠️ Not configured - tasks will sync locally only';
+                statusText.parentElement.style.background = '#fef3c7';
+                statusText.parentElement.style.color = '#92400e';
+            }
+        }
+
+        // Initialize token status on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(updateTokenStatus, 1000);
+        });
 
         // ===== TASK PERSISTENCE TO LOCALSTORAGE + GITHUB =====
         function saveTasks() {
