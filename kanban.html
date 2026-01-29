@@ -572,6 +572,13 @@
                 currentUser = user;
                 loginAttempts = 0;
                 user.lastLogin = new Date().toISOString();
+                // PERSIST SESSION TO LOCALSTORAGE
+                localStorage.setItem('timeProjectSession', JSON.stringify({
+                    username: user.username,
+                    roles: user.roles,
+                    email: user.email,
+                    lastLogin: user.lastLogin
+                }));
                 logLoginAttempt(username, 'SUCCESS', loginAttempts);
                 document.getElementById('loginModal').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
@@ -636,8 +643,11 @@
             currentUser = null;
             loginAttempts = 0;
             sessionLocked = false;
+            // CLEAR SESSION FROM LOCALSTORAGE
+            localStorage.removeItem('timeProjectSession');
             document.getElementById('loginModal').classList.add('active');
-            document.getElementById('userDisplay').remove();
+            const userDisplay = document.getElementById('userDisplay');
+            if (userDisplay) userDisplay.remove();
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
             logLoginAttempt('(unknown)', 'LOGOUT', 0);
@@ -1441,6 +1451,36 @@ ${projectUrl}`;
         }
 
         function refreshTimestamp() { updateTimestamp(); }
+        
+        // RESTORE SESSION FROM LOCALSTORAGE ON PAGE LOAD
+        function restoreSession() {
+            const savedSession = localStorage.getItem('timeProjectSession');
+            if (savedSession) {
+                try {
+                    const session = JSON.parse(savedSession);
+                    const user = validUsers.find(u => u.username === session.username);
+                    if (user) {
+                        currentUser = user;
+                        renderAllColumns();
+                        attachDragListeners();
+                        updateHeader();
+                        console.log('✓ Session restored for:', session.username);
+                        return true;
+                    }
+                } catch (e) {
+                    console.log('Session restore failed:', e);
+                }
+            }
+            return false;
+        }
+        
+        // Check for existing session before showing login
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!restoreSession()) {
+                // No session, show login modal
+                document.getElementById('loginModal').classList.add('active');
+            }
+        });
         
         // Initialize
         detectDevice();
