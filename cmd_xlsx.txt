@@ -1,161 +1,79 @@
-COMMAND REFERENCE - SPREADSHEET FORMAT
-Generated: 2026-01-29
-Source: CMD.txt → Reformatted for Excel/XLSX import
-
-================================================================================
-COMMAND SHORTCUTS TABLE
-================================================================================
-
-CATEGORY | ABBREVIATION | FULL NAME | DESCRIPTION | STATUS
----------|--------------|-----------|-------------|--------
-WORKFLOW | PA | Present Analysis | Describe situation, propose action | ACTIVE
-WORKFLOW | PE | Present Execution | Show what will be implemented | ACTIVE
-WORKFLOW | EX | Execute | Implement the changes | ACTIVE
-WORKFLOW | PSC | Please Show Changes | Review before proceeding | ACTIVE
-WORKFLOW | RSC | Review & Suggest Changes | Feedback loop | ACTIVE
-REVIEW | AL | Analyze Log | Review Log_all.txt for redundancy | ACTIVE
-REVIEW | AD | Analyze Documentation | Review all docs for clarity | ACTIVE
-REVIEW | UD | Update Documentation | Sync docs with implementation | ACTIVE
-REVIEW | LA | List All | Show current state | ACTIVE
-KANBAN | UKB | Update Kanban Board | Sync Todo.txt → Kanban | ACTIVE
-KANBAN | UKB-Low | Update Kanban Low | Exclude low-priority | PROPOSED
-KANBAN | TB | Test Build | Validate functionality | ACTIVE
-KANBAN | BK | Backup | Save current state | ACTIVE
-PROPOSED | SYNC | Synchronize | Auto-update references | PROPOSED
-PROPOSED | QS | Quick Search | Find text across files | PROPOSED
-PROPOSED | RB | Rollback | Revert last change | PROPOSED
-PROPOSED | SPLIT | Split Task | Split task into subtasks | PROPOSED
-PROPOSED | ASSIGN | Assign | Assign task to user/role | PROPOSED
-PROPOSED | ARCHIVE | Archive | Move completed tasks | PROPOSED
-QUESTION | AOQ | Any Outstanding Questions | Add to CMD.txt file | ACTIVE
-QUESTION | LQ | List Questions | Show all pending questions | ACTIVE
-QUESTION | OBO | One By One | Answer sequentially | ACTIVE
-QUESTION | NQ | Next Question | Move to next in sequence | ACTIVE
-QUESTION | AQ | Analyze Question | Deep dive on question | ACTIVE
-DECISION | YS | You Select | AI decides best option | ACTIVE
-DECISION | YD | You Decide | Same as YS - AI chooses | ACTIVE
-DECISION | W8 | Wait | Defer decision to later | ACTIVE
-DECISION | L8R | Later | Phase 2 or future | ACTIVE
-DECISION | AYOK | Are You OK | Team check-in | ACTIVE
-PRINT | LS | Landscape | Print/PDF orientation | ACTIVE
-PRINT | PT | Portrait | Print/PDF/email orientation | ACTIVE
-PRINT | prtot | Printer Orientation | User-selectable in dialog | ACTIVE
-PRINT | DT | Demo Tour | Feature walkthrough | ACTIVE
-PRINT | PD | Please Describe | Request description | ACTIVE
-STATUS | Y | Yes | Approved/confirmed | ACTIVE
-STATUS | N | No | Rejected/declined | ACTIVE
-STATUS | TBD | To Be Determined | Decision pending | ACTIVE
-STATUS | MVP | Minimum Viable Product | Core feature set | ACTIVE
-STATUS | CRUD | CRUD | Create, Read, Update, Delete | ACTIVE
-
-================================================================================
-LOGIN CREDENTIALS TABLE
-================================================================================
-
-USER_NUMBER | USERNAME | PASSWORD | ROLE | PERMISSIONS | STATUS | UPDATED
-------------|----------|----------|------|-------------|--------|----------
-1 | R18 | R18 | Project Manager | Full access, view all projects | ACTIVE | 2026-01-29
-2 | Maximus | Maximus | Developer | Create/edit tasks, assign work | ACTIVE | 2026-01-29
-3 | Joel | Joel | Reviewer | View, test, comment, approve | ACTIVE | 2026-01-29
-4 | admin | admin | Admin | User management, logs, sessions | PLANNED | 2026-01-29
-
-================================================================================
-FEATURE IMPLEMENTATION CHECKLIST
-================================================================================
-
-FEATURE_ID | FEATURE_NAME | TASK | STATUS | PRIORITY | COMPLETION_%
------------|--------------|------|--------|----------|-------------
-HJ-ID1RS5 | Password Protection | Create Login_Log.txt template | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Add password prompt modal | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Implement AES-256 encryption | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Implement SHA-256 hashing | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Add session token management | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Add failed login counter | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Add lockout logic (5-min) | PENDING | HIGH | 0%
-HJ-ID1RS5 | Password Protection | Add logout button to header | PENDING | MEDIUM | 0%
-HJ-ID1RS5 | Password Protection | Add user display in header | PENDING | MEDIUM | 0%
-HJ-ID1RS5 | Password Protection | Test all 3 credentials | PENDING | MEDIUM | 0%
-HJ-ID1RS5 | Password Protection | Verify encryption in localStorage | PENDING | MEDIUM | 0%
-HJ-ID1RS5 | Password Protection | Verify Login_Log.txt entries | PENDING | MEDIUM | 0%
-HJ-ID1RS5 | Password Protection | Test session expiration | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add users[] data store | PENDING | HIGH | 0%
-HJ-ID1RS6 | User Assignment | Add task.owner field | PENDING | HIGH | 0%
-HJ-ID1RS6 | User Assignment | Add task.roles[] field | PENDING | HIGH | 0%
-HJ-ID1RS6 | User Assignment | Add owner dropdown to modal | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add role checkboxes to modal | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add owner display on cards | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add role badges to cards | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add header owner filter | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Add header role filter | PENDING | MEDIUM | 0%
-HJ-ID1RS6 | User Assignment | Test filtering logic | PENDING | LOW | 0%
-
-================================================================================
-OUTSTANDING QUESTIONS
-================================================================================
-
-QUESTION_ID | FEATURE | QUESTION_TEXT | OPTION_1 | OPTION_2 | OPTION_3 | OPTION_4 | USER_ANSWER | STATUS
-------------|---------|---------------|----------|----------|----------|----------|-------------|--------
-Q1 | HJ-ID1RS8 | Print scope? | Per-column | Entire board | Both options | N/A | PENDING | OPEN
-Q2 | HJ-ID1RS8 | Include filters? | Show filters | Hide filters | N/A | N/A | PENDING | OPEN
-Q3 | HJ-ID1RS8 | Orientation? | Portrait | Landscape | Auto-detect | N/A | PENDING | OPEN
-Q4 | HJ-ID1RS8 | Include metadata? | Timestamp | Username | Project data | All/None | PENDING | OPEN
-Q5 | HJ-ID1RS9 | Email mechanism? | FormSubmit.co | EmailJS | mailto link | Backend API | PENDING | OPEN
-Q6 | HJ-ID1RS9 | PDF attachment? | jsPDF attach | Embed base64 | Server link | Plain text | PENDING | OPEN
-Q7 | HJ-ID1RS9 | Manual email? | Free-form text | User list only | Both | N/A | PENDING | OPEN
-Q8 | HJ-ID1RS9 | Email history? | Create log | Track data | Not needed | N/A | PENDING | OPEN
-Q9 | GENERAL | Implementation order? | RS7→RS6→RS8→RS9 | RS8 first | RS7→RS8→RS6→RS9 | N/A | PENDING | OPEN
-Q10 | GENERAL | MVP scope? | All RS6-9 | RS5+RS7 only | RS5+RS7+RS6 | RS5+RS7+RS8 | PENDING | OPEN
-
-================================================================================
-DEVELOPER SHORTCUTS
-================================================================================
-
-FUNCTION | KEYBOARD | TOOL | NOTES
----------|----------|------|-------
-DevTools | F12 | Browser | Console, Network, Application tabs
-DevTools | Ctrl+Shift+I | Browser | Windows alternative
-Find File | Ctrl+Shift+P | VSCode | Command palette
-Find Text | Ctrl+F | VSCode | Current file search
-Find Replace | Ctrl+H | VSCode | Find and replace
-Go To Line | Ctrl+G | VSCode | Jump to line number
-Open HTML | Ctrl+O | Browser | Drag file to browser
-Git Status | git status | PowerShell | Show changes
-Git Commit | git commit -m | PowerShell | Commit changes
-Git Push | git push | PowerShell | Push to GitHub
-
-================================================================================
-NEXT STEPS
-================================================================================
-
-PRIORITY | ACTION | OWNER | DEADLINE | STATUS
----------|--------|-------|----------|--------
-1 | User answers 10 questions in Q&A section | USER | TODAY | PENDING
-2 | Update Requirements.txt with chosen options | AI | TODAY | PENDING
-3 | Create Design.txt entries for each feature | AI | TODAY | PENDING
-4 | Begin implementation (confirmed priority) | AI | TOMORROW | PENDING
-5 | Test all credentials and features | USER | TOMORROW | PENDING
-
-================================================================================
-SUMMARY STATISTICS
-================================================================================
-
-Total Commands Documented: 57
-Active Commands: 35
-Proposed Commands: 6
-Question & Decision Commands: 9
-Status Indicators: 7
-
-Test Users Available: 4
-Active Users: 3
-Admin Users: 1 (planned)
-
-Features in Design Phase: 4
-Features in Implementation Phase: 1
-Features Completed: 1
-
-Outstanding Decisions Required: 10
-Implementation Tasks Listed: 20+
-
-================================================================================
-EOF - CMD_XLSX.txt (Reformatted for Excel)
-================================================================================
+CATEGORY	COMMAND	Request Input from	DESCRIPTION	NOTES
+REVIEW COMMANDS	AD	AIPN	Analyze Documentation (review all docs for clarity)	Includes clarity review, redundancy check, completeness verification
+TBA	ADM	AIPD	Administration (manage system settings, user access, configuration)	
+KANBAN COMMANDS	AF	AIPN	Add Feature (propose new feature with TPK-NIRS ID)	Use TPK-NIRS format for new feature IDs (e.g., TPK-v1-SEC-01-013)
+AI Propose Notes	AIPN	AIPN	AI Propose Into Notes if Column E field is empty = blank	
+AI Propose Description	AIPD	AIPN	AI Propose Into Description if Column D field is empty = blank	
+REVIEW COMMANDS	AL	AIPN	Analyze Log (review Log_all.txt for redundancy)	Check Log_all.txt for duplicate entries and redundancy
+QUESTION & DECISION COMMANDS	AOQ	AIPN	Any Outstanding Questions (add to CMD.txt file)	Add to AOQ list in CMD.txt file before proceeding
+QUESTION & DECISION COMMANDS	AQ	AIPN	Analyze Question (deep dive on specific question)	Deep analysis required; document findings
+PROPOSED NEW COMMANDS	ARCHIVE	AIPN	Move completed tasks to archive	
+PROPOSED NEW COMMANDS	ASSIGN	AIPN	Assign task to user/role	
+QUESTION & DECISION COMMANDS	AYOK	AIPN	Are You OK / Working well together (team check-in)	Team sync/check-in for alignment and morale
+KANBAN COMMANDS	BK	AIPD	Backup/Build Keep (save current Kanban state/version)	
+TBA	BUG	AIPD	Bug/Issue Report (identify, document, and track bugs)	
+TPK-NIRS ID SYSTEM	Categories	AIPN	SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX, REQ, EPIC	
+PROPOSED NEW COMMANDS	CMDX	AIPN	Create cmd_xlsx.txt from CMD.txt (Excel format conversion)	
+TBA	COM	AIPD	Communication (team discussion, updates, announcements)	
+TBA	COR	AIPD	Core/Correctness (verify accuracy and quality)	
+STATUS INDICATORS	CRUD	AIPN	Create, Read, Update, Delete	
+TBA	DOC	AIPD	Documentation (create, update, maintain reference materials)	
+TPK-NIRS ID SYSTEM	Documentation	AIPN	See: TPK_NIRS_PROPOSAL.txt for full specification	
+PRINT & EXPORT ABBREVIATIONS	DT	AIPN	Demo Tour (feature walkthrough)	
+TBA	EPIC	AIPD	Epic/Major Feature (large project milestone or goal)	
+TBA	ETEST	AIPD	End-to-End Testing (full system workflow verification)	
+WORKFLOW COMMANDS	EX	AIPN	Execute (implement the changes)	
+TBA	EXP	AIPD	Experimentation (try new approaches or features)	
+TBA	FIX	AIPD	Fix/Correction (resolve identified issues)	
+QUESTION & DECISION COMMANDS	L8R	AIPN	Later (Phase 2 or future implementation)	
+TPK-NIRS ID SYSTEM	Format	Ignore	TPK-v[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE]	Example: TPK-v1-SEC-01-011
+REVIEW COMMANDS	LA	AIPN	List All (show current state)	Shows current project status, Kanban state, and logs
+REVIEW COMMANDS	LCMD	AIPN	List CMD (display CMD.txt contents)	
+QUESTION & DECISION COMMANDS	LQ	AIPN	List Questions (show all pending questions)	Compile all pending questions from various sources
+PRINT & EXPORT ABBREVIATIONS	LS	AIPN	Landscape orientation (print/PDF)	Landscape = wider view, better for large boards
+STATUS INDICATORS	MVP	AIPN	Minimum Viable Product	
+STATUS INDICATORS	N	AIPN	No (rejected/declined)	
+PROJECT ABBREVIATIONS	NIRS	AIPN	New Identification Requirement Specification (TPK ID system)	
+QUESTION & DECISION COMMANDS	NQ	AIPN	Next Question (move to next question in sequence)	Move to next question in OBO sequence
+QUESTION & DECISION COMMANDS	OBO	AIPN	One By One (answer questions sequentially)	Answer one question completely before moving to next
+TBA	ORG	AIPD	Organization (structure, plan, coordinate work)	
+WORKFLOW COMMANDS	PA	AIPN	Present Analysis (describe situation, propose action)	Standard opening for status updates and planning sessions
+PRINT & EXPORT ABBREVIATIONS	PD	AIPN	Please Describe	
+WORKFLOW COMMANDS	PE	AIPN	Present Execution (show what will be implemented) OR Please Execute	
+PROJECT ABBREVIATIONS	PNI	AIPN	Propose New ID no (suggest new ID numbering)	
+PROJECT ABBREVIATIONS	PNIR	AIPN	Propose New ID and RS no (combined ID + requirement spec)	
+TPK-NIRS ID SYSTEM	Priorities	AIPN	01=CRITICAL | 02=HIGH | 03=MEDIUM | 04=LOW	
+PRINT & EXPORT ABBREVIATIONS	prtot	AIPD	Printer Orientation (toggle between portrait/landscape)	
+WORKFLOW COMMANDS	PSC	AIPN	Please Show Changes (review before proceeding)	Always review before EX (execute)
+PRINT & EXPORT ABBREVIATIONS	PT	AIPN	Portrait orientation (print/PDF/email)	
+WORKFLOW COMMANDS	PWF	AIPN	Propose Way Forward (recommend next steps)	Propose recommended sequence of next actions
+PROPOSED NEW COMMANDS	QS	AIPN	Quick Search (find text across files)	
+PROPOSED NEW COMMANDS	RB	AIPN	Rollback (revert last change)	
+TBA	REQ	AIPD	Requirement (feature request, spec, or constraint)	
+TBA	RES	AIPD	Resource (allocate time, people, tools)	
+PROJECT ABBREVIATIONS	RS	AIPN	Requirement Specification (detailed specs for TPK IDs)	
+WORKFLOW COMMANDS	RSC	AIPN	Review & Suggest Changes (feedback loop)	Give constructive feedback on implementation
+Suggest Description	SDS	AIPD	SDS (Suggest Description - placeholder for blank descriptions)	
+TPK-NIRS ID SYSTEM	SEC	AIPD	Security (authentication, password, access control, lockout rules)	
+PROPOSED NEW COMMANDS	SPLIT	AIPN	Split task into subtasks	
+PROPOSED NEW COMMANDS	SYNC	AIPN	Synchronize all files (auto-update references)	
+KANBAN COMMANDS	TB	AIPN	Test Build (validate functionality)	
+To Be Assigned	TBA	AIPD	TBA (To Be Assigned - placeholder for unassigned categories)	
+STATUS INDICATORS	TBD	AIPN	To Be Determined	
+To Be Decided	TBD	AIPN	SDS	
+To Be Described	TBDS	AIPN	SDS	
+PROJECT ABBREVIATIONS	TP	AIPN	Time Project	
+PROJECT ABBREVIATIONS	TPK	AIPN	Time Project Kanban (full project)	
+TBA	TSK	AIPD	Task (work item, action item, assignment)	
+PROJECT ABBREVIATIONS	TTK	AIPN	Time Project Kanban (sessions without Kanban board)	
+REVIEW COMMANDS	UD	AIPN	Update Documentation (sync docs with implementation)	
+KANBAN COMMANDS	UKB	AIPN	Update Kanban Board (sync Todo.txt → Kanban)	
+KANBAN COMMANDS	UKB-Low	AIPN	Update Kanban (exclude low-priority)	
+LOGIN CREDENTIALS	User 1	Ignore	R18 / R18	Role: Project Manager
+LOGIN CREDENTIALS	User 2	Ignore	Maximus / Maximus	Role: Developer/Executor
+LOGIN CREDENTIALS	User 3		Joel / Joel	Role: Reviewer/Tester
+LOGIN CREDENTIALS	User 4	Ignore	admin / admin	Role: Admin
+QUESTION & DECISION COMMANDS	W8		Wait (defer decision to later)	
+STATUS INDICATORS	Y		Yes (approved/confirmed)	
+QUESTION & DECISION COMMANDS	YD		You Decide (same as YS - AI chooses)	
+QUESTION & DECISION COMMANDS	YS		You Select (AI decides best option)

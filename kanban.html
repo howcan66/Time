@@ -48,6 +48,38 @@
         }
         .nav-btn:hover { background: #5568d3; }
 
+        .mobile-toolbar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            padding: 8px 12px;
+            display: none;
+            gap: 8px;
+            align-items: center;
+            z-index: 999;
+        }
+        .mobile-toolbar select {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+        }
+        .mobile-btn {
+            padding: 8px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .mobile-btn.secondary { background: #10b981; }
+
         .kanban-container {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -97,6 +129,30 @@
             font-size: 12px;
         }
         .add-task-btn:hover { background: #5568d3; }
+
+        @media (max-width: 800px) {
+            .header { height: 60px; padding: 10px 12px; }
+            .header-left { gap: 10px; }
+            .project-title { font-size: 16px; }
+            .timestamp { display: none; }
+            .project-controls { gap: 6px; }
+            .project-select { font-size: 14px; padding: 8px; }
+            .project-btn { font-size: 13px; padding: 8px 10px; }
+            .nav-btn { font-size: 13px; padding: 8px 12px; }
+
+            .mobile-toolbar { display: flex; }
+
+            .kanban-container {
+                margin-top: 120px;
+                height: calc(100vh - 120px);
+                grid-template-columns: repeat(7, minmax(240px, 1fr));
+            }
+
+            .add-task-btn { padding: 10px; font-size: 14px; }
+            .task-card { cursor: default; }
+            .move-select { font-size: 14px; padding: 6px 8px; }
+            .delete-btn, .icon-btn, .priority-btn { min-height: 32px; min-width: 32px; }
+        }
 
         .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; }
         .project-filter select { flex: 1; padding: 4px 6px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; background: white; }
@@ -366,6 +422,21 @@
         </div>
     </div>
 
+    <div class="mobile-toolbar">
+        <select id="mobileColumnSelect" onchange="scrollToColumn(this.value)">
+            <option value="">Jump to column...</option>
+            <option value="1">1 - Idea</option>
+            <option value="2">2 - Todo</option>
+            <option value="3">3 - Planning</option>
+            <option value="4">4 - Design</option>
+            <option value="5">5 - Test</option>
+            <option value="6">6 - Done</option>
+            <option value="7">7 - Cancelled</option>
+        </select>
+        <button class="mobile-btn" onclick="openAddModal(currentColumn || 1)">➕ Task</button>
+        <button class="mobile-btn secondary" onclick="exportAll()">📋</button>
+    </div>
+
     <div class="kanban-container">
         <div class="kanban-column idea" data-column="1">
             <div class="column-header">1 - 💡 Idea</div>
@@ -504,7 +575,7 @@
     </div>
 
     <script>
-        let tasks = [
+        const defaultTasks = [
             // OLD HJ ID TASKS (COMPLETED)
             { id: 'HJ-ID1', what: 'Kanban HTML Web Page', why: 'Visual project management system', how: 'Built with HTML/CSS/Vanilla JS', who: 'HJ', when: '2026-01-28', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
             { id: 'HJ-ID2', what: 'Enhanced Kanban Forms', why: 'Interactive task management with modals', how: 'Modal forms + priority + status system', who: 'HJ', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
@@ -517,6 +588,7 @@
             { id: 'AI-TD15', what: 'Interactive Calendar', why: 'Display calendar with event marking', how: 'Build widget with month/year nav, grid, events', who: 'Frontend Dev', when: 'Week 2', where: 'features/calendar.js', priority: 1, status: 'Not Started', column: 1, projectId: 'proj-2' },
             { id: 'AI-TD16', what: 'Doomsday Clock Display', why: 'Show current Doomsday Clock status', how: 'Create display with countdown + info links', who: 'Frontend Dev', when: 'Week 2', where: 'features/doomsday.js', priority: 1, status: 'Not Started', column: 1, projectId: 'proj-2' },
             // NEW HJ-ID1RS# TASKS (KANBAN ENHANCEMENTS - proj-1)
+            { id: 'HJ-ID1RS2', what: 'Enhanced Interactive Kanban', why: 'Rich task management UX', how: 'Priority/status toggle + modal edit + move/delete', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
             { id: 'HJ-ID1RS3', what: 'Device Detection Testing', why: 'Verify responsive design on all screen sizes', how: 'Test on desktop/tablet/mobile, verify drag-drop and menus', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
             { id: 'HJ-ID1RS4', what: 'Multi-Project Kanban', why: 'Organize work across multiple projects', how: 'Add project filters + dropdown selectors + sorting', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
             { id: 'HJ-ID1RS6', what: 'User/Role Assignment System', why: 'Assign tasks to users with multiple roles', how: 'Add assignee field + role checkboxes to task modal', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
@@ -526,7 +598,33 @@
             { id: 'HJ-ID1RS9-Logging', what: 'Email Event Logging', why: 'Track ASSIGN + MOVED events for audit trail', how: 'Log to Email_Log.txt on assignment/movement', who: 'AI', when: 'Phase 1', where: 'Email_Log.txt', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
             { id: 'HJ-ID1RS9-P2', what: 'Email Notifications (Phase 2)', why: 'Auto-send emails on task assign/move', how: 'Notification triggers + FormSubmit or backend', who: 'TBD', when: 'Phase 2 (L8R)', where: 'kanban.html', priority: 2, status: 'Deferred', column: 7, projectId: 'proj-1' },
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+
+            // RESERVED HJ-ID (placeholder)
+            { id: 'HJ-ID1RS11', what: 'Reserved Requirement Placeholder', why: 'Next user-assigned requirement', how: 'Define scope and specs', who: 'USER', when: 'TBD', where: 'TBD', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+
+            // LOGIN & SECURITY COMPLETIONS (proj-1)
+            { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'NEW-LOGIN-PWD', what: 'Password Visibility Toggle', why: 'Reduce login errors', how: 'Eye icon + toggle input type', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'NEW-LOGIN-ATTEMPTS', what: 'Lockout Threshold (5 Strikes)', why: 'Balance security and UX', how: 'Increase lockout to 5 attempts', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'TPK-v1-BUG-01-001', what: 'Login Lockout Reset Bug', why: 'User stuck after correct login', how: 'Reset locked flag + lockUntil', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'TPK-v1-FIX-01-001', what: 'Reset Lockout Flags on Login', why: 'Ensure successful login clears lockout', how: 'Clear attempts/lockUntil/disabled state', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+
+            // RESPONSIVE FEATURES (AF3/AF4) - planned
+            { id: 'TPK-v1-RES-02-005', what: 'Minimized View Selection at Login (AF3)', why: 'Compact UI for small screens', how: 'Login selector + localStorage viewMode', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'TPK-v1-RES-02-006', what: 'Header Minimization Toggle (AF4)', why: 'Maximize board space', how: 'Header toggle + CSS minimized state', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'TPK-v1-RES-02-007', what: 'Mobile Header & Toolbar Optimization', why: 'Improve mobile navigation and actions', how: 'Compact header + mobile toolbar + quick actions', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+
+            // EPIC OVERVIEW (high-level)
+            { id: 'TPK-EPIC-SEC-01', what: 'EPIC: Security & Access', why: 'Secure login and lockout controls', how: 'HJ-ID1RS5 + NEW-LOGIN + BUG/FIX', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 2, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-ADM-01', what: 'EPIC: Admin & Invitations', why: 'User management + onboarding', how: 'HJ-ID1RS7 + HJ-ID1RS10', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 2, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-RES-02', what: 'EPIC: Responsive & Views', why: 'Adaptive UX across devices', how: 'HJ-ID1RS3 + AF3 + AF4', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-EXP-02', what: 'EPIC: Print & Export', why: 'Share board externally', how: 'HJ-ID1RS8', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-COM-02', what: 'EPIC: Communication', why: 'Email and notifications', how: 'HJ-ID1RS9 + RS9-Logging + RS9-P2', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-ORG-02', what: 'EPIC: Organization', why: 'Multi-project structure', how: 'HJ-ID1RS4', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-TSK-03', what: 'EPIC: Task Management', why: 'Assignments and ownership', how: 'HJ-ID1RS6', who: 'AI', when: 'Phase 2', where: 'kanban.html', priority: 3, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'TPK-EPIC-DOC-02', what: 'EPIC: Documentation System', why: 'TPK-NIRS tracking & docs', how: 'TPK-NIRS proposal + master index', who: 'AI', when: 'Phase 1', where: 'TPK_NIRS_*', priority: 3, status: 'Done', column: 6, projectId: 'proj-1' },
         ];
+        let tasks = defaultTasks.map(task => ({ ...task }));
         let taskIdCounter = 24;
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
@@ -1249,25 +1347,30 @@ ${projectUrl}`;
         }
 
         function initSampleTasks() {
-            tasks = [
-                { id: 'HJ ID1', what: 'Kanban HTML Web Page', why: 'Visual project management', how: 'HTML/CSS/JS', who: 'HJ', when: '2026-01-28', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
-                { id: 'HJ ID2', what: 'Enhanced Kanban Forms', why: 'Interactive task management', how: 'Modal forms + priority system', who: 'HJ', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
-                { id: 'AI TD11', what: 'Create GitHub Repository', why: 'Version control', how: 'GitHub Pages setup', who: 'HJ', when: '2026-01-30', where: 'GitHub', priority: 1, status: 'Executing', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD12', what: 'Project Directory Structure', why: 'Organize code', how: 'Create folders for CSS/JS/assets', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD13', what: 'Base HTML Template', why: 'Core structure', how: 'Create index.html framework', who: 'HJ', when: '', where: 'index.html', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD14', what: 'Global CSS Stylesheet', why: 'Consistent styling', how: 'Create base CSS with variables', who: 'HJ', when: '', where: 'styles.css', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD15', what: 'Interactive Calendar', why: 'Track dates', how: 'JS calendar widget', who: 'HJ', when: '2026-02-05', where: 'calendar.js', priority: 1, status: 'Executing', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD16', what: 'Doomsday Clock Display', why: 'Visual urgency', how: 'Clock display + info section', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD17', what: 'Time Tracking Tool', why: 'Track sessions', how: 'Start/stop timer + log', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD18', what: 'Event/Milestone Tracker', why: 'Countdowns and elapsed time', how: 'Events list + localStorage', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD20', what: 'Mobile Responsiveness', why: 'Usable on all devices', how: 'Responsive layout + touch support', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD22', what: 'Data Persistence', why: 'Save user data', how: 'localStorage for tasks/events', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD23', what: 'Performance Optimization', why: 'Smooth UX', how: 'Minify and optimize load', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD24', what: 'GitHub Pages Setup', why: 'Deploy site', how: 'Configure GH Pages', who: 'HJ', when: '', where: 'GitHub', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
-                { id: 'AI TD25', what: 'README Documentation', why: 'Project clarity', how: 'Write README.md', who: 'HJ', when: '', where: 'README.md', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' }
-            ];
+            tasks = defaultTasks.map(task => ({ ...task }));
             taskIdCounter = 27;
             renderAllColumns();
+        }
+
+        function mergeMissingTasks() {
+            const existingIds = new Set(tasks.map(t => t.id));
+            const missing = defaultTasks.filter(t => !existingIds.has(t.id));
+            if (missing.length) {
+                tasks = tasks.concat(missing.map(task => ({ ...task })));
+                saveTasks();
+            }
+        }
+
+        function dedupeTasksById(taskList) {
+            const seen = new Set();
+            const deduped = [];
+            taskList.forEach(task => {
+                if (!task || !task.id) return;
+                if (seen.has(task.id)) return;
+                seen.add(task.id);
+                deduped.push(task);
+            });
+            return deduped;
         }
 
         function openAddModal(column) {
@@ -1406,6 +1509,12 @@ ${projectUrl}`;
                 try {
                     tasks = JSON.parse(saved);
                     console.log('✓ Tasks loaded from localStorage:', tasks.length);
+                    const deduped = dedupeTasksById(tasks);
+                    if (deduped.length !== tasks.length) {
+                        tasks = deduped;
+                        saveTasks();
+                    }
+                    mergeMissingTasks();
                     return true;
                 } catch (e) {
                     console.log('Failed to load tasks:', e);
@@ -1556,6 +1665,16 @@ ${projectUrl}`;
         }
 
         function refreshTimestamp() { updateTimestamp(); }
+
+        function scrollToColumn(columnNum) {
+            const parsed = parseInt(columnNum, 10);
+            if (!parsed) return;
+            currentColumn = parsed;
+            const target = document.querySelector(`.kanban-column[data-column="${parsed}"]`);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+            }
+        }
         
         // RESTORE SESSION FROM LOCALSTORAGE ON PAGE LOAD
         function restoreSession() {

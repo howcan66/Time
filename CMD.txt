@@ -10,71 +10,77 @@ QUICK COMMAND SHORTCUTS
 ================================================================================
 
 WORKFLOW COMMANDS:
-  PA    - Present Analysis (describe situation, propose action)
-  PE    - Present Execution (show what will be implemented)
   EX    - Execute (implement the changes)
+  PA    - Present Analysis (describe situation, propose action)
+  PE    - Present Execution (show what will be implemented) OR Please Execute
   PSC   - Please Show Changes (review before proceeding)
+  PWF   - Propose Way Forward (recommend next steps)
   RSC   - Review & Suggest Changes (feedback loop)
   
 REVIEW COMMANDS:
-  AL    - Analyze Log (review Log_all.txt for redundancy)
   AD    - Analyze Documentation (review all docs for clarity)
-  UD    - Update Documentation (sync docs with implementation)
+  AL    - Analyze Log (review Log_all.txt for redundancy)
   LA    - List All (show current state)
+  LCMD  - List CMD (display CMD.txt contents)
+  UD    - Update Documentation (sync docs with implementation)
 
 KANBAN COMMANDS:
+  AF    - Add Feature (propose new feature with TPK-NIRS ID)
+  BK    - Backup (save current state)
+  TB    - Test Build (validate functionality)
   UKB   - Update Kanban Board (sync Todo.txt → Kanban)
   UKB-Low - Update Kanban (exclude low-priority)
-  TB    - Test Build (validate functionality)
-  BK    - Backup (save current state)
 
 PROPOSED NEW COMMANDS:
-  SYNC  - Synchronize all files (auto-update references)
-  QS    - Quick Search (find text across files)
-  RB    - Rollback (revert last change)
-  SPLIT - Split task into subtasks
-  ASSIGN - Assign task to user/role
   ARCHIVE - Move completed tasks to archive
+  ASSIGN  - Assign task to user/role
+  CMDX    - Create cmd_xlsx.txt from CMD.txt (Excel format conversion)
+  QS      - Quick Search (find text across files)
+  RB      - Rollback (revert last change)
+  SPLIT   - Split task into subtasks
+  SYNC    - Synchronize all files (auto-update references)
 
 QUESTION & DECISION COMMANDS:
   AOQ   - Any Outstanding Questions (add to CMD.txt file)
-  LQ    - List Questions (show all pending questions)
-  OBO   - One By One (answer questions sequentially)
-  NQ    - Next Question (move to next question in sequence)
   AQ    - Analyze Question (deep dive on specific question)
-  YS    - You Select (AI decides best option)
-  YD    - You Decide (same as YS - AI chooses)
-  W8    - Wait (defer decision to later)
-  L8R   - Later (Phase 2 or future implementation)
   AYOK  - Are You OK / Working well together (team check-in)
+  L8R   - Later (Phase 2 or future implementation)
+  LQ    - List Questions (show all pending questions)
+  NQ    - Next Question (move to next question in sequence)
+  OBO   - One By One (answer questions sequentially)
+  W8    - Wait (defer decision to later)
+  YD    - You Decide (same as YS - AI chooses)
+  YS    - You Select (AI decides best option)
 
 PRINT & EXPORT ABBREVIATIONS:
-  LS    - Landscape orientation (print/PDF)
-  PT    - Portrait orientation (print/PDF/email)
-  prtot - Printer orientation (user-selectable in print dialog)
   DT    - Demo Tour (feature walkthrough)
+  LS    - Landscape orientation (print/PDF)
   PD    - Please Describe
+  prtot - Printer orientation (user-selectable in print dialog)
+  PT    - Portrait orientation (print/PDF/email)
 
 PROJECT ABBREVIATIONS:
-  TP    - Time Project
-  TTK   - Time Project Kanban (sessions without Kanban board)
-  TPK   - Time Project Kanban (full project)
   NIRS  - New Identification Requirement Specification (TPK ID system)
+  PNI   - Propose New ID no (suggest new ID numbering)
+  PNIR  - Propose New ID and RS no (combined ID + requirement spec)
   RS    - Requirement Specification (detailed specs for TPK IDs)
+  TP    - Time Project
+  TPK   - Time Project Kanban (full project)
+  TTK   - Time Project Kanban (sessions without Kanban board)
   
 TPK-NIRS ID SYSTEM (New as of 2026-01-29):
   Format: TPK-v[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE]
   Example: TPK-v1-SEC-01-011 (Security, Critical, #11)
-  Categories: SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX, REQ
+  Categories: SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX, REQ, EPIC
   Priorities: 01=CRITICAL, 02=HIGH, 03=MEDIUM, 04=LOW
   See: TPK_NIRS_PROPOSAL.txt for full specification
 
 STATUS INDICATORS:
-  Y     - Yes (approved/confirmed)
+  CRUD  - Create, Read, Update, Delete
+  MVP   - Minimum Viable Product
   N     - No (rejected/declined)
   TBD   - To Be Determined
-  MVP   - Minimum Viable Product
-  CRUD  - Create, Read, Update, Delete
+  Y     - Yes (approved/confirmed)
 
 ================================================================================
 TIME PROJECT LOGIN CREDENTIALS
@@ -119,7 +125,7 @@ PASSWORD PROTECTION APPROACH:
 FAILED LOGIN HANDLING:
   1 attempt failed → Normal prompt
   2 attempts failed → Warning message
-  3+ attempts failed → 5-minute lockout
+  5 attempts failed → 5-minute lockout
   
 LOGIN_LOG.txt FORMAT:
   [timestamp] | [username] | [status] | [attempt#] | [IP/notes]

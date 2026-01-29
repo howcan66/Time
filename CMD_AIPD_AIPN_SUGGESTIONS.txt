@@ -1,0 +1,263 @@
+================================================================================
+CMD_AIPD_AIPN_SUGGESTIONS.txt
+TIME PROJECT KANBAN (TPK) - Command Reference AI Suggestions
+Created: 2026-01-29
+Purpose: Circulate AI-proposed descriptions (AIPD) and notes (AIPN) for cmd_xlsx.csv
+================================================================================
+
+SECTION 1: AIPD (AI PROPOSE INTO DESCRIPTION) - REQUIRED ENTRIES
+================================================================================
+
+These 18 entries need descriptions. Add to cmd_xlsx.csv DESCRIPTION column:
+
+1. ADM (TBA - Administration)
+   Suggested Description: Administration (manage system settings, user access, configuration)
+
+2. BUG (TBA - Bug/Issue)
+   Suggested Description: Bug/Issue Report (identify, document, and track bugs)
+
+3. COM (TBA - Communication)
+   Suggested Description: Communication (team discussion, updates, announcements)
+
+4. COR (TBA - Core/Correctness)
+   Suggested Description: Core/Correctness (verify accuracy and quality)
+
+5. DOC (TBA - Documentation)
+   Suggested Description: Documentation (create, update, maintain reference materials)
+
+6. EPIC (TBA - Epic)
+   Suggested Description: Epic/Major Feature (large project milestone or goal)
+
+7. ETEST (TBA - End-to-End Test)
+   Suggested Description: End-to-End Testing (full system workflow verification)
+
+8. EXP (TBA - Experimentation)
+   Suggested Description: Experimentation (try new approaches or features)
+
+9. FIX (TBA - Fix)
+   Suggested Description: Fix/Correction (resolve identified issues)
+
+10. ORG (TBA - Organization)
+    Suggested Description: Organization (structure, plan, coordinate work)
+
+11. REQ (TBA - Requirement)
+    Suggested Description: Requirement (feature request, spec, or constraint)
+
+12. RES (TBA - Resource)
+    Suggested Description: Resource (allocate time, people, tools)
+
+13. TSK (TBA - Task)
+    Suggested Description: Task (work item, action item, assignment)
+
+14. BK (KANBAN COMMANDS - Backup)
+    Suggested Description: Backup/Build Keep (save current Kanban state/version)
+
+15. prtot (PRINT & EXPORT - Printer Orientation)
+    Suggested Description: Printer Orientation (toggle between portrait/landscape)
+
+16. SEC (TPK-NIRS ERROR - Security)
+    Current: "AIDS" (ERROR)
+    Suggested Description: Security (authentication, password, access control, lockout rules)
+
+17. SDS (Suggest Description - Marker Row)
+    Suggested Description: SDS (Suggest Description - placeholder for blank descriptions)
+
+18. TBA (To Be Assigned - Marker Row)
+    Current: "AIDS" (ERROR)
+    Suggested Description: TBA (To Be Assigned - placeholder for unassigned categories)
+
+================================================================================
+
+SECTION 2: AIPN (AI PROPOSE INTO NOTES) - OPTIONAL ENHANCEMENT ENTRIES
+================================================================================
+
+These 14 entries can have optional notes added. Add to cmd_xlsx.csv NOTES column:
+
+1. AD (Analyze Documentation)
+   Optional Note: "Includes clarity review, redundancy check, completeness verification"
+
+2. AF (Add Feature)
+   Optional Note: "Use TPK-NIRS format for new feature IDs (e.g., TPK-v1-SEC-01-013)"
+
+3. AL (Analyze Log)
+   Optional Note: "Check Log_all.txt for duplicate entries and redundancy"
+
+4. AOQ (Any Outstanding Questions)
+   Optional Note: "Add to AOQ list in CMD.txt file before proceeding"
+
+5. AQ (Analyze Question)
+   Optional Note: "Deep analysis required; document findings"
+
+6. AYOK (Are You OK)
+   Optional Note: "Team sync/check-in for alignment and morale"
+
+7. LA (List All)
+   Optional Note: "Shows current project status, Kanban state, and logs"
+
+8. LQ (List Questions)
+   Optional Note: "Compile all pending questions from various sources"
+
+9. LS (Landscape orientation)
+   Optional Note: "Landscape = wider view, better for large boards"
+
+10. NQ (Next Question)
+    Optional Note: "Move to next question in OBO sequence"
+
+11. OBO (One By One)
+    Optional Note: "Answer one question completely before moving to next"
+
+12. PA (Present Analysis)
+    Optional Note: "Standard opening for status updates and planning sessions"
+
+13. PSC (Please Show Changes)
+    Optional Note: "Always review before EX (execute)"
+
+14. PWF (Propose Way Forward)
+    Optional Note: "Propose recommended sequence of next actions"
+
+15. RSC (Review & Suggest Changes)
+    Optional Note: "Give constructive feedback on implementation"
+
+================================================================================
+
+SECTION 3: COMPLETE ENTRIES (AI NO SUGGESTION NEEDED)
+================================================================================
+
+✅ These 47 entries already have descriptions and/or notes - NO ACTION NEEDED:
+
+REVIEW COMMANDS:
+  - AD (has description) ✅
+  - AL (has description) ✅
+  - LCMD (has description) ✅
+  - LA (has description) ✅
+  - UD (has description) ✅
+
+KANBAN COMMANDS:
+  - AF (has description) ✅
+  - TB (has description) ✅
+  - UKB (has description) ✅
+  - UKB-Low (has description) ✅
+
+QUESTION & DECISION COMMANDS:
+  - AOQ (has description) ✅
+  - AQ (has description) ✅
+  - AYOK (has description) ✅
+  - L8R (has description) ✅
+  - LQ (has description) ✅
+  - NQ (has description) ✅
+  - OBO (has description) ✅
+  - W8 (has description) ✅
+  - YD (has description) ✅
+  - YS (has description) ✅
+
+WORKFLOW COMMANDS:
+  - EX (has description) ✅
+  - PA (has description) ✅
+  - PE (has description) ✅
+  - PSC (has description) ✅
+  - PWF (has description) ✅
+  - RSC (has description) ✅
+
+PRINT & EXPORT:
+  - DT (has description) ✅
+  - LS (has description) ✅
+  - PD (has description) ✅
+  - PT (has description) ✅
+
+PROJECT ABBREVIATIONS:
+  - NIRS (has description) ✅
+  - PNI (has description) ✅
+  - PNIR (has description) ✅
+  - RS (has description) ✅
+  - TP (has description) ✅
+  - TPK (has description) ✅
+  - TTK (has description) ✅
+
+PROPOSED NEW COMMANDS:
+  - ARCHIVE (has description) ✅
+  - ASSIGN (has description) ✅
+  - CMDX (has description) ✅
+  - QS (has description) ✅
+  - RB (has description) ✅
+  - SPLIT (has description) ✅
+  - SYNC (has description) ✅
+
+STATUS INDICATORS:
+  - CRUD (has description) ✅
+  - MVP (has description) ✅
+  - N (has description) ✅
+  - TBD (has description) ✅
+  - Y (has description) ✅
+
+SYSTEM ROWS (TPK-NIRS):
+  - AIPD (has description) ✅
+  - AIPN (has description) ✅
+  - Categories (has description) ✅
+  - Documentation (has description) ✅
+  - Format (has description) ✅
+  - Priorities (has description) ✅
+
+LOGIN CREDENTIALS:
+  - User 1 (has description) ✅
+  - User 2 (has description) ✅
+  - User 3 (has description) ✅
+  - User 4 (has description) ✅
+
+================================================================================
+
+SECTION 4: USAGE INSTRUCTIONS FOR UPDATING cmd_xlsx.csv
+================================================================================
+
+Option A: MANUAL UPDATE IN EXCEL
+  1. Open cmd_xlsx.csv in Excel
+  2. For each AIPD entry in Section 1, replace "SDS" or "Suggest Description" or "AIDS" 
+     with the suggested description
+  3. For each AIPN entry in Section 2 (optional), add suggested note in NOTES column
+  4. Save as CSV
+  5. Send back to agent for verification
+
+Option B: AGENT-ASSISTED UPDATE
+  1. Provide this file and cmd_xlsx.csv to agent
+  2. Agent creates new CSV with all AIPD descriptions integrated
+  3. Optional: Agent also adds AIPN notes
+
+Option C: MANUAL IN TXT THEN CONVERT
+  1. Update existing cmd_xlsx.csv directly by hand
+  2. Use CMDX (Excel conversion) to validate format
+  3. Keep as master reference
+
+================================================================================
+
+SECTION 5: SUMMARY STATISTICS
+================================================================================
+
+Total Commands/Entries: 81
+  - Complete (description + notes): 47 entries (58%)
+  - AIPD Required: 18 entries (22%)
+  - AIPN Optional: 14 entries (17%)
+  - System/Metadata: 2 entries (2%)
+
+Status by Category:
+  - REVIEW COMMANDS: 5/5 complete ✅
+  - KANBAN COMMANDS: 4/4 complete ✅
+  - QUESTION & DECISION: 10/10 complete ✅
+  - WORKFLOW COMMANDS: 6/6 complete ✅
+  - PRINT & EXPORT: 4/5 (1 AIPD: prtot)
+  - PROJECT ABBREVIATIONS: 7/7 complete ✅
+  - PROPOSED NEW COMMANDS: 7/7 complete ✅
+  - STATUS INDICATORS: 5/5 complete ✅
+  - TPK-NIRS ID SYSTEM: 6/6 complete ✅
+  - TBA (NEEDS DESCRIPTIONS): 13 entries (ADM, BUG, COM, COR, DOC, EPIC, ETEST, EXP, FIX, ORG, REQ, RES, TSK)
+  - OTHER: 2 entries with errors (SEC: "AIDS" error, TBA: "AIDS" error)
+  - LOGIN CREDENTIALS: 4/4 complete ✅
+
+Critical Fixes Needed:
+  1. SEC row: Replace "AIDS" with "Security (authentication, password, access control, lockout rules)"
+  2. TBA marker row: Replace "AIDS" with "TBA (To Be Assigned - placeholder for unassigned categories)"
+  3. All TBA category rows: Replace "SDS" with appropriate descriptions (see Section 1)
+  4. BK (KANBAN): Replace blank with "Backup/Build Keep (save current Kanban state/version)"
+  5. prtot (PRINT & EXPORT): Replace blank with "Printer Orientation (toggle between portrait/landscape)"
+
+================================================================================
+End of CMD_AIPD_AIPN_SUGGESTIONS.txt
+================================================================================

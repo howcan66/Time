@@ -1,0 +1,388 @@
+================================================================================
+ANALYSIS: AF3 & AF4 - MINIMIZED VIEW FEATURES
+================================================================================
+Date: 2026-01-29
+Request: User proposes two new responsive features
+Analysis Type: AQ (Analyze Question) + PA (Present Analysis)
+Action Needed: PWF (Propose Way Forward)
+
+================================================================================
+FEATURE AF3: LOGIN PROMPT MINIMIZED VIEW SELECTION
+================================================================================
+
+TPK-ID: TPK-v1-RES-02-005
+Name: Minimized View Selection at Login
+Category: Responsive (RES)
+Priority: 02-HIGH
+Type: User Preference Feature
+Status: NEW
+
+DESCRIPTION:
+────────────────────────────────────────────────────────────────
+Add option at login screen to select minimized view mode before
+entering the kanban board. Users choose display density level:
+  - Normal (full UI)
+  - Minimized (compact UI)
+  - Custom (user preference)
+
+USER STORY:
+────────────────────────────────────────────────────────────────
+"As a frequent user with limited screen space, I want to select
+a minimized view at login so I can work with more compact UI
+from the start without toggling later."
+
+ACCEPTANCE CRITERIA:
+────────────────────────────────────────────────────────────────
+✓ Login modal includes view mode selector
+✓ Options: "Normal View" (default), "Minimized View"
+✓ User selection persisted to localStorage
+✓ Applies immediately after login
+✓ Can be toggled later via header button
+✓ Mobile devices default to minimized automatically
+✓ No loss of functionality in minimized mode
+
+TECHNICAL REQUIREMENTS:
+────────────────────────────────────────────────────────────────
+- Add radio buttons/dropdown at login modal
+- Store preference: localStorage['viewMode'] = 'normal' | 'minimized'
+- CSS class toggle: body.minimized-view
+- Apply CSS rules for compact layout
+- Restore setting on next login
+
+IMPLEMENTATION APPROACH:
+  1. Add view mode selector to login form
+  2. Create minimized CSS stylesheet
+  3. Toggle body class based on selection
+  4. Persist preference to localStorage
+  5. Auto-load on next session
+
+ESTIMATED EFFORT: 2-3 hours
+
+================================================================================
+FEATURE AF4: TOGGLE BUTTON TO MINIMIZE TOP FRAME
+================================================================================
+
+TPK-ID: TPK-v1-RES-02-006
+Name: Toggle Button for Top Frame Minimization
+Category: Responsive (RES)
+Priority: 02-HIGH
+Type: UI Optimization Feature
+Status: NEW
+
+DESCRIPTION:
+────────────────────────────────────────────────────────────────
+Add toggle button to minimize the top header frame. When minimized:
+  - Text labels become abbreviations
+  - Icons only (no accompanying text)
+  - Component layout becomes horizontal scrollable if needed
+  - Maximum width = largest component name width
+  - Timestamp hidden
+  - Minimize all buttons/icons
+
+MINIMIZATION RULES (Detailed):
+────────────────────────────────────────────────────────────────
+
+CURRENT STATE          → MINIMIZED STATE
+"Time Project Kanban"  → "TPK" (text only)
+"Kanban"               → Hidden or "K" icon
+"Timestamp: Jan 29..."  → Hidden completely
+User display text      → Icon + username only
+"Project" dropdown     → "Proj" or icon
+"Logout" button        → "X" button
+"Admin" button         → ⚙️ settings icon (no text)
+"Export" button        → 📤 icon only
+"Refresh" button       → 🔄 icon only
+
+LAYOUT CHANGES:
+────────────────────────────────────────────────────────────────
+Normal Header Height: ~60px
+Minimized Height: ~40px (33% reduction)
+
+Text Form Size: Full width label
+Minimized: Auto-fit to content width (no larger than largest label)
+
+Buttons: Full width + text label
+Minimized: Icon only (small padding)
+
+Icons: Medium size (24px)
+Minimized: Small size (20px) or keep same
+
+USER STORY:
+────────────────────────────────────────────────────────────────
+"As a power user with limited vertical screen space, I want to
+toggle the header to a minimized state so I can maximize kanban
+board viewing area on my laptop."
+
+ACCEPTANCE CRITERIA:
+────────────────────────────────────────────────────────────────
+✓ Toggle button visible in header (⇅ or similar icon)
+✓ Click toggles between normal ↔ minimized
+✓ All header elements condense:
+  - Text → abbreviations or hidden
+  - Full labels → icons only
+  - Buttons remain functional
+✓ Board height increases when minimized
+✓ Preference saved to localStorage
+✓ Persists across sessions
+✓ Smooth CSS transition (0.3s)
+✓ No functionality lost
+✓ Keyboard shortcut available (optional: Ctrl+M or Alt+H)
+
+TECHNICAL REQUIREMENTS:
+────────────────────────────────────────────────────────────────
+HTML:
+- Add toggle button to header (icon button)
+- Add data-* attributes for minimized text/icons
+- Keep full text in title attributes for tooltips
+
+CSS:
+- Create .header-minimized class
+- Set display: none for full text labels
+- Use ::before pseudo-elements for abbreviations or icons
+- Adjust spacing and layout
+- Media queries for responsive behavior
+- CSS transitions for smooth toggle
+
+JavaScript:
+- Toggle function: toggleHeaderMinimize()
+- localStorage key: 'headerMinimized' (true/false)
+- Load preference on page load
+- Apply class on startup if minimized was saved
+
+LOCAL STORAGE:
+  localStorage['headerMinimized'] = true | false
+  localStorage['viewMode'] = 'normal' | 'minimized' (AF3)
+
+IMPLEMENTATION APPROACH:
+  1. Add toggle button to header HTML
+  2. Create CSS for minimized state
+  3. Add JavaScript toggle function
+  4. Integrate with AF3 (minimized view feature)
+  5. Add keyboard shortcut (optional)
+  6. Test all button functionality remains
+
+ESTIMATED EFFORT: 3-4 hours
+
+================================================================================
+FEATURE COMPARISON: AF3 vs AF4
+================================================================================
+
+FEATURE | AF3 | AF4
+---------|-----|-----
+Name | Minimized View Selection | Header Minimization Toggle
+Scope | Entire UI compact mode | Just header/frame
+Activation | At login | Anytime via button
+Duration | Session-wide | Toggle on/off
+Priority | HIGH | HIGH
+Effort | 2-3 hrs | 3-4 hrs
+Complexity | MEDIUM | MEDIUM
+Integration | Both use localStorage | Both use minimized CSS
+
+RELATIONSHIP:
+- AF3 = Application-wide minimization (affects entire kanban)
+- AF4 = Header-specific minimization (just top frame)
+- Can work independently OR together
+- AF3 + AF4 = Full minimized experience
+
+================================================================================
+DESIGN CONSIDERATIONS
+================================================================================
+
+ICON/ABBREVIATION MAPPING:
+────────────────────────────────────────────────────────────────
+Component | Full Text | Minimized | Icon | Tooltip
+-----------|-----------|-----------|------|----------
+Title | "Time Project Kanban" | "TPK" | 📊 | Time Project Kanban
+User | "👤 admin (Admin)" | "👤 A" | - | admin (Admin)
+Project Filter | "Project: All" | "Proj" | 📁 | Project Filter
+Logout | "Logout" | "X" | ❌ | Logout
+Admin | "⚙️ Admin" | "⚙️" | ⚙️ | Admin Dashboard
+Export | "Export" | "📤" | 📤 | Export
+Refresh | "Refresh" | "🔄" | 🔄 | Refresh
+Timestamp | "Jan 29, 14:32" | Hidden | - | (none)
+
+CSS APPROACH FOR MINIMIZATION:
+────────────────────────────────────────────────────────────────
+.header { height: 60px; padding: 10px; }
+.header.minimized { height: 40px; padding: 5px; }
+
+.button-text { display: inline; }
+.header.minimized .button-text { display: none; }
+
+.timestamp { display: block; }
+.header.minimized .timestamp { display: none; }
+
+button { padding: 10px 15px; }
+.header.minimized button { padding: 5px 8px; }
+
+RESPONSIVENESS:
+────────────────────────────────────────────────────────────────
+✓ Desktop (1024px+): Full toggle option, AF3 + AF4 available
+✓ Tablet (768px-1023px): Auto-minimized by default, manual toggle
+✓ Mobile (< 768px): Always minimized, toggle for ultra-compact
+
+================================================================================
+INTEGRATION WITH EXISTING FEATURES
+================================================================================
+
+Integrates With:
+- TPK-v1-RES-02-003 (Adaptive Device Detection) ✓
+- TPK-v1-RES-02-004 (Device Selection at Login) ✓
+- Existing header UI (no breaking changes)
+
+Related Preferences:
+- localStorage['viewMode'] (AF3)
+- localStorage['headerMinimized'] (AF4)
+- localStorage['deviceType'] (from AF/RES-02-004)
+
+Shared CSS:
+- Both use @media queries
+- Both use display: none/flex toggles
+- Both use localStorage for persistence
+
+================================================================================
+TESTING REQUIREMENTS
+================================================================================
+
+AF3 Testing (Minimized View Selection at Login):
+────────────────────────────────────────────────────────────────
+- Test selection saves to localStorage
+- Test selection applies after login
+- Test toggle works mid-session
+- Test preference persists after logout/login
+- Test on desktop/tablet/mobile
+- Test with all user roles
+- Test with all features (admin panel, etc.)
+
+AF4 Testing (Header Minimization Toggle):
+────────────────────────────────────────────────────────────────
+- Test toggle button visible and clickable
+- Test all buttons remain functional when minimized
+- Test abbreviations display correctly
+- Test icons display correctly
+- Test localStorage persistence
+- Test smooth CSS transition
+- Test keyboard shortcut (if implemented)
+- Test with AF3 enabled/disabled
+- Test on different screen sizes
+- Test with different browsers
+
+Integration Testing:
+────────────────────────────────────────────────────────────────
+- AF3 enabled + AF4 enabled = Full minimized experience
+- AF3 enabled + AF4 disabled = App minimized, full header
+- AF3 disabled + AF4 enabled = Normal app, minimal header
+- AF3 disabled + AF4 disabled = Full normal UI
+
+================================================================================
+PHASE 2 KANBAN EPIC INTEGRATION
+================================================================================
+
+These features fit into: TPK-v1-EPIC-02-001 (Kanban Board Enhancements)
+
+Sub-features under EPIC:
+  ✓ TPK-v1-RES-02-003 = Device Detection (existing, 80% done)
+  ✓ TPK-v1-RES-02-004 = Device Selection at Login (NEW)
+  ✓ TPK-v1-RES-02-005 = Minimized View Selection (AF3) ← NEW
+  ✓ TPK-v1-RES-02-006 = Header Minimization Toggle (AF4) ← NEW
+  - TPK-v1-EXP-02-008 = Print Board
+  - TPK-v1-COM-02-009 = Email Column
+  - TPK-v1-ORG-02-004 = Multi-Project
+
+EPIC ROADMAP UPDATE:
+  Phase 2a: Device & View Selection (RES-02-004, 005, 006) - 7-10 hrs
+  Phase 2b: Print & Export (EXP-02-008) - 4-6 hrs
+  Phase 2c: Communication (COM-02-009) - 6-8 hrs
+  Phase 2d: Organization (ORG-02-004) - 4-6 hrs
+
+================================================================================
+RISK ANALYSIS
+================================================================================
+
+RISK | LIKELIHOOD | IMPACT | MITIGATION
+------|-----------|--------|----------
+Performance impact with CSS toggles | LOW | LOW | Use CSS transforms (GPU accelerated)
+Accessibility issues with abbreviations | MEDIUM | MEDIUM | Always use title attributes & aria-labels
+Confusion with different view modes | LOW | MEDIUM | Clear UI indicators for current mode
+localStorage quota exceeded | VERY LOW | LOW | Store only boolean values
+Mobile layout breaks on minimized | LOW | MEDIUM | Test thoroughly on all sizes
+
+================================================================================
+PROPOSED WAY FORWARD (PWF)
+================================================================================
+
+RECOMMENDATION: Implement both AF3 and AF4 together
+
+RATIONALE:
+  ✓ Both address responsive/screen space concerns
+  ✓ Minimal implementation overhead if done together
+  ✓ Share CSS/localStorage infrastructure
+  ✓ High user value for power users
+  ✓ Fit naturally into Responsive category (RES)
+  ✓ Build on existing device detection work
+
+IMPLEMENTATION SEQUENCE:
+────────────────────────────────────────────────────────────────
+STEP 1: Create CSS framework for minimization (shared, 1 hr)
+  - Common minimize class and rules
+  - Abbreviation system
+  - Icon display rules
+
+STEP 2: Implement AF4 (Header Minimization) - 3 hours
+  - Add toggle button to header
+  - Create minimized CSS for header
+  - Add JavaScript toggle function
+  - Test functionality
+
+STEP 3: Implement AF3 (Login Selector) - 2 hours
+  - Add selector to login modal
+  - Wire up AF3 CSS (reuse AF4 framework)
+  - Add localStorage integration
+  - Test login flow
+
+STEP 4: Integration & Testing - 2 hours
+  - Test AF3 + AF4 together
+  - Test on multiple devices
+  - Test with other features (admin, etc.)
+  - Cross-browser testing
+
+TOTAL EFFORT: ~8 hours
+
+TIMELINE:
+  Start: 2026-01-30 (after current session)
+  Completion: 2026-02-01 (3 working days)
+  Deadline: 2026-02-05 (before Phase 2 finale)
+
+DELIVERABLES:
+  1. Updated kanban.html with AF3 & AF4 implementation
+  2. Test plan with 20+ test cases
+  3. Documentation of minimization features
+  4. Commits: One per major component
+
+DEPENDENCIES:
+  ✓ None (can start immediately)
+
+BLOCKERS:
+  ✗ None identified
+
+================================================================================
+QUESTIONS FOR USER (Before Proceeding)
+================================================================================
+
+1. Should AF3 have 2 options (Normal/Minimized) or 3 (Normal/Minimized/Custom)?
+
+2. Should AF4 toggle keyboard shortcut? (e.g., Ctrl+M or Alt+H)
+
+3. Should minimized view be device-dependent?
+   (e.g., auto-minimized on mobile, manual on desktop)
+
+4. Should there be a "Super Minimized" mode (even more compact)?
+
+5. Priority order:
+   a) Implement AF4 first, then AF3
+   b) Implement AF3 first, then AF4
+   c) Implement both simultaneously
+
+6. Ready to proceed with implementation immediately?
+
+================================================================================

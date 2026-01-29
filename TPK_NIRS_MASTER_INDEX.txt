@@ -54,6 +54,7 @@ RESPONSIVE FEATURES (TPK-RES)
 # | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
 --|--------|--------|--------------|----------|--------|------------|-------|----------|-------
 1 | TPK-v1-RES-02-003 | HJ-ID1RS3 | Adaptive Kanban Device Detection | 02-HIGH | IN_PROGRESS | 80% | AI | 2026-02-01 | Desktop drag-drop, mobile dropdowns, needs real device testing
+2 | TPK-v1-RES-02-007 | NEW-MOBILE-HEADER | Mobile Header & Toolbar Optimization | 02-HIGH | NEW | 0% | TBD | 2026-02-10 | Compact header, quick actions, improved mobile navigation
 
 
 ORGANIZATION FEATURES (TPK-ORG)
@@ -86,6 +87,15 @@ TASK MANAGEMENT FEATURES (TPK-TSK)
 # | TPK_ID | OLD_ID | FEATURE_NAME | PRIORITY | STATUS | COMPLETION | OWNER | DUE_DATE | NOTES
 --|--------|--------|--------------|----------|--------|------------|-------|----------|-------
 1 | TPK-v1-TSK-03-006 | HJ-ID1RS6 | User Role Assignment to Tasks | 03-MEDIUM | NEW | 0% | TBD | 2026-02-20 | Assignee dropdown, display on card, My Tasks filter
+
+
+================================================================================
+RESERVED / UNASSIGNED (HJ-ID)
+================================================================================
+
+# | HJ_ID | FEATURE_NAME | PRIORITY | STATUS | OWNER | NOTES
+--|-------|--------------|----------|--------|-------|------
+1 | HJ-ID1RS11 | Reserved Placeholder | TBD | NEW | USER | Next user-assigned requirement (details TBD)
 
 
 ================================================================================

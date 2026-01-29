@@ -1,0 +1,79 @@
+CATEGORY;COMMAND;X;Request Input from;DESCRIPTION;NOTES
+REVIEW COMMANDS;AD;X;AIPN;Analyze Documentation (review all docs for clarity);Includes clarity review, redundancy check, completeness verification
+TBA;ADM;X;AIPD;Administration (manage system settings, user access, configuration);
+KANBAN COMMANDS;AF;X;AIPN;Add Feature (propose new feature with TPK-NIRS ID);Use TPK-NIRS format for new feature IDs (e.g., TPK-v1-SEC-01-013)
+AI Propose Notes;AIPN;X;AIPN;AI Propose Into Notes if Column E field is empty = blank;
+AI Propose Description;AIPD;X;AIPN;AI Propose Into Description if Column D field is empty = blank;
+REVIEW COMMANDS;AL;X;AIPN;Analyze Log (review Log_all.txt for redundancy);Check Log_all.txt for duplicate entries and redundancy
+QUESTION & DECISION COMMANDS;AOQ;x;AIPN;Any Outstanding Questions (add to CMD.txt file);Add to AOQ list in CMD.txt file before proceeding
+QUESTION & DECISION COMMANDS;AQ;x;AIPN;Analyze Question (deep dive on specific question);Deep analysis required; document findings
+PROPOSED NEW COMMANDS;ARCHIVE;;AIPN;Move completed tasks to archive;
+PROPOSED NEW COMMANDS;ASSIGN;;AIPN;Assign task to user/role;
+QUESTION & DECISION COMMANDS;AYOK;x;AIPN;Are You OK / Working well together (team check-in);Team sync/check-in for alignment and morale
+KANBAN COMMANDS;BK;;AIPD;Backup/Build Keep (save current Kanban state/version);
+TBA;BUG;x;AIPD;Bug/Issue Report (identify, document, and track bugs);
+TPK-NIRS ID SYSTEM;Categories;;AIPN;SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX, REQ, EPIC;
+PROPOSED NEW COMMANDS;CMDX;X;AIPN;Create cmd_xlsx.txt from CMD.txt (Excel format conversion);
+TBA;COM;x;AIPD;Communication (team discussion, updates, announcements);
+TBA;COR;x;AIPD;Core/Correctness (verify accuracy and quality);
+STATUS INDICATORS;CRUD;x;AIPN;Create, Read, Update, Delete;
+TBA;DOC;x;AIPD;Documentation (create, update, maintain reference materials);
+TPK-NIRS ID SYSTEM;Documentation;;AIPN;See: TPK_NIRS_PROPOSAL.txt for full specification;
+PRINT & EXPORT ABBREVIATIONS;DT;;AIPN;Demo Tour (feature walkthrough);
+TBA;EPIC;;AIPD;Epic/Major Feature (large project milestone or goal);
+TBA;ETEST;;AIPD;End-to-End Testing (full system workflow verification);
+WORKFLOW COMMANDS;EX;x;AIPN;Execute (implement the changes);
+TBA;EXP;;AIPD;Experimentation (try new approaches or features);
+TBA;FIX;;AIPD;Fix/Correction (resolve identified issues);
+QUESTION & DECISION COMMANDS;L8R;x;AIPN;Later (Phase 2 or future implementation);
+TPK-NIRS ID SYSTEM;Format;Ignore;;TPK-v[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE];Example: TPK-v1-SEC-01-011
+REVIEW COMMANDS;LA;x;AIPN;List All (show current state);Shows current project status, Kanban state, and logs
+REVIEW COMMANDS;LCMD;x;AIPN;List CMD (display CMD.txt contents);
+QUESTION & DECISION COMMANDS;LQ;x;AIPN;List Questions (show all pending questions);Compile all pending questions from various sources
+PRINT & EXPORT ABBREVIATIONS;LS;x;AIPN;Landscape orientation (print/PDF);Landscape = wider view, better for large boards
+STATUS INDICATORS;MVP;x;AIPN;Minimum Viable Product;
+STATUS INDICATORS;N;x;AIPN;No (rejected/declined);
+PROJECT ABBREVIATIONS;NIRS;x;AIPN;New Identification Requirement Specification (TPK ID system);
+QUESTION & DECISION COMMANDS;NQ;x;AIPN;Next Question (move to next question in sequence);Move to next question in OBO sequence
+QUESTION & DECISION COMMANDS;OBO;x;AIPN;One By One (answer questions sequentially);Answer one question completely before moving to next
+TBA;ORG;;AIPD;Organization (structure, plan, coordinate work);
+WORKFLOW COMMANDS;PA;x;AIPN;Present Analysis (describe situation, propose action);Standard opening for status updates and planning sessions
+PRINT & EXPORT ABBREVIATIONS;PD;x;AIPN;Please Describe;
+WORKFLOW COMMANDS;PE;x;AIPN;Present Execution (show what will be implemented) OR Please Execute;
+PROJECT ABBREVIATIONS;PNI;x;AIPN;Propose New ID no (suggest new ID numbering);
+PROJECT ABBREVIATIONS;PNIR;x;AIPN;Propose New ID and RS no (combined ID + requirement spec);
+TPK-NIRS ID SYSTEM;Priorities;x;AIPN;01=CRITICAL | 02=HIGH | 03=MEDIUM | 04=LOW;
+PRINT & EXPORT ABBREVIATIONS;prtot;;AIPD;Printer Orientation (toggle between portrait/landscape);
+WORKFLOW COMMANDS;PSC;x;AIPN;Please Show Changes (review before proceeding);Always review before EX (execute)
+PRINT & EXPORT ABBREVIATIONS;PT;x;AIPN;Portrait orientation (print/PDF/email);
+WORKFLOW COMMANDS;PWF;x;AIPN;Propose Way Forward (recommend next steps);Propose recommended sequence of next actions
+PROPOSED NEW COMMANDS;QS;x;AIPN;Quick Search (find text across files);
+PROPOSED NEW COMMANDS;RB;x;AIPN;Rollback (revert last change);
+TBA;REQ;;AIPD;Requirement (feature request, spec, or constraint);
+TBA;RES;;AIPD;Resource (allocate time, people, tools);
+PROJECT ABBREVIATIONS;RS;x;AIPN;Requirement Specification (detailed specs for TPK IDs);
+WORKFLOW COMMANDS;RSC;x;AIPN;Review & Suggest Changes (feedback loop);Give constructive feedback on implementation
+Suggest Description;SDS;;AIPD;SDS (Suggest Description - placeholder for blank descriptions);
+TPK-NIRS ID SYSTEM;SEC;;AIPD;Security (authentication, password, access control, lockout rules);
+PROPOSED NEW COMMANDS;SPLIT;x;AIPN;Split task into subtasks;
+PROPOSED NEW COMMANDS;SYNC;x;AIPN;Synchronize all files (auto-update references);
+KANBAN COMMANDS;TB;x;AIPN;Test Build (validate functionality);
+To Be Assigned;TBA;;AIPD;TBA (To Be Assigned - placeholder for unassigned categories);
+STATUS INDICATORS;TBD;;AIPN;To Be Determined;
+To Be Decided;TBD;;AIPN;SDS;
+To Be Described;TBDS;;AIPN;SDS;
+PROJECT ABBREVIATIONS;TP;;AIPN;Time Project;
+PROJECT ABBREVIATIONS;TPK;;AIPN;Time Project Kanban (full project);
+TBA;TSK;;AIPD;Task (work item, action item, assignment);
+PROJECT ABBREVIATIONS;TTK;;AIPN;Time Project Kanban (sessions without Kanban board);
+REVIEW COMMANDS;UD;;AIPN;Update Documentation (sync docs with implementation);
+KANBAN COMMANDS;UKB;;AIPN;Update Kanban Board (sync Todo.txt → Kanban);
+KANBAN COMMANDS;UKB-Low;;AIPN;Update Kanban (exclude low-priority);
+LOGIN CREDENTIALS;User 1;Ignore;;R18 / R18;Role: Project Manager
+LOGIN CREDENTIALS;User 2;Ignore;;Maximus / Maximus;Role: Developer/Executor
+LOGIN CREDENTIALS;User 3;;;Joel / Joel;Role: Reviewer/Tester
+LOGIN CREDENTIALS;User 4;Ignore;;admin / admin;Role: Admin
+QUESTION & DECISION COMMANDS;W8;;;Wait (defer decision to later);
+STATUS INDICATORS;Y;;;Yes (approved/confirmed);
+QUESTION & DECISION COMMANDS;YD;;;You Decide (same as YS - AI chooses);
+QUESTION & DECISION COMMANDS;YS;;;You Select (AI decides best option);

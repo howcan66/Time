@@ -58,7 +58,7 @@ AUTH-004 | 4 | Click [LOGIN] button | Modal closes, board displays | | PENDING |
 AUTH-005 | 5 | Check header | User display shows "👤 admin (Admin)" | | PENDING | Role display
 AUTH-006 | 6 | Check header | ⚙️ ADMIN button appears | | PENDING | Permission check
 AUTH-007 | 7 | Invalid login: user/pass | Error message displays | | PENDING | Attempt counter
-AUTH-008 | 8 | 3x failed login | Account locks 5 minutes | | PENDING | Lockout logic
+AUTH-008 | 8 | 5x failed login | Account locks 5 minutes | | PENDING | Lockout logic (NEW: 5 strikes)
 
 TEST_CATEGORY: Admin Dashboard - Access
 REF_FILE: Design.txt, HJ-ID1RS7D_xlsx.txt (Step 2)
@@ -88,6 +88,67 @@ USER-005 | 5 | Check Joel row | Joel | joel@time.local | Reviewer | Jan 28... | 
 USER-006 | 6 | Check admin row | admin | admin@time.local | Admin | Jan 29... | | PENDING | Data accuracy
 USER-007 | 7 | Check status | All show ✓ Active | | PENDING | Status indicator
 USER-008 | 8 | Check buttons | [EDIT] [RESET] [DELETE] buttons per row | | PENDING | Action buttons
+
+================================================================================
+TEST PLAN - LOGIN IMPROVEMENTS (NEW-LOGIN-PWD & NEW-LOGIN-ATTEMPTS)
+================================================================================
+
+TEST_CATEGORY: Password Visibility Toggle (NEW-LOGIN-PWD)
+REF_FILE: LOGIN_IMPROVEMENTS_IMPLEMENTATION.txt
+KANBAN_ID: NEW-LOGIN-PWD
+RESPONSIBLE: USER (Testing), AI (Support)
+STATUS: READY FOR TESTING
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+PWD-001 | 1 | Open kanban.html | Login modal displays with password field | | PENDING | Initial state
+PWD-002 | 2 | Check password field | Eye icon 👁️ visible next to password input | | PENDING | Button present
+PWD-003 | 3 | Type password: admin | Password masked with asterisks (•••••) | | PENDING | Default behavior
+PWD-004 | 4 | Click eye icon 👁️ | Password becomes visible as text: "admin" | | PENDING | Toggle to text
+PWD-005 | 5 | Check icon state | Eye icon changes to 😨 (closed eye) | | PENDING | Icon feedback
+PWD-006 | 6 | Click 😨 again | Password hidden again with asterisks | | PENDING | Toggle back
+PWD-007 | 7 | Check icon state | Icon changes back to 👁️ (open eye) | | PENDING | Icon resets
+PWD-008 | 8 | Hover over eye icon | Tooltip shows "Show/Hide Password" | | PENDING | Accessibility
+PWD-009 | 9 | Type wrong password | Can verify before clicking login | | PENDING | Use case
+PWD-010 | 10 | Click [Reset Lockout] | Eye icon resets to 👁️, password hidden | | PENDING | Reset state
+PWD-011 | 11 | Test on mobile | Eye icon positioned correctly, readable | | PENDING | Responsive design
+PWD-012 | 12 | Test on tablet | Toggle works smoothly on touch devices | | PENDING | Touch interaction
+
+TEST_CATEGORY: Lockout Threshold - 5 Strikes (NEW-LOGIN-ATTEMPTS)
+REF_FILE: LOGIN_IMPROVEMENTS_IMPLEMENTATION.txt, LOGIN_ANALYSIS_SESSION.txt
+KANBAN_ID: NEW-LOGIN-ATTEMPTS
+RESPONSIBLE: USER (Testing), AI (Support)
+STATUS: READY FOR TESTING
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+LOCK-001 | 1 | Attempt 1 failed login | Error: "Invalid credentials. Attempt 1/5" | | PENDING | First attempt
+LOCK-002 | 2 | Attempt 2 failed login | Error: "Invalid credentials. Attempt 2/5" | | PENDING | Counter increments
+LOCK-003 | 3 | Attempt 3 failed login | Error: "Invalid credentials. Attempt 3/5" | | PENDING | Midway point
+LOCK-004 | 4 | Attempt 4 failed login | Error: "Invalid credentials. Attempt 4/5" | | PENDING | One before lock
+LOCK-005 | 5 | Attempt 5 failed login | Error: "Too many failed attempts. Account locked for 5 minutes." | | PENDING | Lockout triggered
+LOCK-006 | 6 | Login button state | Button disabled after 5th attempt | | PENDING | UI feedback
+LOCK-007 | 7 | Try 6th login immediately | Cannot login, lockout message appears | | PENDING | Lockout enforced
+LOCK-008 | 8 | Wait 5 minutes | Lockout expires, can attempt login again | | PENDING | Timeout works
+LOCK-009 | 9 | Click [Reset Lockout] button | Attempt counter clears | | PENDING | Manual reset
+LOCK-010 | 10 | After reset, attempt login | Counter starts from 1 again | | PENDING | Reset verified
+LOCK-011 | 11 | Try valid credentials | Login succeeds, counter resets to 0 | | PENDING | Successful reset
+LOCK-012 | 12 | Test per-user lockout | User A locked doesn't affect User B | | PENDING | Isolation check
+
+TEST_CATEGORY: Integration - Password Toggle + Lockout
+REF_FILE: LOGIN_IMPROVEMENTS_IMPLEMENTATION.txt, kanban.html
+KANBAN_ID: NEW-LOGIN-PWD + NEW-LOGIN-ATTEMPTS
+RESPONSIBLE: USER (Testing)
+STATUS: READY FOR TESTING
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+INT-001 | 1 | Toggle password visibility | No interference with lockout counter | | PENDING | Feature independence
+INT-002 | 2 | After 4 failed attempts, toggle pwd | Password toggle still works | | PENDING | Lockout doesn't break toggle
+INT-003 | 3 | Failed attempt, show password | Can see incorrect entry typed | | PENDING | Use case: typo detection
+INT-004 | 4 | Reset lockout after showing password | Password hidden, toggle resets | | PENDING | Clean state
+INT-005 | 5 | Successful login, logout, login again | Password toggle state resets properly | | PENDING | Session handling
+INT-006 | 6 | Browser refresh during password shown | Password field resets to hidden | | PENDING | Page reload behavior
 
 TEST_CATEGORY: Users Tab - Add New User
 REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 4), HJ-ID1RS7D_xlsx.txt (Add New User Form)
@@ -266,16 +327,50 @@ RESPONSIBLE: USER (Testing)
 
 TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
 ----------|------|--------|-----------------|---------------|-----------|-------
-COLOR-001 | 1 | Check primary buttons | Blue (#667eea) for Add/Save/Login | | PENDING | Primary color
-COLOR-002 | 2 | Check danger buttons | Red (#ef4444) for Delete | | PENDING | Danger color
-COLOR-003 | 3 | Check reset buttons | Orange (#f59e0b) for Reset | | PENDING | Reset color
-COLOR-004 | 4 | Check secondary buttons | Gray (#6b7280) for Cancel/Close | | PENDING | Secondary color
-COLOR-005 | 5 | Check success status | Green for ✓ Active | | PENDING | Success color
+================================================================================
+TEST EXECUTION SUMMARY
+================================================================================
 
-TEST_CATEGORY: Responsive Design
-REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 10), Design.txt
-KANBAN_ID: HJ-ID1RS7
-RESPONSIBLE: USER (Testing)
+FEATURE | TEST_CASES | STATUS | PRIORITY | DUE_DATE | NOTES
+---------|-----------|--------|----------|----------|-------
+NEW-LOGIN-PWD | PWD-001 to PWD-012 | READY | HIGH | 2026-01-30 | 12 test cases
+NEW-LOGIN-ATTEMPTS | LOCK-001 to LOCK-012 | READY | HIGH | 2026-01-30 | 12 test cases
+Integration (PWD+LOCK) | INT-001 to INT-006 | READY | HIGH | 2026-01-30 | 6 test cases
+HJ-ID1RS7 Admin Panel | DASH-001 to USER-008 | READY | HIGH | 2026-01-30 | Existing tests
+
+TOTAL TEST CASES: 44 test cases across 5 feature areas
+
+================================================================================
+TESTING PRIORITY SEQUENCE
+================================================================================
+
+PHASE 1: Login Features (NEW-LOGIN-PWD & NEW-LOGIN-ATTEMPTS)
+- Must pass before admin features testing
+- 30 test cases total
+- Estimated time: 30-45 minutes
+
+PHASE 2: Admin Panel Integration
+- Dependent on Phase 1 passing
+- 14 test cases
+- Estimated time: 45-60 minutes
+
+PHASE 3: End-to-End Flow
+- Full user journey testing
+- Cross-browser compatibility
+- Mobile responsiveness testing
+
+================================================================================
+NEXT_STEPS
+================================================================================
+
+ACTION | OWNER | DEADLINE | STATUS
+--------|-------|----------|--------
+Execute login feature test cases (PWD-001 to LOCK-012) | USER | 2026-01-30 | PENDING
+Document results | USER | 2026-01-30 | PENDING
+Report issues | USER | 2026-01-30 | PENDING
+Fix bugs (if any) | AI | 2026-01-31 | PENDING
+Execute admin panel tests (if Phase 1 passes) | USER | 2026-01-31 | PENDING
+Move to Done (if allR (Testing)
 
 TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
 ----------|------|--------|-----------------|---------------|-----------|-------

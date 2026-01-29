@@ -1,0 +1,179 @@
+================================================================================
+TEST PLAN ADDITIONS - SUMMARY
+================================================================================
+Date: 2026-01-29
+Updated File: TEST_PLAN.txt
+Changes: Added comprehensive testing for NEW-LOGIN-PWD & NEW-LOGIN-ATTEMPTS
+
+================================================================================
+NEW TEST SECTIONS ADDED
+================================================================================
+
+1. TEST PLAN - PASSWORD VISIBILITY TOGGLE (NEW-LOGIN-PWD)
+   Location: TEST_PLAN.txt (NEW SECTION)
+   Test Cases: PWD-001 through PWD-012 (12 tests)
+   Coverage:
+   ✓ Eye icon presence and positioning
+   ✓ Password visibility toggle (text ↔ asterisks)
+   ✓ Icon state changes (👁️ ↔ 😨)
+   ✓ Tooltip functionality
+   ✓ Mobile/tablet responsiveness
+   ✓ Reset lockout behavior
+
+2. TEST PLAN - LOCKOUT THRESHOLD (NEW-LOGIN-ATTEMPTS)
+   Location: TEST_PLAN.txt (NEW SECTION)
+   Test Cases: LOCK-001 through LOCK-012 (12 tests)
+   Coverage:
+   ✓ Attempt counter progression (1/5, 2/5, 3/5, 4/5)
+   ✓ Lockout trigger at attempt 5
+   ✓ Error messages display correctly
+   ✓ Button disabled state
+   ✓ 5-minute timeout expiration
+   ✓ Manual reset functionality
+   ✓ Per-user lockout isolation
+
+3. INTEGRATION TESTING - PASSWORD TOGGLE + LOCKOUT
+   Location: TEST_PLAN.txt (NEW SECTION)
+   Test Cases: INT-001 through INT-006 (6 tests)
+   Coverage:
+   ✓ Feature independence
+   ✓ Lockout doesn't break toggle
+   ✓ Use case: typo detection with visibility
+   ✓ Clean state after reset
+   ✓ Session handling
+   ✓ Page reload behavior
+
+4. UPDATED EXISTING TESTS
+   Location: TEST_PLAN.txt (MODIFIED)
+   Changes:
+   ✓ AUTH-008: Updated from "3x failed login" to "5x failed login"
+   ✓ AUTH-008: Updated notes to reference 5 strikes
+
+================================================================================
+TEST EXECUTION PLAN
+================================================================================
+
+PHASE 1: Login Features (30 test cases)
+- Password Toggle: PWD-001 to PWD-012
+- Lockout Threshold: LOCK-001 to LOCK-012
+- Integration: INT-001 to INT-006
+- Priority: HIGH
+- Deadline: 2026-01-30
+- Estimated Time: 30-45 minutes
+
+PHASE 2: Admin Panel (14 test cases)
+- Dependent on Phase 1 passing
+- Dashboard access, user management, etc.
+- Priority: HIGH
+- Deadline: 2026-01-31
+- Estimated Time: 45-60 minutes
+
+PHASE 3: End-to-End
+- Full user journey
+- Cross-browser compatibility
+- Mobile responsiveness
+
+================================================================================
+KEY TEST SCENARIOS
+================================================================================
+
+✅ SCENARIO 1: User Typo Detection
+   1. User enters wrong password
+   2. Click eye icon to show password
+   3. See "adnin" instead of "admin"
+   4. Clear field and re-enter correct password
+   5. Login successfully
+
+✅ SCENARIO 2: Accidental Lockout Recovery
+   1. User tries 4 failed attempts (typo, caps lock, etc.)
+   2. Gets "Attempt 4/5" message
+   3. Uses password toggle to verify correct entry
+   4. Enters correct password on attempt 5
+   5. Logs in successfully without lockout
+
+✅ SCENARIO 3: Lockout After 5 Attempts
+   1. User tries 5 failed attempts
+   2. Gets "Too many failed attempts. Account locked for 5 minutes."
+   3. Login button disabled
+   4. Click "Reset Lockout" button
+   5. Counter resets, can try again
+
+✅ SCENARIO 4: Per-User Lockout
+   1. User A tries 5 failed attempts → locked
+   2. User B still can login → not locked
+   3. Lockout is per-user, not global
+
+================================================================================
+TOTAL TEST COVERAGE
+================================================================================
+
+Feature Tests: 44 total test cases
+
+By Category:
+- Password Visibility Toggle (PWD): 12 cases
+- Lockout Threshold (LOCK): 12 cases
+- Integration (INT): 6 cases
+- Admin Panel (existing): 14 cases
+
+By Type:
+- Functional: 35 cases
+- UI/UX: 5 cases
+- Integration: 4 cases
+
+By Priority:
+- HIGH: 30 cases (login features)
+- MEDIUM: 14 cases (admin features)
+
+================================================================================
+TESTING CHECKLIST FOR USER
+================================================================================
+
+Before Testing:
+☐ Review this document and TEST_PLAN.txt
+☐ Have valid credentials ready (admin/admin, R18/R18, etc.)
+☐ Have multiple browsers available (Chrome, Firefox, Safari)
+☐ Have mobile device or browser dev tools (device emulation)
+
+Phase 1 - Password Toggle:
+☐ PWD-001 through PWD-012 (12 tests) - ~15 minutes
+☐ Record any issues found
+
+Phase 1 - Lockout Threshold:
+☐ LOCK-001 through LOCK-012 (12 tests) - ~15 minutes
+☐ Record any issues found
+
+Phase 1 - Integration:
+☐ INT-001 through INT-006 (6 tests) - ~10 minutes
+☐ Record any issues found
+
+After Phase 1 (if all pass):
+☐ Proceed to Phase 2 admin testing
+☐ Proceed to Phase 3 end-to-end testing
+
+================================================================================
+ISSUE TRACKING
+================================================================================
+
+If test fails, document:
+1. Test Case ID (e.g., PWD-005)
+2. Steps to reproduce
+3. Expected result
+4. Actual result
+5. Browser/Device used
+6. Screenshot/Video (if applicable)
+7. Severity (Critical/High/Medium/Low)
+
+Report to: AI Assistant or team lead
+
+================================================================================
+SUCCESS CRITERIA
+================================================================================
+
+Phase 1 Complete ✅ when:
+- All 30 test cases pass (PWD + LOCK + INT)
+- No Critical or High severity issues
+- Works on desktop, tablet, mobile
+- Works across Chrome, Firefox, Safari
+- No JavaScript errors in console
+
+================================================================================
