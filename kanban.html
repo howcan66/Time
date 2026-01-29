@@ -32,6 +32,8 @@
 
         .header-left { display: flex; align-items: center; gap: 20px; }
         .project-title { font-size: 24px; font-weight: bold; color: #667eea; }
+        .title-short { display: none; }
+        .title-full { display: inline; }
         .timestamp { font-size: 14px; color: #666; padding: 5px 15px; background: #f0f0f0; border-radius: 5px; }
         .project-controls { display: flex; align-items: center; gap: 8px; }
         .project-select { padding: 6px 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; }
@@ -166,6 +168,8 @@
             .header { height: 60px; padding: 10px 12px; }
             .header-left { gap: 10px; }
             .project-title { font-size: 14px; }
+            .title-full { display: none; }
+            .title-short { display: inline; }
             .timestamp { display: none !important; }
             .project-controls { gap: 6px; }
             .project-select { font-size: 12px; padding: 6px; }
@@ -204,8 +208,10 @@
         }
 
         @media (max-width: 1024px) and (min-width: 801px) {
-            /* HJ-ID1RS11: Tablet - hide timestamp */
+            /* HJ-ID1RS11: Tablet - hide timestamp, show short title */
             .timestamp { display: none !important; }
+            .title-full { display: none; }
+            .title-short { display: inline; }
             
             .kanban-container {
                 display: flex;
@@ -488,7 +494,7 @@
 
     <div class="header">
         <div class="header-left">
-            <div class="project-title">⏰ Time Project - Kanban Board</div>
+            <div class="project-title"><span class="title-full">⏰ Time Project - Kanban Board</span><span class="title-short">⏰ Time Kanban</span></div>
             <div class="timestamp" id="timestamp">Loading...</div>
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
@@ -684,7 +690,7 @@
             { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
 
             // RESERVED HJ-ID (placeholder)
-            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS11', what: 'Responsive Font Sizing for Mobile/Tablet', why: 'Improve readability and fit content on different screen sizes', how: '1) For Tablet: reduce font to fit screen resolution; For Mobile phone: reduce font size more than tablet. 2) For Tablet and mobile: remove timestamp. 3) For Export: take away "All" text for tablet and mobile; for refresh have only refresh icon. On mobile: have only icons with mouseover showing the button names. 4) Tablet and Mobile: Page name change from "Time Project - Kanban Board" to "Time Kanban"', who: 'AI', when: 'TBD', where: 'kanban.html CSS @media queries', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
 
             // LOGIN & SECURITY COMPLETIONS (proj-1)
             { id: 'HJ-ID1RS5', what: 'Password Protection & Login', why: 'Secure access to board', how: 'Login modal + per-user lockout', who: 'AI', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
