@@ -1,0 +1,384 @@
+====================================
+  REQUIREMENTS & SPECIFICATIONS
+====================================
+
+Adding Requirements Below
+------------------------------------
+
+[HJ-ID1RS8RS] Print Kanban Board (Column Group Export)
+Date: 2026-01-29
+Status: NEW → AWAITING DESIGN
+
+USER REQUIREMENTS:
+1. Print button in header ("Print Board") for full 7-column view
+2. Print button per column header ("Print Column") for single column export
+3. Landscape orientation (LS) as default for full board
+4. Portrait orientation (PT) for column exports and individual tasks
+5. User dropdown to select existing user (from validUsers)
+6. Text field to add new user (free-form entry, temporary)
+7. Include metadata: timestamp, username who printed, project name, column data
+8. Printer orientation selector (prtot) - user can override in print dialog
+
+PURPOSE:
+- Export current Kanban view for meetings/presentations
+- Print column tasks for team handouts
+- Archive board state as PDF snapshots
+- Share project status with external stakeholders
+
+CONSTRAINTS:
+- Use browser native print API (window.print())
+- No external PDF libraries (avoid jsPDF dependency)
+- Mobile responsive (split UI - desktop vs mobile print options)
+- Client-side only (GitHub Pages compatible)
+
+SUCCESS CRITERIA:
+✓ "Print Board" button in main header
+✓ "Print Column" button in each column header
+✓ Full board prints in landscape (7 columns visible)
+✓ Single column prints in portrait (detailed view)
+✓ Task cards display portrait orientation
+✓ Metadata footer: timestamp, user, project, applied filters
+✓ Print dialog allows user to select landscape/portrait (prtot)
+✓ Mobile: Hamburger menu contains print options
+
+APPROACH:
+- Add @media print {} CSS rules
+- Hide UI controls (buttons, dropdowns) in print view
+- Show task data cleanly (ID, title, priority, status, owner)
+- Landscape @page rule for full board
+- Portrait @page rule for column exports
+- User selector dropdown + manual text field
+
+NEXT STEPS:
+→ Design.txt: Add HJ-ID1RS8D print layout design
+→ kanban.html: Implement print buttons + CSS print styles
+
+[HJ-ID1RS9RS] Email Column Group with Person Assignment
+Date: 2026-01-29
+Status: NEW → AWAITING DESIGN
+
+USER REQUIREMENTS:
+1. Email button per column header ("📧 Email Column")
+2. Assign email per person (user profile with email field in validUsers)
+3. One person can have multiple roles (Owner, Designer, Tester, etc.)
+4. Admin panel to define users with roles (checkboxes - multiple select)
+5. Task assignment: Active selection from existing users OR free-text entry
+6. Free-text email entry = temporary external contact (not added to validUsers)
+7. Email modal with: To (dropdown/text), Subject (pre-filled), Message (template)
+8. Send button generates mailto: link + Copy to Clipboard fallback
+9. Email template: Generic hello, project/column data, task list, goodbye
+10. Email_Log.txt tracking: Log all assignments and movements (Phase 1)
+11. Email notifications: Deferred to Phase 2 (L8R - trigger on ASSIGN + MOVED events)
+
+PURPOSE:
+- Send column status to team members or external stakeholders
+- Track task assignments with email addresses
+- Multi-role support (users wear multiple hats)
+- Prepare foundation for Phase 2 notifications
+
+CONSTRAINTS:
+- Client-side only (no backend email sending)
+- mailto: link primary method (opens email client)
+- Copy to Clipboard fallback (for webmail users)
+- No group email functionality yet (Phase 2)
+- Free-text emails are temporary (not added to system)
+- Mobile responsive (split UI - desktop vs mobile)
+
+SUCCESS CRITERIA:
+✓ validUsers[] extended with email field + roles[] array
+✓ Admin panel (HJ-ID1RS7) allows editing user email + multi-role checkboxes
+✓ Task modal includes: assignee dropdown + manual email text field
+✓ Email button per column header
+✓ Email modal: To (dropdown + text), Subject, Message template, [Send] [Copy]
+✓ mailto: link generation with pre-filled subject/body
+✓ Copy to Clipboard button as fallback
+✓ Email_Log.txt logs: ASSIGN events, MOVED events (with from/to/task/timestamp)
+✓ Email template includes: Hello, project name, column name, task list, goodbye
+✓ PDF attachment: Column exported as PT (portrait orientation)
+✓ Mobile: Email button in hamburger menu or column dropdown
+
+APPROACH:
+- Extend validUsers: { username, password, email, roles[], active }
+- Task model: { ...existing, assignee, assigneeEmail }
+- Email modal: To selector (dropdown existing users + manual text field)
+- mailto: generation: mailto:email?subject=...&body=... 
+- Copy to Clipboard: navigator.clipboard.writeText(emailText)
+- Email_Log.txt format: [timestamp] | [type: ASSIGN/MOVED] | [from] | [to] | [task] | [action]
+- Phase 1: Log only (no auto-send)
+- Phase 2: Add notification triggers when ASSIGN or MOVED
+
+FUTURE ENHANCEMENTS (Phase 2):
+□ Auto-send notifications on task assignment
+□ Auto-send notifications on column movement
+□ Group email to all role members
+□ Email digest (daily/weekly summary)
+□ Email preferences (opt-in/opt-out per user)
+□ Notification templates per event type
+
+NEXT STEPS:
+→ Design.txt: Add HJ-ID1RS9D email modal + user assignment design
+→ kanban.html: Implement email modal + user management
+→ Email_Log.txt: Create template for assignment/movement tracking
+
+[HJ-ID1RS5RS] Password Protection with Login & Session Management
+Date: 2026-01-29
+Status: IMPLEMENTED → READY FOR TEST
+
+IMPLEMENTATION NOTES:
+✓ Login modal with username/password fields
+✓ 3-strike lockout system (5-minute timeout)
+✓ Demo Mode for testing (R18/R18)
+✓ User display in header with logout button
+✓ Login attempt logging to console
+✓ Session enforcement (board hidden until login)
+✓ Login_Log.txt template created
+✓ Credentials: R18/R18, Maximus/Maximus, Joel/Joel
+
+Completed: 2026-01-29
+Tested: Pending user validation
+
+[HJ-ID1RS4] Multi-Project Kanban with Idea/Project Groups
+Date: 2026-01-29
+Status: APPROVED → MOVING TO DESIGN
+
+USER REQUIREMENTS:
+1. Idea/Project is the highest-level grouping container
+2. Tasks are assigned to an Idea/Project (or All)
+3. Top header: dropdown to filter by Idea/Project (All option included)
+4. Each column: dropdown to filter by Idea/Project
+5. Ability to create a new Idea/Project from the UI
+6. Ability to assign or reassign a task to an Idea/Project
+7. Idea/Project has a priority that affects task ordering
+
+PURPOSE:
+- Allow multiple Idea/Projects in the same Kanban board
+- Enable focus on a single project or view All tasks
+- Keep priorities clear across projects
+
+CONSTRAINTS:
+- No external libraries (vanilla JavaScript only)
+- Maintain existing Kanban layout and task card design
+- Work with current task data structure (extend it, do not replace)
+
+SUCCESS CRITERIA:
+✓ Top dropdown filters all columns by selected Idea/Project
+✓ Column dropdowns filter within each column
+✓ New Idea/Project can be created and selected
+✓ Tasks can be assigned/reassigned to an Idea/Project
+✓ Sorting respects Project Priority then Task Priority
+
+APPROACH:
+- Add projects data store (id, name, priority)
+- Add projectId to each task
+- Render filters in header and column controls
+- Update renderColumn() to filter and sort by project priority
+
+NEXT STEPS:
+→ Design.txt: Add HJ-ID1D4 high-level design
+→ kanban.html: Implement project store, filters, and sorting
+
+[HJ-ID1RS3RS] Adaptive Kanban with Device Detection
+Date: 2026-01-29
+Status: APPROVED → MOVING TO DESIGN
+
+USER REQUIREMENTS:
+1. Desktop Dropdowns: SHOW as backup (accessibility option)
+2. Device Switch Notification: SILENT (no toast alerts)
+3. Tablet Handling: HYBRID (drag-drop if screen >800px)
+4. Keyboard Accessibility: PHASE 2 (defer custom shortcuts)
+5. Creator Color Coding: GOLD BORDER (minimal visual distinction)
+6. Task Migration: Keep current sample tasks (HJ ID1, ID2, AI TD11, TD15)
+7. Documentation: Requirements.txt created (this file)
+
+PURPOSE:
+- Desktop users: Power-user drag-and-drop for faster workflow
+- Mobile users: Dropdown menus for touch-friendly interaction
+- Tablet users: Hybrid mode (drag on large screens >800px, dropdowns on smaller)
+- Visual distinction: HJ ID# tasks get gold border to differentiate from AI TD# tasks
+
+CONSTRAINTS:
+- No external libraries (vanilla JavaScript only)
+- Client-side only (no backend required)
+- Maintain current UI design (3-row compact cards, modals, forms)
+- Responsive across desktop/tablet/mobile
+- Backwards compatible with existing task data structure
+
+SUCCESS CRITERIA:
+✓ Desktop (>800px, no-touch): Drag-drop enabled, dropdowns visible as backup
+✓ Tablet (>800px, touch-capable): Drag-drop enabled if large screen
+✓ Mobile (<800px): Dropdowns only, drag disabled
+✓ Device switch: Silent transition, no user notification
+✓ Gold border: Visible on HJ ID# tasks (3px solid gold)
+✓ Existing features: All current functionality (modals, priority, status, export) preserved
+
+APPROACH:
+- Hybrid detection: Combine viewport width + touch capability + pointer type
+- Conditional UI: Show/hide drag handles and dropdowns based on device
+- Event handlers: Desktop drag events (dragstart, dragover, drop, dragend)
+- Responsive CSS: Media queries + dynamic class toggling
+- Creator tracking: Add data-creator attribute to task cards
+
+TECHNICAL SPECIFICATIONS:
+- Detection method: window.innerWidth + 'ontouchstart' in window + matchMedia('(pointer: coarse)')
+- Breakpoint: 800px (desktop threshold)
+- Drag events: Native HTML5 Drag and Drop API
+- Visual feedback: Dragging opacity 0.5, drop zone highlight
+- Fallback: Dropdowns always functional regardless of device
+
+COMPLETED:
+✓ Design.txt: HJ-ID3D documented
+✓ kanban.html: Device detection + drag-drop implemented
+✓ Log_all.txt: Implementation logged
+→ Test: Verify on desktop (Chrome/Edge), mobile (responsive mode), tablet (hybrid)
+
+[HJ-ID1RS7RS] Setup Time Project Admin Functionality
+Date: 2026-01-29
+Status: NEW → AWAITING DESIGN
+
+USER REQUIREMENTS:
+1. Admin user role with elevated permissions (beyond Project Manager)
+2. Admin dashboard accessible from header (admin users only)
+3. User management panel: view all users, create new users, delete users
+4. Role assignment: change user roles dynamically
+5. Password management: reset user passwords, set password rules
+6. Login audit viewer: display Login_Log.txt entries in-app
+7. Session management: view active sessions, force logout capability
+8. Admin activity logging: track all admin actions separately
+
+PURPOSE:
+- Centralized user administration for multi-user environment
+- Security oversight with login monitoring and audit trails
+- Dynamic user/role management without code changes
+- Prepare for team collaboration and access control
+
+CONSTRAINTS:
+- Client-side only (GitHub Pages compatible)
+- No backend database (localStorage for now)
+- Admin actions logged to separate Admin_Log.txt
+- Must not break existing HJ-ID1RS5 (password protection)
+- Must integrate with future HJ-ID1RS6 (user/role assignment)
+
+SUCCESS CRITERIA:
+✓ Admin role identified in validUsers array with elevated permissions
+✓ Admin dashboard button visible only to admin users
+✓ User management panel: CRUD operations on validUsers
+✓ Role dropdown allows changing user.role dynamically
+✓ Password reset function updates user.password
+✓ Login_Log.txt viewer displays all entries with filtering
+✓ Session viewer shows currently logged-in users (simulated)
+✓ Admin actions logged to Admin_Log.txt with timestamp + admin name
+
+APPROACH:
+- Add 4th user: { username: 'admin', password: 'admin', role: 'Admin' }
+- Create admin modal/panel with tabbed sections (Users, Logs, Sessions)
+- User table: username, role, last login, actions (Edit, Delete)
+- Add isAdmin() helper function to check currentUser.role === 'Admin'
+- Admin dashboard only renders if isAdmin() returns true
+- Store users in localStorage (persist changes across sessions)
+- Read Login_Log.txt via fetch (if available) or display from console logs
+
+FUTURE ENHANCEMENTS:
+□ Backend API for persistent user storage (Node.js + MongoDB)
+□ Email notifications for password resets
+□ Two-factor authentication (TOTP)
+□ IP-based access restrictions
+□ Geolocation tracking for suspicious logins
+□ Role-based permissions matrix (granular access control)
+
+NEXT STEPS:
+→ Design.txt: Add HJ-ID1RS7D admin dashboard design
+→ kanban.html: Implement admin modal + user management functions
+→ Admin_Log.txt: Create template for admin activity tracking
+
+====================================
+
+[HJ-ID1RS10RS] Admin User Invitations - Send Join Requests
+Date: 2026-01-29
+Status: NEW → READY FOR DESIGN
+
+USER REQUIREMENTS:
+1. Admin can generate invitation links with temporary credentials
+2. Invitation includes: project name, login URL, temp username, temp password
+3. Invitation can be sent via email (mailto: link) or copied to clipboard
+4. Invitations tracked in admin dashboard (date sent, recipient, status)
+5. Recipients can login, view board, change their password on first login
+6. Invitations can expire after X days (optional: 7 days default)
+7. Admin can resend or revoke invitations
+8. Invitation history logged in Invitations_Log.txt
+
+PURPOSE:
+- Streamline onboarding process for new team members
+- Provide controlled access to Time Project Kanban
+- Reduce manual setup and password sharing via external channels
+- Maintain audit trail of invitations and acceptances
+- Support distributed teams with self-service registration
+
+CONSTRAINTS:
+- Client-side only (GitHub Pages compatible)
+- No external email service (mailto: primary, clipboard fallback)
+- Temporary credentials stored in localStorage (non-persistent)
+- Must not compromise existing HJ-ID1RS5 (password protection)
+- Invitation format: plain text email body + link structure
+
+SUCCESS CRITERIA:
+✓ Generate invitation modal in admin panel (Invitations tab)
+✓ Invitation includes: temp username, temp password, project URL, login guide
+✓ Copy-to-clipboard fallback for email clients that don't support mailto:
+✓ Send via mailto: link with pre-populated subject + body
+✓ Track invitation date, recipient email, status (Sent/Viewed/Accepted/Expired)
+✓ Invitations table in admin dashboard with send/resend/revoke buttons
+✓ First-time login detection (temp user prompted to change password)
+✓ Expiration logic: mark invitations as expired after 7 days
+✓ Invitation_Log.txt created with audit trail
+✓ Admin can view invitation history per user
+
+APPROACH:
+- Add Invitations tab to admin modal (4th tab after Users/Logs/Sessions)
+- Create invitation generation function with random temp credentials
+- Modal form: recipient email, custom message (optional), expiration days
+- Pre-populate email body with formatted invitation text
+- Invitations stored in clientInvitations[] array
+- Display invitations table: email, date sent, status, expiration
+- Add checkbox "Require password change on first login"
+- Validation: prevent duplicate pending invitations for same email
+- Action buttons: Send, Resend, Revoke, View Details
+- On recipient first login: show "Change Password" modal
+- Log all invitation events: SENT, VIEWED, ACCEPTED, EXPIRED, REVOKED
+
+INVITATION EMAIL TEMPLATE:
+────────────────────────────────────────────────────────────────
+Subject: You're Invited to Join Time Project Kanban
+
+Hi there,
+
+You've been invited to join the Time Project Kanban board!
+
+PROJECT: Time Project - Enhanced Kanban Board
+LOGIN URL: [GitHub Pages URL - kanban.html]
+TEMPORARY USERNAME: [generated - e.g., user_2026_001]
+TEMPORARY PASSWORD: [generated - 8 chars]
+
+→ Visit the login page and enter your credentials above
+→ On first login, you'll be prompted to change your password
+→ Contact admin if you have any questions
+
+This invitation expires on: [Date + 7 days]
+
+────────────────────────────────────────────────────────────────
+
+FUTURE ENHANCEMENTS:
+□ Email service integration (SendGrid, Mailgun, etc.)
+□ Invitation acceptance confirmation email
+□ Bulk invite (CSV upload)
+□ Invitation email templates with custom branding
+□ Auto-generate project documentation in invitation
+□ TOTP (Two-Factor Authentication) setup in invitation flow
+□ Role assignment in invitation (pre-assign roles)
+□ Slack/Teams integration for notification
+
+NEXT STEPS:
+→ Design.txt: Add HJ-ID1RS10D admin invitations design
+→ kanban.html: Add Invitations tab + functions
+→ Add clientInvitations[] storage
+→ Create Invitations_Log.txt template
+

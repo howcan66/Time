@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Project - Enhanced Kanban Board</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .project-title { font-size: 24px; font-weight: bold; color: #667eea; }
+        .timestamp { font-size: 14px; color: #666; padding: 5px 15px; background: #f0f0f0; border-radius: 5px; }
+        .project-controls { display: flex; align-items: center; gap: 8px; }
+        .project-select { padding: 6px 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; }
+        .project-btn {
+            padding: 6px 10px; background: #10b981; color: white; border: none;
+            border-radius: 5px; cursor: pointer; font-size: 12px; transition: background 0.3s;
+        }
+        .project-btn:hover { background: #0e9f6e; }
+        .project-btn.small { padding: 4px 6px; font-size: 11px; }
+        .nav-buttons { display: flex; gap: 10px; }
+        .nav-btn {
+            padding: 8px 20px; background: #667eea; color: white; border: none;
+            border-radius: 5px; cursor: pointer; font-size: 14px; transition: background 0.3s;
+        }
+        .nav-btn:hover { background: #5568d3; }
+
+        .kanban-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            padding: 20px;
+            height: calc(100vh - 70px);
+            margin-top: 70px;
+            overflow-x: auto;
+        }
+
+        .kanban-column {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            padding: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .idea .column-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .todo .column-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .planning .column-header { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .design .column-header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .test .column-header { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .done .column-header { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .cancelled .column-header { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
+
+        .add-task-btn {
+            margin: 10px;
+            padding: 8px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .add-task-btn:hover { background: #5568d3; }
+
+        .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; }
+        .project-filter select { flex: 1; padding: 4px 6px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; background: white; }
+
+        .column-content { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
+        .column-content::-webkit-scrollbar { width: 6px; }
+        .column-content::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+
+        .task-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: move;
+            transition: all 0.2s;
+        }
+        .task-card:hover { transform: translateY(-1px); box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); }
+        .task-card[data-creator="HJ"] { border-left: 3px solid gold; }
+        .task-card.dragging { opacity: 0.5; }
+        .column-content.drag-over { background: rgba(102, 126, 234, 0.1); }
+
+        .task-row1 { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; font-size: 11px; }
+        .task-id { color: #888; font-weight: bold; flex-shrink: 0; }
+        .project-tag { font-size: 10px; color: #555; background: #f3f4f6; padding: 2px 6px; border-radius: 10px; }
+        .priority-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; }
+        .priority-1 { background: #22c55e; }
+        .priority-2 { background: #3b82f6; }
+        .priority-3 { background: #eab308; }
+        .status-icon { font-size: 14px; cursor: pointer; }
+        .action-buttons { margin-left: auto; display: flex; gap: 3px; }
+        .icon-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px; opacity: 0.7; }
+        .icon-btn:hover { opacity: 1; }
+
+        .task-row2 { font-size: 13px; font-weight: 500; color: #333; margin-bottom: 5px; cursor: pointer; line-height: 1.3; }
+        .task-row2:hover { color: #667eea; }
+
+        .task-row3 { display: flex; gap: 5px; align-items: center; }
+        .move-select { flex: 1; padding: 3px 5px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; }
+        .delete-btn { padding: 3px 8px; background: #ef4444; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 10px; }
+        .delete-btn:hover { background: #dc2626; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #555; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-primary { flex: 1; padding: 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-secondary { flex: 1; padding: 10px; background: #6b7280; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        .btn-secondary:hover { background: #4b5563; }
+        
+        /* LOGIN MODAL (HJ-ID1RS5) */
+        .login-box { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: center; width: 90%; max-width: 350px; }
+        .login-box h2 { margin-bottom: 20px; color: #667eea; font-size: 24px; }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+        .login-box input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 5px rgba(102, 126, 234, 0.3); }
+        .login-box .login-error { color: #dc2626; font-size: 12px; margin: 10px 0; display: none; }
+        .login-box .login-status { color: #059669; font-size: 12px; margin: 10px 0; }
+        .login-btn { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 15px; }
+        .login-btn:hover { background: #5568d3; }
+        .login-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* ADMIN PANEL (HJ-ID1RS7) */
+        .admin-modal .modal-content { max-width: 900px; max-height: 90vh; }
+        .admin-tabs { display: flex; gap: 5px; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+        .admin-tab { padding: 10px 20px; background: #f3f4f6; border: none; border-radius: 5px 5px 0 0; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .admin-tab.active { background: #667eea; color: white; }
+        .admin-tab:hover:not(.active) { background: #e5e7eb; }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
+        .user-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; }
+        .user-table th { background: #f3f4f6; padding: 10px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
+        .user-table td { padding: 10px; border-bottom: 1px solid #e5e7eb; }
+        .user-table tr:hover { background: #f9fafb; }
+        .user-table .user-active { color: #10b981; font-weight: bold; }
+        .user-table .user-inactive { color: #ef4444; font-weight: bold; }
+        .user-actions { display: flex; gap: 5px; }
+        .user-actions button { padding: 4px 8px; font-size: 11px; border: none; border-radius: 3px; cursor: pointer; }
+        .btn-edit { background: #3b82f6; color: white; }
+        .btn-edit:hover { background: #2563eb; }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn-delete:hover { background: #dc2626; }
+        .btn-reset { background: #f59e0b; color: white; }
+        .btn-reset:hover { background: #d97706; }
+        .role-checkboxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 5px; }
+        .role-checkboxes label { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+        .log-viewer { max-height: 400px; overflow-y: auto; background: #f9fafb; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 12px; }
+        .log-entry { padding: 5px 0; border-bottom: 1px solid #e5e7eb; }
+        .log-entry:last-child { border-bottom: none; }
+        .session-list { max-height: 400px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <!-- LOGIN MODAL (HJ-ID1RS5) -->
+    <div id="loginModal" class="modal active">
+        <div class="login-box">
+            <h2>🔐 Time Project Login</h2>
+            <input type="text" id="loginUsername" placeholder="Username" onkeypress="if(event.key==='Enter') verifyLogin()">
+            <input type="password" id="loginPassword" placeholder="Password" onkeypress="if(event.key==='Enter') verifyLogin()">
+            <div class="login-error" id="loginError"></div>
+            <div class="login-status" id="loginStatus"></div>
+            <button class="login-btn" id="loginBtn" onclick="verifyLogin()">Login</button>
+            <button class="login-btn" style="background: #6b7280; margin-top: 8px;" onclick="toggleDemoMode()" title="For testing only">Demo Mode</button>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL MODAL (HJ-ID1RS7) -->
+    <div id="adminModal" class="modal admin-modal">
+        <div class="modal-content">
+            <div class="modal-header">⚙️ Admin Dashboard</div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('users')">👥 Users</button>
+                <button class="admin-tab" onclick="switchAdminTab('logs')">📋 Login Logs</button>
+                <button class="admin-tab" onclick="switchAdminTab('sessions')">🔒 Sessions</button>
+                <button class="admin-tab" onclick="switchAdminTab('invitations')">✉️ Invitations</button>
+            </div>
+
+            <!-- USERS TAB -->
+            <div id="adminTab-users" class="admin-tab-content active">
+                <button class="btn-primary" style="width: auto; margin-bottom: 15px;" onclick="openAddUserForm()">➕ Add New User</button>
+                <div id="userTableContainer"></div>
+            </div>
+
+            <!-- LOGS TAB -->
+            <div id="adminTab-logs" class="admin-tab-content">
+                <div class="form-row" style="margin-bottom: 15px;">
+                    <input type="text" id="logFilterUser" placeholder="Filter by username..." oninput="filterLogs()">
+                    <select id="logFilterType" onchange="filterLogs()">
+                        <option value="">All Types</option>
+                        <option value="SUCCESS">Success</option>
+                        <option value="FAILED">Failed</option>
+                        <option value="LOCKED">Locked</option>
+                    </select>
+                </div>
+                <div id="logViewer" class="log-viewer"></div>
+            </div>
+
+            <!-- SESSIONS TAB -->
+            <div id="adminTab-sessions" class="admin-tab-content">
+                <h3 style="margin-bottom: 10px; font-size: 14px;">Active Sessions</h3>
+                <div id="sessionList" class="session-list"></div>
+            </div>
+
+            <!-- INVITATIONS TAB (HJ-ID1RS10) -->
+            <div id="adminTab-invitations" class="admin-tab-content">
+                <button class="btn-primary" style="width: auto; margin-bottom: 15px;" onclick="openInvitationForm()">✉️ Send Invitation</button>
+                <div id="invitationTableContainer"></div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeAdminPanel()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- USER FORM MODAL (HJ-ID1RS7) -->
+    <div id="userFormModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="userFormTitle">Add New User</div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="userFormUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="userFormPassword" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="userFormEmail" placeholder="user@time.local">
+            </div>
+            <div class="form-group">
+                <label>Roles (select multiple)</label>
+                <div class="role-checkboxes">
+                    <label><input type="checkbox" value="Project Manager"> Project Manager</label>
+                    <label><input type="checkbox" value="Developer"> Developer</label>
+                    <label><input type="checkbox" value="Reviewer"> Reviewer</label>
+                    <label><input type="checkbox" value="Designer"> Designer</label>
+                    <label><input type="checkbox" value="Tester"> Tester</label>
+                    <label><input type="checkbox" value="Admin"> Admin</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="userFormActive" checked> Active
+                </label>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="saveUser()">Save User</button>
+                <button class="btn-secondary" onclick="closeUserForm()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INVITATION FORM MODAL (HJ-ID1RS10) -->
+    <div id="invitationFormModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">✉️ Send Invitation</div>
+            <div class="form-group">
+                <label>Recipient Email</label>
+                <input type="email" id="inviteEmail" placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label>Custom Message (optional)</label>
+                <textarea id="inviteMessage" placeholder="Add a personal message..." style="min-height: 60px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Expiration Days</label>
+                <input type="number" id="inviteExpireDays" value="7" min="1" max="30">
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="inviteForcePasswordChange" checked> Require password change on first login
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Pre-assign Roles (optional)</label>
+                <div class="role-checkboxes">
+                    <label><input type="checkbox" value="Developer"> Developer</label>
+                    <label><input type="checkbox" value="Reviewer"> Reviewer</label>
+                    <label><input type="checkbox" value="Designer"> Designer</label>
+                    <label><input type="checkbox" value="Tester"> Tester</label>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="generateInvitation()">Generate & Send</button>
+                <button class="btn-secondary" onclick="closeInvitationForm()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-left">
+            <div class="project-title">⏰ Time Project - Kanban Board</div>
+            <div class="timestamp" id="timestamp">Loading...</div>
+            <div class="project-controls">
+                <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
+                <button class="project-btn" onclick="createProjectFlow()">➕ Project</button>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;">⚙️ Admin</button>
+            <button class="nav-btn" onclick="exportAll()">📋 Export All</button>
+            <button class="nav-btn" onclick="refreshTimestamp()">🔄 Refresh</button>
+        </div>
+    </div>
+
+    <div class="kanban-container">
+        <div class="kanban-column idea" data-column="1">
+            <div class="column-header">1 - 💡 Idea</div>
+            <button class="add-task-btn" onclick="openAddModal(1)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-1" onchange="setColumnProjectFilter(1, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-1"></div>
+        </div>
+        <div class="kanban-column todo" data-column="2">
+            <div class="column-header">2 - 📋 Todo</div>
+            <button class="add-task-btn" onclick="openAddModal(2)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-2" onchange="setColumnProjectFilter(2, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-2"></div>
+        </div>
+        <div class="kanban-column planning" data-column="3">
+            <div class="column-header">3 - 📊 Planning</div>
+            <button class="add-task-btn" onclick="openAddModal(3)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-3" onchange="setColumnProjectFilter(3, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-3"></div>
+        </div>
+        <div class="kanban-column design" data-column="4">
+            <div class="column-header">4 - 🎨 Design</div>
+            <button class="add-task-btn" onclick="openAddModal(4)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-4" onchange="setColumnProjectFilter(4, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-4"></div>
+        </div>
+        <div class="kanban-column test" data-column="5">
+            <div class="column-header">5 - 🧪 Test</div>
+            <button class="add-task-btn" onclick="openAddModal(5)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-5" onchange="setColumnProjectFilter(5, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-5"></div>
+        </div>
+        <div class="kanban-column done" data-column="6">
+            <div class="column-header">6 - ✅ Done</div>
+            <button class="add-task-btn" onclick="openAddModal(6)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-6" onchange="setColumnProjectFilter(6, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-6"></div>
+        </div>
+        <div class="kanban-column cancelled" data-column="7">
+            <div class="column-header">7 - ❌ Cancelled</div>
+            <button class="add-task-btn" onclick="openAddModal(7)">➕ Add Task</button>
+            <div class="project-filter">
+                <select id="project-filter-7" onchange="setColumnProjectFilter(7, this.value)"></select>
+                <button class="project-btn small" onclick="createProjectFlow()">➕</button>
+            </div>
+            <div class="column-content" id="column-7"></div>
+        </div>
+    </div>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalTitle">Add New Task</div>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label>What (Task Title) *</label>
+                    <input type="text" id="taskWhat" placeholder="Describe the task..." required>
+                </div>
+                <div class="form-group">
+                    <label>Why (Reason/Purpose)</label>
+                    <textarea id="taskWhy" placeholder="Why is this needed?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>How (Approach/Method)</label>
+                    <textarea id="taskHow" placeholder="How will you approach this?"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Who</label>
+                        <input type="text" id="taskWho" value="HJ">
+                    </div>
+                    <div class="form-group">
+                        <label>When</label>
+                        <input type="date" id="taskWhen">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Where</label>
+                    <input type="text" id="taskWhere" placeholder="Location/file...">
+                </div>
+                <div class="form-group">
+                    <label>Project</label>
+                    <select id="taskProject"></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="taskPriority">
+                            <option value="1">1 - High (Green)</option>
+                            <option value="2" selected>2 - Medium (Blue)</option>
+                            <option value="3">3 - Low (Yellow)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="taskStatus">
+                            <option value="Not Started">⬜ Not Started</option>
+                            <option value="Executing">⚙️ Executing</option>
+                            <option value="Progressing">⏳ Progressing</option>
+                            <option value="Done">✅ Done</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">💾 Save</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">❌ Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Task Details</div>
+            <div id="viewContent"></div>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="closeViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tasks = [
+            // OLD HJ ID TASKS (COMPLETED)
+            { id: 'HJ-ID1', what: 'Kanban HTML Web Page', why: 'Visual project management system', how: 'Built with HTML/CSS/Vanilla JS', who: 'HJ', when: '2026-01-28', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            { id: 'HJ-ID2', what: 'Enhanced Kanban Forms', why: 'Interactive task management with modals', how: 'Modal forms + priority + status system', who: 'HJ', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+            // NEW AI TD TASKS (PROJECT SETUP - proj-1)
+            { id: 'AI-TD11', what: 'Create GitHub Repository', why: 'Set up version control and hosting', how: 'Configure GitHub repo + GitHub Pages', who: 'Team Lead', when: 'Week 1', where: 'github.com', priority: 1, status: 'Not Started', column: 1, projectId: 'proj-1' },
+            { id: 'AI-TD12', what: 'Project Directory Structure', why: 'Organize project files logically', how: 'Create folders: css/, js/, assets/', who: 'Team Lead', when: 'Week 1', where: 'Local + GitHub', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-1' },
+            { id: 'AI-TD13', what: 'Base HTML Template', why: 'Create main entry point structure', how: 'Write index.html with meta tags, nav framework', who: 'Frontend Dev', when: 'Week 1', where: 'index.html', priority: 1, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            { id: 'AI-TD14', what: 'Global CSS Stylesheet', why: 'Define consistent styling across site', how: 'Create main.css with variables, resets, responsive', who: 'Frontend Dev', when: 'Week 1', where: 'css/main.css', priority: 2, status: 'Not Started', column: 3, projectId: 'proj-1' },
+            // NEW AI TD TASKS (FEATURES - proj-2)
+            { id: 'AI-TD15', what: 'Interactive Calendar', why: 'Display calendar with event marking', how: 'Build widget with month/year nav, grid, events', who: 'Frontend Dev', when: 'Week 2', where: 'features/calendar.js', priority: 1, status: 'Not Started', column: 1, projectId: 'proj-2' },
+            { id: 'AI-TD16', what: 'Doomsday Clock Display', why: 'Show current Doomsday Clock status', how: 'Create display with countdown + info links', who: 'Frontend Dev', when: 'Week 2', where: 'features/doomsday.js', priority: 1, status: 'Not Started', column: 1, projectId: 'proj-2' },
+            // NEW HJ-ID1RS# TASKS (KANBAN ENHANCEMENTS - proj-1)
+            { id: 'HJ-ID1RS6', what: 'User/Role Assignment System', why: 'Assign tasks to users with multiple roles', how: 'Add assignee field + role checkboxes to task modal', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS7', what: 'Admin User Management Panel', why: 'Manage users, roles, emails via admin dashboard', how: 'Create admin modal with user CRUD + email fields', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Progressing', column: 5, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS8', what: 'Print Kanban Board', why: 'Export board/columns as PDF for meetings', how: 'Add print buttons + @media print CSS (LS/PT)', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS9', what: 'Email Column Group', why: 'Send column tasks to team via email', how: 'Email modal + mailto link + Copy fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS9-Logging', what: 'Email Event Logging', why: 'Track ASSIGN + MOVED events for audit trail', how: 'Log to Email_Log.txt on assignment/movement', who: 'AI', when: 'Phase 1', where: 'Email_Log.txt', priority: 1, status: 'Not Started', column: 4, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS9-P2', what: 'Email Notifications (Phase 2)', why: 'Auto-send emails on task assign/move', how: 'Notification triggers + FormSubmit or backend', who: 'TBD', when: 'Phase 2 (L8R)', where: 'kanban.html', priority: 2, status: 'Deferred', column: 7, projectId: 'proj-1' },
+            { id: 'HJ-ID1RS10', what: 'Admin User Invitations System', why: 'Send invite links with credentials to new team members', how: 'Invitations tab in admin + mailto + clipboard fallback', who: 'AI', when: 'Phase 1', where: 'kanban.html', priority: 1, status: 'Progressing', column: 5, projectId: 'proj-1' },
+        ];
+        let taskIdCounter = 24;
+        
+        // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
+        // ENHANCED SCHEMA (HJ-ID1RS7) - email, roles array, active, lastLogin
+        let validUsers = [
+            { username: 'R18', password: 'R18', email: 'r18@time.local', roles: ['Project Manager'], active: true, lastLogin: null },
+            { username: 'Maximus', password: 'Maximus', email: 'maximus@time.local', roles: ['Developer'], active: true, lastLogin: null },
+            { username: 'Joel', password: 'Joel', email: 'joel@time.local', roles: ['Reviewer'], active: true, lastLogin: null },
+            { username: 'admin', password: 'admin', email: 'admin@time.local', roles: ['Admin'], active: true, lastLogin: null }
+        ];
+        let currentUser = null;
+        let loginAttempts = 0;
+        let sessionLocked = false;
+        let sessionLockUntil = null;
+        let currentColumn = 1;
+        let editingTaskId = null;
+        let deviceInfo = {};
+        let draggedTaskId = null;
+        let projects = [
+            { id: 'proj-1', name: 'Time Project Kanban', priority: 1 },
+            { id: 'proj-2', name: 'Time Website Features', priority: 2 }
+        ];
+        let globalProjectFilter = 'all';
+        let columnProjectFilters = { 1: 'all', 2: 'all', 3: 'all', 4: 'all', 5: 'all', 6: 'all', 7: 'all' };
+
+        // ===== PASSWORD PROTECTION (HJ-ID1RS5) =====
+        function verifyLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            const statusDiv = document.getElementById('loginStatus');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            errorDiv.style.display = 'none';
+            statusDiv.textContent = '';
+            
+            // Check if session is locked
+            if (sessionLocked && sessionLockUntil > Date.now()) {
+                const minutesLeft = Math.ceil((sessionLockUntil - Date.now()) / 60000);
+                errorDiv.textContent = `Account locked. Try again in ${minutesLeft} minute(s).`;
+                errorDiv.style.display = 'block';
+                loginBtn.disabled = true;
+                return;
+            } else if (sessionLocked) {
+                sessionLocked = false;
+                loginAttempts = 0;
+            }
+            
+            // Validate input
+            if (!username || !password) {
+                errorDiv.textContent = 'Username and password required.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Check credentials
+            const user = validUsers.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = user;
+                loginAttempts = 0;
+                user.lastLogin = new Date().toISOString();
+                logLoginAttempt(username, 'SUCCESS', loginAttempts);
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+                renderAllColumns();
+                attachDragListeners();
+                updateHeader();
+                statusDiv.textContent = `Welcome, ${user.username}! (${user.roles ? user.roles.join(', ') : user.role || ''})`;
+                statusDiv.style.color = '#059669';
+            } else {
+                loginAttempts++;
+                logLoginAttempt(username, 'FAILED', loginAttempts);
+                
+                if (loginAttempts >= 3) {
+                    sessionLocked = true;
+                    sessionLockUntil = Date.now() + (5 * 60 * 1000); // 5 min lockout
+                    errorDiv.textContent = 'Too many failed attempts. Account locked for 5 minutes.';
+                    loginBtn.disabled = true;
+                    logLoginAttempt(username, 'LOCKED', loginAttempts);
+                } else {
+                    errorDiv.textContent = `Invalid credentials. Attempt ${loginAttempts}/3`;
+                }
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function logLoginAttempt(username, status, attemptNum) {
+            const timestamp = new Date().toLocaleString();
+            const logEntry = `[${timestamp}] | ${username} | ${status} | Attempt #${attemptNum}`;
+            console.log('LOGIN LOG:', logEntry);
+            // In future: Send to Login_Log.txt via backend
+        }
+
+        function toggleDemoMode() {
+            // For testing: automatically log in as first user
+            document.getElementById('loginUsername').value = 'R18';
+            document.getElementById('loginPassword').value = 'R18';
+            verifyLogin();
+        }
+
+        function updateHeader() {
+            if (currentUser) {
+                const headerLeft = document.querySelector('.header-left');
+                if (!document.getElementById('userDisplay')) {
+                    const userDisplay = document.createElement('div');
+                    userDisplay.id = 'userDisplay';
+                    userDisplay.style.cssText = 'font-size: 12px; color: #059669; padding: 5px 10px; background: #ecfdf5; border-radius: 5px; display: flex; align-items: center; gap: 10px;';
+                    const roles = currentUser.roles ? currentUser.roles.join(', ') : currentUser.role || '';
+                    userDisplay.innerHTML = `👤 ${currentUser.username} (${roles}) <button onclick="logout()" style="background: #dc2626; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px;">Logout</button>`;
+                    headerLeft.appendChild(userDisplay);
+                }
+                
+                // Show/hide admin button (HJ-ID1RS7)
+                const adminBtn = document.getElementById('adminBtn');
+                if (adminBtn) {
+                    adminBtn.style.display = isAdmin() ? 'inline-block' : 'none';
+                }
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            loginAttempts = 0;
+            sessionLocked = false;
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('userDisplay').remove();
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            logLoginAttempt('(unknown)', 'LOGOUT', 0);
+        }
+
+        // ===== END PASSWORD PROTECTION =====
+
+        // ===== ADMIN PANEL (HJ-ID1RS7) =====
+        let editingUserId = null;
+        let adminLogs = [];
+
+        function isAdmin() {
+            if (!currentUser) return false;
+            if (currentUser.roles) return currentUser.roles.includes('Admin');
+            return currentUser.role === 'Admin';
+        }
+
+        function logAdminAction(action, details) {
+            const timestamp = new Date().toLocaleString();
+            const logEntry = `[${timestamp}] | ${currentUser.username} | ${action} | ${details}`;
+            adminLogs.push(logEntry);
+            console.log('ADMIN LOG:', logEntry);
+            // In future: Send to Admin_Log.txt via backend
+        }
+
+        function openAdminPanel() {
+            if (!isAdmin()) {
+                alert('Access denied. Admin role required.');
+                return;
+            }
+            document.getElementById('adminModal').classList.add('active');
+            renderUserTable();
+            renderLoginLogs();
+            renderSessionList();
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+
+        function switchAdminTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+            
+            // Show selected tab
+            document.querySelector(`.admin-tab[onclick*="${tabName}"]`).classList.add('active');
+            document.getElementById(`adminTab-${tabName}`).classList.add('active');
+            
+            // Refresh data
+            if (tabName === 'users') renderUserTable();
+            if (tabName === 'logs') renderLoginLogs();
+            if (tabName === 'sessions') renderSessionList();
+        }
+
+        function renderUserTable() {
+            const container = document.getElementById('userTableContainer');
+            let html = '<table class="user-table"><thead><tr>';
+            html += '<th>Username</th><th>Email</th><th>Roles</th><th>Last Login</th><th>Status</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
+            
+            validUsers.forEach((user, idx) => {
+                const roles = user.roles ? user.roles.join(', ') : user.role || '';
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
+                const statusClass = user.active ? 'user-active' : 'user-inactive';
+                const statusText = user.active ? '✓ Active' : '✗ Inactive';
+                
+                html += `<tr>
+                    <td><strong>${user.username}</strong></td>
+                    <td>${user.email || 'N/A'}</td>
+                    <td>${roles}</td>
+                    <td>${lastLogin}</td>
+                    <td class="${statusClass}">${statusText}</td>
+                    <td class="user-actions">
+                        <button class="btn-edit" onclick="openEditUserForm(${idx})">Edit</button>
+                        <button class="btn-reset" onclick="resetPassword(${idx})">Reset</button>
+                        <button class="btn-delete" onclick="deleteUser(${idx})">Delete</button>
+                    </td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function openAddUserForm() {
+            editingUserId = null;
+            document.getElementById('userFormTitle').textContent = 'Add New User';
+            document.getElementById('userFormUsername').value = '';
+            document.getElementById('userFormPassword').value = '';
+            document.getElementById('userFormEmail').value = '';
+            document.getElementById('userFormActive').checked = true;
+            document.querySelectorAll('.role-checkboxes input').forEach(cb => cb.checked = false);
+            document.getElementById('userFormModal').classList.add('active');
+        }
+
+        function openEditUserForm(idx) {
+            editingUserId = idx;
+            const user = validUsers[idx];
+            document.getElementById('userFormTitle').textContent = 'Edit User';
+            document.getElementById('userFormUsername').value = user.username;
+            document.getElementById('userFormPassword').value = user.password;
+            document.getElementById('userFormEmail').value = user.email || '';
+            document.getElementById('userFormActive').checked = user.active !== false;
+            
+            // Set role checkboxes
+            document.querySelectorAll('.role-checkboxes input').forEach(cb => {
+                if (user.roles) {
+                    cb.checked = user.roles.includes(cb.value);
+                } else {
+                    cb.checked = user.role === cb.value;
+                }
+            });
+            
+            document.getElementById('userFormModal').classList.add('active');
+        }
+
+        function closeUserForm() {
+            document.getElementById('userFormModal').classList.remove('active');
+            editingUserId = null;
+        }
+
+        function saveUser() {
+            const username = document.getElementById('userFormUsername').value.trim();
+            const password = document.getElementById('userFormPassword').value.trim();
+            const email = document.getElementById('userFormEmail').value.trim();
+            const active = document.getElementById('userFormActive').checked;
+            
+            // Get selected roles
+            const roles = [];
+            document.querySelectorAll('.role-checkboxes input:checked').forEach(cb => {
+                roles.push(cb.value);
+            });
+            
+            if (!username || !password) {
+                alert('Username and password are required.');
+                return;
+            }
+            
+            if (roles.length === 0) {
+                alert('Please select at least one role.');
+                return;
+            }
+            
+            const userData = {
+                username,
+                password,
+                email,
+                roles,
+                active,
+                lastLogin: null
+            };
+            
+            if (editingUserId !== null) {
+                // Edit existing user
+                const oldUsername = validUsers[editingUserId].username;
+                validUsers[editingUserId] = userData;
+                logAdminAction('EDIT_USER', `Updated user: ${oldUsername} → ${username}`);
+            } else {
+                // Add new user
+                if (validUsers.find(u => u.username === username)) {
+                    alert('Username already exists.');
+                    return;
+                }
+                validUsers.push(userData);
+                logAdminAction('ADD_USER', `Added new user: ${username} (${roles.join(', ')})`);
+            }
+            
+            closeUserForm();
+            renderUserTable();
+        }
+
+        function deleteUser(idx) {
+            const user = validUsers[idx];
+            if (user.username === currentUser.username) {
+                alert('Cannot delete your own account.');
+                return;
+            }
+            if (confirm(`Delete user "${user.username}"? This action cannot be undone.`)) {
+                validUsers.splice(idx, 1);
+                logAdminAction('DELETE_USER', `Deleted user: ${user.username}`);
+                renderUserTable();
+            }
+        }
+
+        function resetPassword(idx) {
+            const user = validUsers[idx];
+            const newPassword = prompt(`Enter new password for "${user.username}":`);
+            if (newPassword) {
+                user.password = newPassword;
+                logAdminAction('RESET_PASSWORD', `Reset password for: ${user.username}`);
+                alert(`Password reset successfully for ${user.username}`);
+            }
+        }
+
+        function renderLoginLogs() {
+            const viewer = document.getElementById('logViewer');
+            // Simulate login log entries (in future: read from Login_Log.txt)
+            const sampleLogs = [
+                '[2026-01-29 10:15:23] | R18 | SUCCESS | Attempt #1',
+                '[2026-01-29 10:20:45] | admin | SUCCESS | Attempt #1',
+                '[2026-01-29 10:25:12] | unknown | FAILED | Attempt #1',
+                '[2026-01-29 10:26:34] | unknown | FAILED | Attempt #2',
+                '[2026-01-29 10:27:56] | unknown | FAILED | Attempt #3',
+                '[2026-01-29 10:28:10] | unknown | LOCKED | Attempt #3',
+            ];
+            
+            let html = '';
+            sampleLogs.forEach(log => {
+                html += `<div class="log-entry">${log}</div>`;
+            });
+            viewer.innerHTML = html || '<div style="text-align: center; color: #888;">No logs available</div>';
+        }
+
+        function filterLogs() {
+            // Placeholder for log filtering functionality
+            renderLoginLogs();
+        }
+
+        function renderSessionList() {
+            const container = document.getElementById('sessionList');
+            // Simulate active sessions (in future: track real sessions)
+            const sessions = [
+                { username: currentUser.username, loginTime: new Date().toLocaleString(), ip: '127.0.0.1', device: 'Chrome Desktop' }
+            ];
+            
+            let html = '<table class="user-table"><thead><tr>';
+            html += '<th>Username</th><th>Login Time</th><th>IP Address</th><th>Device</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
+            
+            sessions.forEach(session => {
+                html += `<tr>
+                    <td><strong>${session.username}</strong></td>
+                    <td>${session.loginTime}</td>
+                    <td>${session.ip}</td>
+                    <td>${session.device}</td>
+                    <td><button class="btn-delete" onclick="alert('Force logout not yet implemented')">Force Logout</button></td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // ===== INVITATIONS (HJ-ID1RS10) =====
+        let clientInvitations = [];
+
+        function generateRandomCredentials() {
+            const username = 'user_' + new Date().getFullYear() + '_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            const password = Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(2, 2).toUpperCase();
+            return { username, password };
+        }
+
+        function openInvitationForm() {
+            document.getElementById('inviteEmail').value = '';
+            document.getElementById('inviteMessage').value = '';
+            document.getElementById('inviteExpireDays').value = '7';
+            document.getElementById('inviteForcePasswordChange').checked = true;
+            document.querySelectorAll('#invitationFormModal .role-checkboxes input').forEach(cb => cb.checked = false);
+            document.getElementById('invitationFormModal').classList.add('active');
+        }
+
+        function closeInvitationForm() {
+            document.getElementById('invitationFormModal').classList.remove('active');
+        }
+
+        function generateInvitation() {
+            const email = document.getElementById('inviteEmail').value.trim();
+            const message = document.getElementById('inviteMessage').value.trim();
+            const expireDays = parseInt(document.getElementById('inviteExpireDays').value);
+            const forcePasswordChange = document.getElementById('inviteForcePasswordChange').checked;
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Check for duplicate pending invitations
+            if (clientInvitations.find(inv => inv.email === email && inv.status === 'Sent')) {
+                alert('Pending invitation already exists for this email.');
+                return;
+            }
+
+            const credentials = generateRandomCredentials();
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + expireDays);
+            
+            const invitation = {
+                id: 'inv_' + Date.now(),
+                email,
+                tempUsername: credentials.username,
+                tempPassword: credentials.password,
+                message,
+                datesent: new Date().toLocaleString(),
+                expiresOn: expirationDate.toLocaleString(),
+                expireDays,
+                status: 'Sent',
+                forcePasswordChange,
+                roles: [],
+                viewed: false,
+                accepted: false
+            };
+
+            // Get selected roles
+            document.querySelectorAll('#invitationFormModal .role-checkboxes input:checked').forEach(cb => {
+                invitation.roles.push(cb.value);
+            });
+
+            clientInvitations.push(invitation);
+            logAdminAction('SEND_INVITATION', `Sent invitation to: ${email} (expires in ${expireDays} days)`);
+            
+            // Generate email
+            generateInvitationEmail(invitation);
+            
+            closeInvitationForm();
+            renderInvitationTable();
+            alert(`Invitation generated for ${email}. Click "Send via Email" to send.`);
+        }
+
+        function generateInvitationEmail(invitation) {
+            const projectUrl = window.location.origin + window.location.pathname;
+            const emailSubject = `You're Invited to Join Time Project Kanban`;
+            const emailBody = `Hi there,
+
+You've been invited to join the Time Project Kanban board!
+
+PROJECT: Time Project - Enhanced Kanban Board
+LOGIN URL: ${projectUrl}
+
+TEMPORARY CREDENTIALS:
+Username: ${invitation.tempUsername}
+Password: ${invitation.tempPassword}
+
+HOW TO ACCESS:
+1. Visit: ${projectUrl}
+2. Enter your temporary username and password
+3. On first login, you'll be prompted to change your password
+4. Start collaborating!
+
+${invitation.message ? `\nMESSAGE FROM ADMIN:\n${invitation.message}\n` : ''}
+
+IMPORTANT:
+• This invitation expires on: ${invitation.expiresOn}
+• Your temporary credentials are for initial access only
+• You MUST change your password on first login
+• Do not share these credentials via email
+
+Questions? Contact your admin.
+
+---
+Time Project Kanban Board
+${projectUrl}`;
+
+            invitation.emailBody = emailBody;
+            invitation.emailSubject = emailSubject;
+        }
+
+        function sendViaEmail(invitationId) {
+            const invitation = clientInvitations.find(inv => inv.id === invitationId);
+            if (!invitation) return;
+
+            const mailtoLink = `mailto:${invitation.email}?subject=${encodeURIComponent(invitation.emailSubject)}&body=${encodeURIComponent(invitation.emailBody)}`;
+            window.location.href = mailtoLink;
+            logAdminAction('EMAIL_SENT', `Sent invitation email to: ${invitation.email}`);
+        }
+
+        function copyToClipboard(invitationId) {
+            const invitation = clientInvitations.find(inv => inv.id === invitationId);
+            if (!invitation) return;
+
+            const textToCopy = `${invitation.emailSubject}\n\n${invitation.emailBody}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Invitation text copied to clipboard!');
+                logAdminAction('INVITE_COPIED', `Invitation copied to clipboard for: ${invitation.email}`);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Invitation text copied to clipboard!');
+            });
+        }
+
+        function revokeInvitation(invitationId) {
+            const idx = clientInvitations.findIndex(inv => inv.id === invitationId);
+            if (idx !== -1) {
+                const email = clientInvitations[idx].email;
+                clientInvitations[idx].status = 'Revoked';
+                logAdminAction('REVOKE_INVITATION', `Revoked invitation for: ${email}`);
+                renderInvitationTable();
+            }
+        }
+
+        function renderInvitationTable() {
+            const container = document.getElementById('invitationTableContainer');
+            
+            if (clientInvitations.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">No invitations sent yet.</p>';
+                return;
+            }
+
+            let html = '<table class="user-table"><thead><tr>';
+            html += '<th>Email</th><th>Temp Username</th><th>Status</th><th>Sent Date</th><th>Expires</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
+            
+            clientInvitations.forEach(inv => {
+                const statusColor = inv.status === 'Sent' ? '#3b82f6' : inv.status === 'Accepted' ? '#10b981' : '#ef4444';
+                html += `<tr>
+                    <td>${inv.email}</td>
+                    <td><code style="font-family: monospace; font-size: 11px;">${inv.tempUsername}</code></td>
+                    <td style="color: ${statusColor}; font-weight: bold;">${inv.status}</td>
+                    <td>${inv.datesent}</td>
+                    <td>${inv.expiresOn}</td>
+                    <td class="user-actions">
+                        ${inv.status === 'Sent' ? `
+                            <button class="btn-edit" onclick="sendViaEmail('${inv.id}')" title="Send via mailto">✉️ Email</button>
+                            <button class="btn-edit" onclick="copyToClipboard('${inv.id}')" title="Copy to clipboard">📋 Copy</button>
+                            <button class="btn-delete" onclick="revokeInvitation('${inv.id}')">Revoke</button>
+                        ` : inv.status === 'Revoked' ? `
+                            <em style="color: #999;">Revoked</em>
+                        ` : `
+                            <em style="color: #999;">Completed</em>
+                        `}
+                    </td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        // ===== END INVITATIONS =====
+
+        // Device Detection (Hybrid Method)
+        function detectDevice() {
+            const width = window.innerWidth;
+            const supportsTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+            
+            deviceInfo = {
+                isDesktop: width > 800 && !supportsTouch && !hasCoarsePointer,
+                isTablet: width > 800 && (supportsTouch || hasCoarsePointer),
+                isMobile: width <= 800,
+                supportsTouch: supportsTouch,
+                width: width
+            };
+            
+            updateDragDropState();
+        }
+
+        function updateDragDropState() {
+            const enableDrag = deviceInfo.isDesktop || deviceInfo.isTablet;
+            document.querySelectorAll('.task-card').forEach(card => {
+                card.setAttribute('draggable', enableDrag);
+            });
+        }
+
+        function getProjectById(projectId) {
+            return projects.find(p => p.id === projectId);
+        }
+
+        function getProjectName(projectId) {
+            const project = getProjectById(projectId);
+            return project ? project.name : 'Unassigned';
+        }
+
+        function getProjectPriority(projectId) {
+            const project = getProjectById(projectId);
+            return project ? project.priority : 99;
+        }
+
+        function getProjectOptions(includeAll) {
+            const sorted = [...projects].sort((a, b) => a.priority - b.priority);
+            const options = sorted.map(p => `<option value="${p.id}">${p.name} (P${p.priority})</option>`).join('');
+            return (includeAll ? '<option value="all">All Projects</option>' : '') + options;
+        }
+
+        function renderProjectDropdowns() {
+            const headerSelect = document.getElementById('projectFilter');
+            if (headerSelect) {
+                headerSelect.innerHTML = getProjectOptions(true);
+                headerSelect.value = globalProjectFilter;
+            }
+
+            for (let i = 1; i <= 7; i++) {
+                const select = document.getElementById(`project-filter-${i}`);
+                if (select) {
+                    select.innerHTML = getProjectOptions(true);
+                    select.value = columnProjectFilters[i] || 'all';
+                }
+            }
+
+            const taskProjectSelect = document.getElementById('taskProject');
+            if (taskProjectSelect) {
+                taskProjectSelect.innerHTML = getProjectOptions(false);
+            }
+        }
+
+        function setGlobalProjectFilter(projectId) {
+            globalProjectFilter = projectId;
+            renderAllColumns();
+        }
+
+        function setColumnProjectFilter(columnNum, projectId) {
+            columnProjectFilters[columnNum] = projectId;
+            renderColumn(columnNum);
+        }
+
+        function createProjectFlow() {
+            const name = prompt('New project name?');
+            if (!name) return;
+            let priorityInput = prompt('Project priority (1=High, 2=Medium, 3=Low):', '2');
+            let priority = parseInt(priorityInput, 10);
+            if (![1, 2, 3].includes(priority)) priority = 2;
+            const id = `proj-${Date.now()}`;
+            projects.push({ id, name, priority });
+            renderProjectDropdowns();
+            renderAllColumns();
+        }
+
+        function initSampleTasks() {
+            tasks = [
+                { id: 'HJ ID1', what: 'Kanban HTML Web Page', why: 'Visual project management', how: 'HTML/CSS/JS', who: 'HJ', when: '2026-01-28', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+                { id: 'HJ ID2', what: 'Enhanced Kanban Forms', why: 'Interactive task management', how: 'Modal forms + priority system', who: 'HJ', when: '2026-01-29', where: 'kanban.html', priority: 1, status: 'Done', column: 6, projectId: 'proj-1' },
+                { id: 'AI TD11', what: 'Create GitHub Repository', why: 'Version control', how: 'GitHub Pages setup', who: 'HJ', when: '2026-01-30', where: 'GitHub', priority: 1, status: 'Executing', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD12', what: 'Project Directory Structure', why: 'Organize code', how: 'Create folders for CSS/JS/assets', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD13', what: 'Base HTML Template', why: 'Core structure', how: 'Create index.html framework', who: 'HJ', when: '', where: 'index.html', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD14', what: 'Global CSS Stylesheet', why: 'Consistent styling', how: 'Create base CSS with variables', who: 'HJ', when: '', where: 'styles.css', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD15', what: 'Interactive Calendar', why: 'Track dates', how: 'JS calendar widget', who: 'HJ', when: '2026-02-05', where: 'calendar.js', priority: 1, status: 'Executing', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD16', what: 'Doomsday Clock Display', why: 'Visual urgency', how: 'Clock display + info section', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD17', what: 'Time Tracking Tool', why: 'Track sessions', how: 'Start/stop timer + log', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD18', what: 'Event/Milestone Tracker', why: 'Countdowns and elapsed time', how: 'Events list + localStorage', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD20', what: 'Mobile Responsiveness', why: 'Usable on all devices', how: 'Responsive layout + touch support', who: 'HJ', when: '', where: '', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD22', what: 'Data Persistence', why: 'Save user data', how: 'localStorage for tasks/events', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD23', what: 'Performance Optimization', why: 'Smooth UX', how: 'Minify and optimize load', who: 'HJ', when: '', where: '', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD24', what: 'GitHub Pages Setup', why: 'Deploy site', how: 'Configure GH Pages', who: 'HJ', when: '', where: 'GitHub', priority: 1, status: 'Not Started', column: 2, projectId: 'proj-2' },
+                { id: 'AI TD25', what: 'README Documentation', why: 'Project clarity', how: 'Write README.md', who: 'HJ', when: '', where: 'README.md', priority: 2, status: 'Not Started', column: 2, projectId: 'proj-2' }
+            ];
+            taskIdCounter = 27;
+            renderAllColumns();
+        }
+
+        function openAddModal(column) {
+            currentColumn = column;
+            editingTaskId = null;
+            document.getElementById('modalTitle').textContent = 'Add New Task';
+            document.getElementById('taskForm').reset();
+            document.getElementById('taskWho').value = 'HJ';
+            const taskProjectSelect = document.getElementById('taskProject');
+            const columnFilter = columnProjectFilters[column] || 'all';
+            const preferredProject = columnFilter !== 'all'
+                ? columnFilter
+                : (globalProjectFilter !== 'all' ? globalProjectFilter : projects[0].id);
+            if (taskProjectSelect) taskProjectSelect.value = preferredProject;
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function editTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            editingTaskId = taskId;
+            currentColumn = task.column;
+            document.getElementById('modalTitle').textContent = 'Edit Task';
+            document.getElementById('taskWhat').value = task.what;
+            document.getElementById('taskWhy').value = task.why || '';
+            document.getElementById('taskHow').value = task.how || '';
+            document.getElementById('taskWho').value = task.who || 'HJ';
+            document.getElementById('taskWhen').value = task.when || '';
+            document.getElementById('taskWhere').value = task.where || '';
+            document.getElementById('taskPriority').value = task.priority;
+            document.getElementById('taskStatus').value = task.status;
+            document.getElementById('taskProject').value = task.projectId || projects[0].id;
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').classList.remove('active');
+        }
+
+        function viewTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            const content = `
+                <div style="line-height:1.8;"><p><strong>ID:</strong> ${task.id}</p>
+                <p><strong>Project:</strong> ${getProjectName(task.projectId)}</p>
+                <p><strong>What:</strong> ${task.what}</p>
+                <p><strong>Why:</strong> ${task.why || 'Not specified'}</p>
+                <p><strong>How:</strong> ${task.how || 'Not specified'}</p>
+                <p><strong>Who:</strong> ${task.who || 'HJ'}</p>
+                <p><strong>When:</strong> ${task.when || 'Not specified'}</p>
+                <p><strong>Where:</strong> ${task.where || 'Not specified'}</p>
+                <p><strong>Priority:</strong> ${task.priority} - ${task.priority===1?'High':task.priority===2?'Medium':'Low'}</p>
+                <p><strong>Status:</strong> ${task.status}</p></div>
+            `;
+            document.getElementById('viewContent').innerHTML = content;
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const taskData = {
+                id: editingTaskId || `HJ TD${taskIdCounter++}`,
+                what: document.getElementById('taskWhat').value,
+                why: document.getElementById('taskWhy').value,
+                how: document.getElementById('taskHow').value,
+                who: document.getElementById('taskWho').value,
+                when: document.getElementById('taskWhen').value,
+                where: document.getElementById('taskWhere').value,
+                priority: parseInt(document.getElementById('taskPriority').value),
+                status: document.getElementById('taskStatus').value,
+                column: currentColumn,
+                projectId: document.getElementById('taskProject').value
+            };
+            if (editingTaskId) {
+                tasks[tasks.findIndex(t => t.id === editingTaskId)] = taskData;
+            } else {
+                tasks.push(taskData);
+            }
+            renderAllColumns();
+            closeModal();
+        });
+
+        function togglePriority(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.priority = task.priority === 3 ? 1 : task.priority + 1;
+                renderColumn(task.column);
+            }
+        }
+
+        function toggleStatus(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                const statuses = ['Not Started', 'Executing', 'Progressing', 'Done'];
+                task.status = statuses[(statuses.indexOf(task.status) + 1) % statuses.length];
+                renderColumn(task.column);
+            }
+        }
+
+        function moveTask(taskId, newColumn) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                const oldColumn = task.column;
+                task.column = parseInt(newColumn);
+                renderColumn(oldColumn);
+                renderColumn(newColumn);
+            }
+        }
+
+        function deleteTask(taskId) {
+            if (confirm('Delete this task permanently?')) {
+                const column = tasks.find(t => t.id === taskId).column;
+                tasks = tasks.filter(t => t.id !== taskId);
+                renderColumn(column);
+            }
+        }
+
+        function getStatusIcon(status) {
+            return status === 'Not Started' ? '⬜' : status === 'Executing' ? '⚙️' : status === 'Progressing' ? '⏳' : '✅';
+        }
+
+        // Drag and Drop Handlers
+        function handleDragStart(e) {
+            draggedTaskId = e.target.dataset.taskId;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', e.target.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.column-content').forEach(col => {
+                col.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            if (e.target.classList.contains('column-content')) {
+                e.target.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            if (e.target.classList.contains('column-content')) {
+                e.target.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation();
+            e.preventDefault();
+            
+            const targetColumn = e.target.closest('.kanban-column');
+            if (targetColumn && draggedTaskId) {
+                const newColumn = parseInt(targetColumn.dataset.column);
+                const task = tasks.find(t => t.id === draggedTaskId);
+                if (task && task.column !== newColumn) {
+                    moveTask(draggedTaskId, newColumn);
+                }
+            }
+            
+            e.target.classList.remove('drag-over');
+            draggedTaskId = null;
+            return false;
+        }
+
+        function attachDragListeners() {
+            document.querySelectorAll('.column-content').forEach(col => {
+                col.addEventListener('dragover', handleDragOver);
+                col.addEventListener('dragenter', handleDragEnter);
+                col.addEventListener('dragleave', handleDragLeave);
+                col.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function renderTaskCard(task) {
+            const creator = task.id.startsWith('HJ') ? 'HJ' : 'AI';
+            const projectName = getProjectName(task.projectId);
+            return `
+                <div class="task-card" data-task-id="${task.id}" data-creator="${creator}" draggable="${deviceInfo.isDesktop || deviceInfo.isTablet}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
+                    <div class="task-row1">
+                        <span class="task-id">${task.id}</span>
+                        <span class="project-tag">${projectName}</span>
+                        <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
+                        <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
+                        <div class="action-buttons">
+                            <button class="icon-btn" onclick="viewTask('${task.id}')">👁️</button>
+                            <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
+                        </div>
+                    </div>
+                    <div class="task-row2" onclick="viewTask('${task.id}')">${task.what}</div>
+                    <div class="task-row3">
+                        <select class="move-select" onchange="moveTask('${task.id}', this.value)">
+                            <option value="">Move to...</option>
+                            ${[1,2,3,4,5,6,7].map(i => `<option value="${i}" ${task.column===i?'selected':''}>${i}-${['Idea','Todo','Plan','Design','Test','Done','Cancel'][i-1]}</option>`).join('')}
+                        </select>
+                        <button class="delete-btn" onclick="deleteTask('${task.id}')">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderColumn(columnNum) {
+            const columnFilter = columnProjectFilters[columnNum] || 'all';
+            const activeFilter = columnFilter !== 'all' ? columnFilter : globalProjectFilter;
+            const columnTasks = tasks
+                .filter(t => t.column === columnNum)
+                .filter(t => activeFilter === 'all' || t.projectId === activeFilter)
+                .sort((a, b) => {
+                    const projectDelta = getProjectPriority(a.projectId) - getProjectPriority(b.projectId);
+                    if (projectDelta !== 0) return projectDelta;
+                    return a.priority - b.priority;
+                });
+            const columnEl = document.getElementById(`column-${columnNum}`);
+            columnEl.innerHTML = columnTasks.length === 0 ? '<div style="text-align:center;color:#999;padding:20px;font-size:12px;">No tasks</div>' : columnTasks.map(renderTaskCard).join('');
+        }
+
+        function renderAllColumns() {
+            for (let i = 1; i <= 7; i++) renderColumn(i);
+            updateDragDropState();
+        }
+
+        function exportAll() {
+            let output = 'TIME PROJECT - KANBAN EXPORT\\n================================\\nDate: ' + new Date().toLocaleDateString() + '\\n\\n';
+            const cols = ['Idea', 'Todo', 'Planning', 'Design', 'Test', 'Done', 'Cancelled'];
+            for (let i = 1; i <= 7; i++) {
+                const columnTasks = tasks.filter(t => t.column === i).sort((a, b) => a.priority - b.priority);
+                output += `\\n${i}. ${cols[i-1].toUpperCase()}\\n` + '-'.repeat(50) + '\\n';
+                if (columnTasks.length === 0) {
+                    output += 'No tasks\\n';
+                } else {
+                    columnTasks.forEach(task => {
+                        output += `${task.id} | ${task.what} | P:${task.priority} | ${task.status}\\n`;
+                        if (task.why) output += `  Why: ${task.why}\\n`;
+                        if (task.how) output += `  How: ${task.how}\\n`;
+                        if (task.who) output += `  Who: ${task.who}\\n`;
+                        if (task.when) output += `  When: ${task.when}\\n`;
+                        if (task.where) output += `  Where: ${task.where}\\n`;
+                        output += '\\n';
+                    });
+                }
+            }
+            navigator.clipboard.writeText(output).then(() => alert('✅ Copied to clipboard!'));
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('timestamp').textContent = now.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        }
+
+        function refreshTimestamp() { updateTimestamp(); }
+        
+        // Initialize
+        detectDevice();
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(detectDevice, 250);
+        });
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+        renderProjectDropdowns();
+        // Don't render board until logged in (security)
+        // renderAllColumns() and attachDragListeners() called in verifyLogin() after success
+    </script>
+</body>
+</html>

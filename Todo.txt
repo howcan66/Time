@@ -1,0 +1,313 @@
+================================================================================
+TODO - NEW TASKS & FEATURES
+================================================================================
+
+================================================================================
+Adding Tasks Below
+================================================================================
+
+
+
+================================================================================
+Adding Tasks Above
+================================================================================
+
+
+
+DATE CREATED: January 28, 2026
+LAST UPDATED: January 28, 2026
+
+These tasks are awaiting ANALYSIS and planning.
+
+================================================================================
+10 BASIC WEB COMPONENT BUILDING BLOCKS (Reference Guide)
+================================================================================
+
+AI TD1 - TEXT DISPLAY
+   - Use <p> for paragraphs, <h1>-<h6> for headings
+   - Use <div> to group related content
+   - Style with CSS: color, font-size, text-align
+
+AI TD2 - TEXT INPUT FORMS
+   - Use <input type="text"> for single-line input
+   - Use <textarea> for multi-line input
+   - Add <label> to describe each input
+   - Wrap in <form> for organization
+
+AI TD3 - RADIO BUTTONS
+   - Use <input type="radio"> for single choice from multiple options
+   - Group related radios with same "name" attribute
+   - Use <label> to make clickable text
+
+AI TD4 - DROPDOWN/SELECT LISTS
+   - Use <select> and <option> tags
+   - Let users pick one from many options
+   - Style with CSS for consistency
+
+AI TD5 - BUTTONS & INTERACTIONS
+   - Use <button> or <input type="button">
+   - Add onclick attribute to trigger JavaScript functions
+   - Style with CSS for appearance
+
+AI TD6 - LAYOUT ROWS & COLUMNS
+   - Use <div> with CSS Flexbox or Grid
+   - Flexbox: display: flex; for horizontal rows
+   - Grid: display: grid; for complex layouts
+   - Use CSS justify-content and align-items
+
+AI TD7 - SCROLLBARS & OVERFLOW
+   - Use overflow: scroll; for scrollable content
+   - overflow: hidden; to hide excess
+   - overflow: auto; for automatic scrollbars
+   - Set max-height on <div> to enable scrolling
+
+AI TD8 - FRAMES & CONTAINERS
+   - Use <div> with borders and padding
+   - Add border: 1px solid #ccc;
+   - Use padding/margin for spacing
+   - Background color: background-color: #f0f0f0;
+
+AI TD9 - DESIGN & STYLING BASICS
+   - Use CSS in <style> tag or external CSS file
+   - Define colors, fonts, sizes consistently
+   - Use classes for reusable styles: <div class="container">
+   - Mobile-friendly: use max-width, padding, responsive units
+
+AI TD10 - COMBINING ELEMENTS INTO PAGES
+    - Structure: <header>, <main>, <footer>
+    - Group related elements in <section> or <div>
+    - Use consistent spacing and alignment
+    - Test on different screen sizes (mobile, tablet, desktop)
+
+================================================================================
+PROJECT SETUP TASKS
+================================================================================
+
+AI TD11 - T-TODO-001: Create GitHub Repository
+--------
+Description: Set up a GitHub repository for the Time project and configure
+GitHub Pages for hosting.
+
+Status: MIGRATED TO KANBAN (Column 1 - Idea)
+Priority: HIGH
+Date Migrated: 2026-01-29
+
+---
+
+AI TD12 - T-TODO-002: Project Directory Structure
+--------
+Description: Create the initial folder structure with directories for CSS,
+JavaScript, and assets.
+
+Status: MIGRATED TO KANBAN (Column 2 - Todo)
+Priority: HIGH
+Date Migrated: 2026-01-29
+
+---
+
+AI TD13 - T-TODO-003: Base HTML Template
+--------
+Description: Create the main index.html file with basic structure, meta tags,
+and navigation framework.
+
+Status: MIGRATED TO KANBAN (Column 3 - Planning)
+Priority: HIGH
+Date Migrated: 2026-01-29
+
+---
+
+AI TD14 - T-TODO-004: Global CSS Stylesheet
+--------
+Description: Create the main CSS file with reset styles, variables for colors,
+fonts, and responsive breakpoints.
+
+Status: MIGRATED TO KANBAN (Column 3 - Planning)
+Priority: MEDIUM
+Date Migrated: 2026-01-29
+
+---
+
+================================================================================
+FEATURE TASKS
+================================================================================
+
+AI TD15 - T-TODO-005: Interactive Calendar
+--------
+Description: Build a calendar widget that displays the current month, allows
+navigation between months/years, highlights today's date, and shows events.
+
+Components:
+- Month/Year navigation buttons
+- Calendar grid display
+- Event marking
+- Responsive design
+
+Status: MIGRATED TO KANBAN (Column 1 - Idea)
+Priority: HIGH
+Date Migrated: 2026-01-29
+
+---
+
+AI TD16 - T-TODO-006: Doomsday Clock Display
+--------
+Description: Create a display showing the current Doomsday Clock time, with
+countdown information and links to background information.
+
+Components:
+- Current clock time display
+- Historical timeline
+- Information section
+- Update mechanism
+
+Status: MIGRATED TO KANBAN (Column 1 - Idea)
+Priority: HIGH
+Date Migrated: 2026-01-29
+
+---
+
+AI TD17 - T-TODO-007: Time Tracking Tool
+--------
+Description: Build a simple time tracker allowing users to start/stop/reset a
+timer, with session history and categorization.
+
+Components:
+- Start/Stop/Reset buttons
+- Timer display
+- Session log
+- Activity category selector
+
+Status: NOT STARTED
+Priority: MEDIUM
+Awaiting: Analysis
+
+---
+
+AI TD18 - T-TODO-008: Event/Milestone Tracker
+--------
+Description: Create functionality to add custom events, track countdowns to
+future dates, and display elapsed time since past events.
+
+Components:
+- Add new event form
+- Event list with countdown/elapsed
+- Delete/edit functionality
+- localStorage persistence
+
+Status: NOT STARTED
+Priority: MEDIUM
+Awaiting: Analysis
+
+---
+
+AI TD19 - T-TODO-009: Fun Facts & Trivia Section
+--------
+Description: Display rotating interesting facts and trivia about time,
+calendars, and related concepts.
+
+Components:
+- Fact display area
+- Next/Previous navigation
+- Auto-rotate option
+- Search/filter (optional)
+
+Status: NOT STARTED
+Priority: LOW
+Awaiting: Analysis
+
+---
+
+================================================================================
+ENHANCEMENT & OPTIMIZATION TASKS
+================================================================================
+
+AI TD20 - T-TODO-010: Mobile Responsiveness
+--------
+Description: Ensure all features work smoothly on mobile devices, tablets,
+and desktops with appropriate scaling and touch interactions.
+
+Status: NOT STARTED
+Priority: HIGH
+Awaiting: Analysis
+
+---
+
+AI TD21 - T-TODO-011: Dark Mode Feature
+--------
+Description: Add a toggle for dark mode theme across the entire application.
+
+Status: NOT STARTED
+Priority: LOW
+Awaiting: Analysis
+
+---
+
+AI TD22 - T-TODO-012: Data Persistence
+--------
+Description: Implement localStorage to save user data (tracked time, events,
+preferences) across browser sessions.
+
+Status: NOT STARTED
+Priority: MEDIUM
+Awaiting: Analysis
+
+---
+
+AI TD23 - T-TODO-013: Performance Optimization
+--------
+Description: Optimize loading times, minimize CSS/JavaScript, and ensure
+smooth animations.
+
+Status: NOT STARTED
+Priority: MEDIUM
+Awaiting: Analysis
+
+---
+
+================================================================================
+DEPLOYMENT & DOCUMENTATION TASKS
+================================================================================
+
+AI TD24 - T-TODO-014: GitHub Pages Setup
+--------
+Description: Configure and deploy the site to GitHub Pages for public access.
+
+Status: NOT STARTED
+Priority: HIGH
+Awaiting: Analysis
+
+---
+
+AI TD25 - T-TODO-015: README Documentation
+--------
+Description: Write comprehensive README.md with project overview, features,
+usage instructions, and deployment guide.
+
+Status: NOT STARTED
+Priority: MEDIUM
+Awaiting: Analysis
+
+---
+
+AI TD26 - T-TODO-016: User Guide & Help Text
+--------
+Description: Create in-app help text, tooltips, and documentation for each
+feature to guide users.
+
+Status: NOT STARTED
+Priority: LOW
+Awaiting: Analysis
+
+---
+
+================================================================================
+NOTES
+================================================================================
+
+- All tasks awaiting analysis before planning
+- Prioritize HIGH priority items first
+- Dependencies between tasks should be identified during planning phase
+- Refer to time_2026Q1.txt for project overview
+- Use Legend.txt for reference on AI TD#, PA, EX shortcuts
+- Example: "AI TD11 PA" = Analyze task AI TD11 (Create GitHub Repository)
+
+================================================================================

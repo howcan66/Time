@@ -1,0 +1,161 @@
+COMMAND REFERENCE - SPREADSHEET FORMAT
+Generated: 2026-01-29
+Source: CMD.txt → Reformatted for Excel/XLSX import
+
+================================================================================
+COMMAND SHORTCUTS TABLE
+================================================================================
+
+CATEGORY | ABBREVIATION | FULL NAME | DESCRIPTION | STATUS
+---------|--------------|-----------|-------------|--------
+WORKFLOW | PA | Present Analysis | Describe situation, propose action | ACTIVE
+WORKFLOW | PE | Present Execution | Show what will be implemented | ACTIVE
+WORKFLOW | EX | Execute | Implement the changes | ACTIVE
+WORKFLOW | PSC | Please Show Changes | Review before proceeding | ACTIVE
+WORKFLOW | RSC | Review & Suggest Changes | Feedback loop | ACTIVE
+REVIEW | AL | Analyze Log | Review Log_all.txt for redundancy | ACTIVE
+REVIEW | AD | Analyze Documentation | Review all docs for clarity | ACTIVE
+REVIEW | UD | Update Documentation | Sync docs with implementation | ACTIVE
+REVIEW | LA | List All | Show current state | ACTIVE
+KANBAN | UKB | Update Kanban Board | Sync Todo.txt → Kanban | ACTIVE
+KANBAN | UKB-Low | Update Kanban Low | Exclude low-priority | PROPOSED
+KANBAN | TB | Test Build | Validate functionality | ACTIVE
+KANBAN | BK | Backup | Save current state | ACTIVE
+PROPOSED | SYNC | Synchronize | Auto-update references | PROPOSED
+PROPOSED | QS | Quick Search | Find text across files | PROPOSED
+PROPOSED | RB | Rollback | Revert last change | PROPOSED
+PROPOSED | SPLIT | Split Task | Split task into subtasks | PROPOSED
+PROPOSED | ASSIGN | Assign | Assign task to user/role | PROPOSED
+PROPOSED | ARCHIVE | Archive | Move completed tasks | PROPOSED
+QUESTION | AOQ | Any Outstanding Questions | Add to CMD.txt file | ACTIVE
+QUESTION | LQ | List Questions | Show all pending questions | ACTIVE
+QUESTION | OBO | One By One | Answer sequentially | ACTIVE
+QUESTION | NQ | Next Question | Move to next in sequence | ACTIVE
+QUESTION | AQ | Analyze Question | Deep dive on question | ACTIVE
+DECISION | YS | You Select | AI decides best option | ACTIVE
+DECISION | YD | You Decide | Same as YS - AI chooses | ACTIVE
+DECISION | W8 | Wait | Defer decision to later | ACTIVE
+DECISION | L8R | Later | Phase 2 or future | ACTIVE
+DECISION | AYOK | Are You OK | Team check-in | ACTIVE
+PRINT | LS | Landscape | Print/PDF orientation | ACTIVE
+PRINT | PT | Portrait | Print/PDF/email orientation | ACTIVE
+PRINT | prtot | Printer Orientation | User-selectable in dialog | ACTIVE
+PRINT | DT | Demo Tour | Feature walkthrough | ACTIVE
+PRINT | PD | Please Describe | Request description | ACTIVE
+STATUS | Y | Yes | Approved/confirmed | ACTIVE
+STATUS | N | No | Rejected/declined | ACTIVE
+STATUS | TBD | To Be Determined | Decision pending | ACTIVE
+STATUS | MVP | Minimum Viable Product | Core feature set | ACTIVE
+STATUS | CRUD | CRUD | Create, Read, Update, Delete | ACTIVE
+
+================================================================================
+LOGIN CREDENTIALS TABLE
+================================================================================
+
+USER_NUMBER | USERNAME | PASSWORD | ROLE | PERMISSIONS | STATUS | UPDATED
+------------|----------|----------|------|-------------|--------|----------
+1 | R18 | R18 | Project Manager | Full access, view all projects | ACTIVE | 2026-01-29
+2 | Maximus | Maximus | Developer | Create/edit tasks, assign work | ACTIVE | 2026-01-29
+3 | Joel | Joel | Reviewer | View, test, comment, approve | ACTIVE | 2026-01-29
+4 | admin | admin | Admin | User management, logs, sessions | PLANNED | 2026-01-29
+
+================================================================================
+FEATURE IMPLEMENTATION CHECKLIST
+================================================================================
+
+FEATURE_ID | FEATURE_NAME | TASK | STATUS | PRIORITY | COMPLETION_%
+-----------|--------------|------|--------|----------|-------------
+HJ-ID1RS5 | Password Protection | Create Login_Log.txt template | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Add password prompt modal | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Implement AES-256 encryption | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Implement SHA-256 hashing | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Add session token management | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Add failed login counter | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Add lockout logic (5-min) | PENDING | HIGH | 0%
+HJ-ID1RS5 | Password Protection | Add logout button to header | PENDING | MEDIUM | 0%
+HJ-ID1RS5 | Password Protection | Add user display in header | PENDING | MEDIUM | 0%
+HJ-ID1RS5 | Password Protection | Test all 3 credentials | PENDING | MEDIUM | 0%
+HJ-ID1RS5 | Password Protection | Verify encryption in localStorage | PENDING | MEDIUM | 0%
+HJ-ID1RS5 | Password Protection | Verify Login_Log.txt entries | PENDING | MEDIUM | 0%
+HJ-ID1RS5 | Password Protection | Test session expiration | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add users[] data store | PENDING | HIGH | 0%
+HJ-ID1RS6 | User Assignment | Add task.owner field | PENDING | HIGH | 0%
+HJ-ID1RS6 | User Assignment | Add task.roles[] field | PENDING | HIGH | 0%
+HJ-ID1RS6 | User Assignment | Add owner dropdown to modal | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add role checkboxes to modal | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add owner display on cards | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add role badges to cards | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add header owner filter | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Add header role filter | PENDING | MEDIUM | 0%
+HJ-ID1RS6 | User Assignment | Test filtering logic | PENDING | LOW | 0%
+
+================================================================================
+OUTSTANDING QUESTIONS
+================================================================================
+
+QUESTION_ID | FEATURE | QUESTION_TEXT | OPTION_1 | OPTION_2 | OPTION_3 | OPTION_4 | USER_ANSWER | STATUS
+------------|---------|---------------|----------|----------|----------|----------|-------------|--------
+Q1 | HJ-ID1RS8 | Print scope? | Per-column | Entire board | Both options | N/A | PENDING | OPEN
+Q2 | HJ-ID1RS8 | Include filters? | Show filters | Hide filters | N/A | N/A | PENDING | OPEN
+Q3 | HJ-ID1RS8 | Orientation? | Portrait | Landscape | Auto-detect | N/A | PENDING | OPEN
+Q4 | HJ-ID1RS8 | Include metadata? | Timestamp | Username | Project data | All/None | PENDING | OPEN
+Q5 | HJ-ID1RS9 | Email mechanism? | FormSubmit.co | EmailJS | mailto link | Backend API | PENDING | OPEN
+Q6 | HJ-ID1RS9 | PDF attachment? | jsPDF attach | Embed base64 | Server link | Plain text | PENDING | OPEN
+Q7 | HJ-ID1RS9 | Manual email? | Free-form text | User list only | Both | N/A | PENDING | OPEN
+Q8 | HJ-ID1RS9 | Email history? | Create log | Track data | Not needed | N/A | PENDING | OPEN
+Q9 | GENERAL | Implementation order? | RS7→RS6→RS8→RS9 | RS8 first | RS7→RS8→RS6→RS9 | N/A | PENDING | OPEN
+Q10 | GENERAL | MVP scope? | All RS6-9 | RS5+RS7 only | RS5+RS7+RS6 | RS5+RS7+RS8 | PENDING | OPEN
+
+================================================================================
+DEVELOPER SHORTCUTS
+================================================================================
+
+FUNCTION | KEYBOARD | TOOL | NOTES
+---------|----------|------|-------
+DevTools | F12 | Browser | Console, Network, Application tabs
+DevTools | Ctrl+Shift+I | Browser | Windows alternative
+Find File | Ctrl+Shift+P | VSCode | Command palette
+Find Text | Ctrl+F | VSCode | Current file search
+Find Replace | Ctrl+H | VSCode | Find and replace
+Go To Line | Ctrl+G | VSCode | Jump to line number
+Open HTML | Ctrl+O | Browser | Drag file to browser
+Git Status | git status | PowerShell | Show changes
+Git Commit | git commit -m | PowerShell | Commit changes
+Git Push | git push | PowerShell | Push to GitHub
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+PRIORITY | ACTION | OWNER | DEADLINE | STATUS
+---------|--------|-------|----------|--------
+1 | User answers 10 questions in Q&A section | USER | TODAY | PENDING
+2 | Update Requirements.txt with chosen options | AI | TODAY | PENDING
+3 | Create Design.txt entries for each feature | AI | TODAY | PENDING
+4 | Begin implementation (confirmed priority) | AI | TOMORROW | PENDING
+5 | Test all credentials and features | USER | TOMORROW | PENDING
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+
+Total Commands Documented: 57
+Active Commands: 35
+Proposed Commands: 6
+Question & Decision Commands: 9
+Status Indicators: 7
+
+Test Users Available: 4
+Active Users: 3
+Admin Users: 1 (planned)
+
+Features in Design Phase: 4
+Features in Implementation Phase: 1
+Features Completed: 1
+
+Outstanding Decisions Required: 10
+Implementation Tasks Listed: 20+
+
+================================================================================
+EOF - CMD_XLSX.txt (Reformatted for Excel)
+================================================================================

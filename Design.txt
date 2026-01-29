@@ -1,0 +1,149 @@
+================================================================================
+DESIGN - READY FOR IMPLEMENTATION
+================================================================================
+
+================================================================================
+DESIGN - Ongoing Below
+================================================================================
+
+HJ ID1D4 - Multi-Project Kanban (Idea/Project Groups)
+================================================================================
+DESIGN APPROACH OVERVIEW:
+
+1. DATA MODEL
+   - Add projects[] store: { id, name, priority }
+   - Add task.projectId (default: "all" or first project)
+   - Project priority used in task ordering
+
+2. HEADER FILTER
+   - Top dropdown: All + list of projects
+   - Selecting a project filters all columns
+   - Option to create new project
+
+3. COLUMN FILTERS
+   - Each column gets project dropdown
+   - Filter applies per column (overrides header if set)
+   - All option to show all projects
+
+4. TASK ASSIGNMENT
+   - Task form adds Project selector
+   - Existing tasks can be reassigned
+   - Display project badge or label on card (optional)
+
+5. SORTING LOGIC
+   - Sort by project priority first, then task priority
+   - Preserve column grouping by project when filtered
+
+6. UI/UX CONSIDERATIONS
+   - Keep layout compact (no major layout changes)
+   - Dropdowns aligned with existing controls
+   - Default to All for global overview
+
+TECHNOLOGIES: HTML5, CSS3, Vanilla JavaScript
+FILES TO MODIFY: kanban.html (project store, filters, sorting)
+STATUS: READY FOR IMPLEMENTATION
+
+TIMESTAMP: 2026-01-29
+
+================================================================================
+
+HJ-ID1RS3 - Adaptive Kanban with Device Detection
+================================================================================
+DESIGN APPROACH OVERVIEW:
+
+1. DEVICE DETECTION ARCHITECTURE
+   - Hybrid detection: Viewport width + touch capability + pointer type
+   - Function: detectDevice() returns { isDesktop, isTablet, isMobile, supportsTouch }
+   - Breakpoint: 800px (desktop threshold)
+   - Re-detect on window resize (debounced)
+
+2. CONDITIONAL UI RENDERING
+   - Desktop (>800px, no-touch): Enable drag-drop, show dropdowns as backup
+   - Tablet (>800px, touch-capable): Enable drag-drop if large screen
+   - Mobile (<800px): Disable drag-drop, show dropdowns only
+   - Silent transitions (no notifications)
+
+3. DRAG-AND-DROP IMPLEMENTATION
+   - HTML5 Drag and Drop API (native)
+   - Events: dragstart, dragover, drop, dragend
+   - Visual feedback: Opacity 0.5 while dragging, drop zone highlight
+   - Data transfer: Task ID passed via event.dataTransfer
+   - Drop validation: Prevent drop on same column
+
+4. DROPDOWN FALLBACK
+   - Always rendered in DOM
+   - Desktop: display: inline-block (visible as backup)
+   - Mobile: display: inline-block (primary interaction)
+   - Move dropdown → Select column → Task moves and re-sorts
+
+5. CREATOR COLOR CODING
+   - Gold border for HJ ID# tasks: border-left: 3px solid gold
+   - AI TD# tasks: Default border (no special styling)
+   - Data attribute: data-creator="HJ" or data-creator="AI"
+
+6. RESPONSIVE BEHAVIOR
+   - CSS media queries: @media (max-width: 800px)
+   - Dynamic class toggling: .drag-enabled vs .dropdown-only
+   - Grid layout: 7 columns (desktop) → 3 columns (tablet) → 1 column (mobile)
+
+7. EVENT HANDLER STRUCTURE
+   - handleDragStart(event): Set dragging task ID, reduce opacity
+   - handleDragOver(event): Prevent default, highlight drop zone
+   - handleDrop(event): Get task ID, move to target column, re-render
+   - handleDragEnd(event): Reset opacity, remove highlights
+
+TECHNOLOGIES: HTML5 Drag and Drop API, CSS3 Media Queries, Vanilla JavaScript
+FILES TO MODIFY: kanban.html (add detectDevice, drag handlers, conditional CSS)
+STATUS: READY FOR IMPLEMENTATION
+
+TIMESTAMP: 2026-01-29
+
+================================================================================
+
+HJ-ID1RS2 - Enhanced Interactive Kanban with Task Management
+================================================================================
+DESIGN APPROACH OVERVIEW:
+
+1. COLUMN STRUCTURE
+   - Add column numbers (1-7) to headers
+   - Collapsible "+ Add Task" button at top of each column
+   - Click button → Opens modal dialogue with form
+
+2. TASK CARD REDESIGN (3 rows)
+   Row 1: Task ID + Priority button (colored) + Status icon + View/Edit buttons
+   Row 2: Task title (clickable)
+   Row 3: Move dropdown + Delete button
+
+3. FORM MODAL
+   - Fields: What (required), Why, How, Who (default: HJ), When, Where, Priority, Status
+   - Generate auto-incrementing ID
+   - Save → Creates task card in column, sorted by priority
+
+4. INTERACTION LAYERS
+   Level 1 (Quick): Click priority/status → Inline dropdown → Update instantly
+   Level 2 (Edit): Click Edit button or title → Modal with all fields
+   Level 3 (View): Click View button → Read-only modal
+
+5. PRIORITY SYSTEM
+   - 1 (High) = Green button, sorts to top
+   - 2 (Medium) = Blue button, middle
+   - 3 (Low) = Yellow button, bottom
+
+6. MOVE & DELETE
+   - Dropdown shows 7 columns → Select → Task moves and re-sorts
+   - Delete button with confirmation on all cards
+
+7. EXPORT/SAVE
+   - "Export All" button in header
+   - Copy to clipboard or download .txt
+
+TECHNOLOGIES: HTML5, CSS3, Vanilla JavaScript
+FILES TO MODIFY: kanban.html
+STATUS: READY FOR IMPLEMENTATION
+
+TIMESTAMP: 2026-01-29
+================================================================================
+
+---
+TIMESTAMP: [YYYY-MM-DD HH:MM]
+

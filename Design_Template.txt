@@ -1,0 +1,45 @@
+================================================================================
+DESIGN TEMPLATE
+================================================================================
+
+TIMESTAMP: [YYYY-MM-DD HH:MM]
+STATUS: NEW / EXPLORING / READY FOR TODO / DISCARDED
+================================================================================
+
+HJ ID# - [Feature/Task Name]
+================================================================================
+Title: [Feature/Task Name]
+
+TECHNICAL SPECIFICATIONS:
+- Exact functionality details
+- Input/output specifications
+- API/library choices
+- Browser/device support
+
+FILE STRUCTURE:
+- Files to create or modify
+- Directory structure changes
+- Dependencies to install
+
+CODE APPROACH:
+- High-level algorithm/logic
+- Key functions/methods
+- Data structures
+- Error handling
+
+ACCEPTANCE CRITERIA:
+- What makes this "done"?
+- How will it be tested?
+- Performance requirements
+
+ESTIMATED EFFORT:
+- Time estimate
+- Complexity level
+
+READY TO BUILD:
+- Yes - proceed with implementation
+- No - awaiting clarification
+
+MOVED FROM: Planning.txt
+CONFIRMATION NEEDED: User says "proceed" or "implement"
+================================================================================

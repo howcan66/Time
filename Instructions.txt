@@ -1,0 +1,287 @@
+================================================================================
+COPILOT INSTRUCTIONS & WORKFLOW RULES
+================================================================================
+DATE CREATED: January 28, 2026
+LAST UPDATED: January 28, 2026
+
+================================================================================
+CORE WORKFLOW RULES
+================================================================================
+
+RULE 1: ANALYZE ONLY (Default Mode)
+--------
+When given a task:
+- Read and understand the requirements
+- Identify what needs to be done
+- List dependencies and potential issues
+- Ask clarifying questions
+- PROVIDE ANALYSIS - DO NOT EXECUTE CODE
+
+**PA = "PLEASE ANALYZE"**
+- Analyze the task/idea
+- Provide detailed report on requirements, approach, dependencies
+- Ask clarifying questions if needed
+- DO NOT build/execute - just research and report
+
+EXAMPLE:
+- User says: "AI TD15 PA"
+- Copilot analyzes the Interactive Calendar task
+- Copilot reports what's needed, how to build it, potential issues
+- Copilot waits for confirmation to execute
+
+SHORT VERSION: PA = Study it and tell me about it, but don't build it yet.
+
+RULE 2: EXECUTION ONLY ON CONFIRMATION
+--------
+Code/files are created ONLY when user says:
+- "proceed"
+- "implement"
+- "build"
+- "create"
+- Or explicit confirmation after analysis
+
+RULE 3: FILE MANAGEMENT
+--------
+- All files stay in /Time directory
+- Use separate text files for workflow stages
+- Move task entries between files as progress happens
+- Keep timestamps for tracking
+
+RULE 4: DOCUMENTATION & LOGGING
+--------
+- Major decisions → Planning.txt
+- Implementation steps → Design.txt
+- Test results → Test.txt
+- Completed work → Completed.txt
+- All conversations → Log_all.txt
+- Successful outcomes → Log_successful_analyse_implementation.txt
+
+RULE 5: COMMUNICATION STYLE
+--------
+- Be clear and concise
+- Summarize before asking for confirmation
+- Provide analysis first, never assume
+- Ask for clarification if instructions are vague
+
+RULE 6: HANDLING AMBIGUITY
+--------
+If instructions are unclear:
+- List possible interpretations
+- Recommend the most logical approach
+- Ask which interpretation to use
+- Wait for user confirmation
+
+RULE 7: LOG & DOCUMENTATION REVIEW COMMANDS
+--------
+Two new analysis-only shortcuts for cleanup and review:
+
+**AL = "ANALYZE LOG"**
+- Scan Log_all.txt for redundancy, outdated notes, or noise
+- Propose what to remove or archive (no deletion without approval)
+- Suggest a compact summary entry when logs are too long
+- Output: Recommended deletions + proposed condensed log entry
+
+**AD = "ANALYZE DOCUMENTATION"**
+- Review Requirements.txt, Design.txt, and Instructions.txt
+- Flag overlaps, outdated sections, and missing links between files
+- Recommend improvements or simplifications (no edits without approval)
+- Output: Action list (keep / trim / merge / update) with rationale
+
+================================================================================
+TASK ID FORMAT
+================================================================================
+
+CURRENT FORMAT (PRIMARY)
+- HJ-ID#RS#: Requirements under an Idea/Project group
+   Example: HJ-ID1RS4 (Kanban v4 Multi-Project)
+- HJ-ID#D#: Design entries tied to the same Idea/Project
+   Example: HJ-ID1D4
+- AI TD#: AI task IDs (Todo list)
+   Example: AI TD15
+
+LEGACY FORMAT (ONLY IF NEEDED)
+Format: T[STAGE]-[NUMBER]
+Example:
+- T-TODO-001: Create homepage layout
+- T-PLAN-001: Calendar feature analysis
+- T-DESIGN-001: Calendar CSS styling
+- T-TEST-001: Test calendar on mobile
+- T-COMPLETE-001: Homepage published
+
+================================================================================
+FILE STRUCTURE & PURPOSE
+================================================================================
+
+Todo.txt
+- New tasks awaiting planning
+- High-level description of what needs doing
+- No analysis yet
+
+Planning.txt
+- Tasks that have been ANALYZED
+- Include: requirements, dependencies, approach
+- Ready to move to Design when confirmed
+
+Design.txt
+- Tasks ready for IMPLEMENTATION
+- Include: technical specs, file structure, code approach
+- Awaiting execution confirmation
+
+Test.txt
+- Completed features undergoing testing
+- Include: what was tested, results, bugs found
+- Ready to move to Completed or back to Planning if issues
+
+Completed.txt
+- Finished and verified work
+- Include: completion date, notes, final status
+- Reference for future similar tasks
+
+Instructions.txt
+- This file - workflow rules and guidelines
+- Reference for how to work together
+
+Log_all.txt
+- Complete conversation log
+- Timestamps for all activities
+- Full context of decisions
+
+Log_successful_analyse_implementation.txt
+- Summary of successful analysis & implementations
+- Lessons learned
+- Quick wins and solutions
+
+================================================================================
+TASK MOVEMENT FLOW
+================================================================================
+
+Todo.txt
+    ↓ (after ANALYSIS)
+Planning.txt
+    ↓ (after confirmation to BUILD)
+Design.txt
+    ↓ (after IMPLEMENTATION)
+Test.txt
+    ↓ (if PASSES tests)
+Completed.txt
+
+Note: Tasks can move BACK to previous stages if issues found
+
+================================================================================
+LOGGING GUIDELINES
+================================================================================
+
+EVERY LOG ENTRY SHOULD INCLUDE:
+- Timestamp: [YYYY-MM-DD HH:MM]
+- Task ID: T-XXX-001
+- Activity: What happened (analyzed, implemented, tested, etc.)
+- Status: Result or current state
+- Notes: Any relevant details or blockers
+
+EXAMPLE:
+[2026-01-28 14:30] T-TODO-001 → PLANNING | Homepage layout analyzed
+  Requirements: Mobile responsive, 3 sections (header, main, footer)
+  Dependencies: CSS framework decision needed
+  Next: Await framework confirmation
+
+================================================================================
+TEXT FILE PLACEMENT GUIDELINES
+================================================================================
+
+WHEN USER INSTRUCTIONS ARE NEEDED:
+
+1. NEW CUSTOM CONTENT - When adding HJ items with specific requirements
+   - Example: "HJ TD5 - Add this feature AFTER AI TD15"
+   - Example: "Put this in the Planning section, not Feature section"
+
+2. SPECIAL ORDERING - When sequence matters
+   - Example: "Move AI TD12 to top of Todo list"
+   - Example: "Group all calendar tasks together"
+
+3. CROSS-FILE REFERENCES - When content relates to multiple files
+   - Example: "Reference this in both Planning.txt and Design.txt"
+
+WHEN COPILOT CAN AUTO-PLACE (No instructions needed):
+
+1. STANDARD WORKFLOW MOVES - Automatic placement:
+   - Todo → Planning: Goes to bottom of Planning.txt with timestamp
+   - Planning → Design: Goes to Design.txt when approved
+   - Design → Test: After implementation
+   - Test → Completed: After passing tests
+   - Any stage → Cancelled: When abandoned
+
+2. NEW TASKS IN TODO.TXT - Append to appropriate section:
+   - PROJECT SETUP TASKS section
+   - FEATURE TASKS section
+   - ENHANCEMENT section
+   - DEPLOYMENT section
+
+3. LOGGING - Always append to bottom with timestamp:
+   - Log_all.txt: Chronological order (newest at bottom)
+   - Log_successful: By completion date
+
+4. UPDATES TO EXISTING ITEMS - Find by ID and update in place:
+   - Example: "AI TD15 PA" → Find AI TD15 and update its status
+
+BEST PRACTICES COPILOT FOLLOWS:
+
+✅ CHRONOLOGICAL - Logs always newest at bottom
+✅ GROUPED BY TYPE - Tasks stay in their sections
+✅ PRESERVE IDs - AI TD# never changes, just moves between files
+✅ ADD TIMESTAMPS - When moving between stages
+✅ KEEP ORIGINAL - Old entry stays for history (unless told to delete)
+
+WHAT USER SHOULD SPECIFY:
+
+- "Delete from Todo after moving" (if you don't want duplicates)
+- "Keep both copies" (if you want history in original file)
+- "Add to top instead of bottom" (for priority)
+- "Create new section called X" (for custom organization)
+
+DEFAULT BEHAVIOR (if user doesn't specify):
+- Tasks move to new file, stay in old file too (for history)
+- New items append to appropriate section
+- Logs append chronologically
+- IDs remain constant across all files
+
+================================================================================
+INSTRUCTIONS FOR BUILDING WEB FUNCTIONALITY
+================================================================================
+
+IMPROVING YOUR INSTRUCTIONS TO ME:
+
+1. BE SPECIFIC ABOUT FORMAT
+   Instead of: "create a webpage"
+   Say: "create an HTML file with a form containing 3 text inputs and a submit button"
+
+2. STATE CONSTRAINTS
+   Specify: "Use only vanilla HTML/CSS, no frameworks" or similar
+
+3. DEFINE SUCCESS CRITERIA
+   Tell me: What should it do? How should it look? What's the end goal?
+
+4. SPECIFY FILE LOCATIONS
+   Always include: "Create at [exact path]"
+
+5. USE CLEAR ACTION VERBS
+   "Analyze" = research & report
+   "Build" = create files & code
+   "Update" = modify existing files
+   "Test" = verify functionality
+
+6. MENTION ACCEPTANCE CRITERIA
+   How will we know when it's done?
+
+7. PROVIDE CONTEXT
+   Why are we building this? How does it fit?
+
+8. REQUEST REGULAR UPDATES
+   "Update Log_all.txt as you work"
+
+9. SPECIFY TESTING REQUIREMENTS
+   "Test on mobile and desktop" or similar
+
+10. DEFINE DONE
+    "Done = feature works, documented, and logged"
+
+================================================================================

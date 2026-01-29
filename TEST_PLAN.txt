@@ -1,0 +1,343 @@
+================================================================================
+TEST PLAN - Time Project Kanban Board
+================================================================================
+Date Created: 2026-01-29
+Test Phase: Phase 1 - Admin Panel & Invitations
+Reference Documentation: Requirements.txt, Design.txt, kanban.html
+Responsible Person: USER (Testing), AI (Support/Fixes)
+Status: READY FOR TESTING
+
+================================================================================
+RELATED DOCUMENTATION REFERENCES
+================================================================================
+
+FILE | SECTION | CONTENT | LINE_RANGE | RELEVANCE
+-----|---------|---------|-----------|----------
+kanban.html | validUsers array | Test credentials (R18/admin) | 474-477 | Login credentials
+kanban.html | isAdmin() function | Admin permission check | ~650 | Permission logic
+kanban.html | openAdminPanel() | Dashboard initialization | ~665 | Dashboard access
+Requirements.txt | HJ-ID1RS5RS | Password Protection spec | 7-24 | Login functionality
+Requirements.txt | HJ-ID1RS7RS | Admin functionality spec | 234-290 | Admin features
+Requirements.txt | HJ-ID1RS10RS | Invitations spec | Added | Invitation features
+Design.txt | HJ-ID1RS7D | Admin UI design document | New file | Visual reference
+HJ-ID1RS7D_xlsx.txt | Workflow steps | Step-by-step guide | All sections | Test procedures
+Invitations_Log.txt | Format template | Invitation audit trail | All sections | Expected logs
+CMD.txt | Test credentials | Login info + shortcuts | 77-104 | Quick reference
+cmd_xlsx.txt | Credentials table | Spreadsheet format | All sections | Reference table
+
+================================================================================
+KANBAN BOARD TASK REFERENCES - TEST PHASE
+================================================================================
+
+TASK_ID | TASK_NAME | CURRENT_COLUMN | TARGET_COLUMN | STATUS | RESPONSIBLE | PRIORITY
+--------|-----------|----------------|---------------|--------|-------------|----------
+HJ-ID1RS5 | Password Protection | 6 (Done) | N/A | COMPLETE | AI | HIGH
+HJ-ID1RS7 | Admin User Management | 5 (Test) | 5 (Test) | IN_TESTING | USER | HIGH
+HJ-ID1RS8 | Print Kanban Board | 4 (Design) | 4 (Design) | PENDING_DESIGN | AI | MEDIUM
+HJ-ID1RS9 | Email Column Group | 4 (Design) | 4 (Design) | PENDING_DESIGN | AI | MEDIUM
+HJ-ID1RS9-Logging | Email Event Logging | 4 (Design) | 4 (Design) | PENDING_DESIGN | AI | MEDIUM
+HJ-ID1RS10 | Admin Invitations | 1 (Idea) | 5 (Test) | READY_FOR_TEST | USER | HIGH
+HJ-ID1RS9-P2 | Email Notifications P2 | 7 (Deferred) | 7 (Deferred) | DEFERRED | TBD | LOW
+HJ-ID1RS6 | User/Role Assignment | 4 (Design) | 4 (Design) | PENDING_DESIGN | AI | MEDIUM
+
+================================================================================
+TEST PLAN - ADMIN PANEL (HJ-ID1RS7)
+================================================================================
+
+TEST_CATEGORY: Authentication & Access Control
+REF_FILE: Requirements.txt HJ-ID1RS5RS (lines 7-24)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing), AI (Support)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+AUTH-001 | 1 | Open kanban.html in browser | Login modal appears | | PENDING | Initial screen
+AUTH-002 | 2 | Enter username: admin | Text field accepts input | | PENDING | Case-sensitive
+AUTH-003 | 3 | Enter password: admin | Password field masks input | | PENDING | Masked display
+AUTH-004 | 4 | Click [LOGIN] button | Modal closes, board displays | | PENDING | Validation check
+AUTH-005 | 5 | Check header | User display shows "👤 admin (Admin)" | | PENDING | Role display
+AUTH-006 | 6 | Check header | ⚙️ ADMIN button appears | | PENDING | Permission check
+AUTH-007 | 7 | Invalid login: user/pass | Error message displays | | PENDING | Attempt counter
+AUTH-008 | 8 | 3x failed login | Account locks 5 minutes | | PENDING | Lockout logic
+
+TEST_CATEGORY: Admin Dashboard - Access
+REF_FILE: Design.txt, HJ-ID1RS7D_xlsx.txt (Step 2)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+DASH-001 | 1 | Click ⚙️ ADMIN button | Admin dashboard modal opens | | PENDING | Modal visibility
+DASH-002 | 2 | Check modal title | Shows "⚙️ ADMIN DASHBOARD" | | PENDING | 24px font
+DASH-003 | 3 | Check tabs | 4 tabs visible: Users, Logs, Sessions, Invitations | | PENDING | All tabs present
+DASH-004 | 4 | Check default tab | Users tab selected (👥 USERS) | | PENDING | Active state
+DASH-005 | 5 | Check table | User table displays with 4 users | | PENDING | Data population
+
+TEST_CATEGORY: Users Tab - Display
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 3), HJ-ID1RS7D_xlsx.txt
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+USER-001 | 1 | View Users tab | Table shows all 4 users | | PENDING | Complete list
+USER-002 | 2 | Check columns | USERNAME, EMAIL, ROLES, LAST LOGIN visible | | PENDING | All columns
+USER-003 | 3 | Check R18 row | R18 | r18@time.local | Project Manager | Jan 29... | | PENDING | Data accuracy
+USER-004 | 4 | Check Maximus row | Maximus | max@time.local | Developer | Jan 29... | | PENDING | Data accuracy
+USER-005 | 5 | Check Joel row | Joel | joel@time.local | Reviewer | Jan 28... | | PENDING | Data accuracy
+USER-006 | 6 | Check admin row | admin | admin@time.local | Admin | Jan 29... | | PENDING | Data accuracy
+USER-007 | 7 | Check status | All show ✓ Active | | PENDING | Status indicator
+USER-008 | 8 | Check buttons | [EDIT] [RESET] [DELETE] buttons per row | | PENDING | Action buttons
+
+TEST_CATEGORY: Users Tab - Add New User
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 4), HJ-ID1RS7D_xlsx.txt (Add New User Form)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+ADD-001 | 1 | Click [➕ ADD NEW USER] | User form modal opens | | PENDING | Form visibility
+ADD-002 | 2 | Check form fields | Username, Password, Email, Roles, Active fields present | | PENDING | All fields
+ADD-003 | 3 | Check role checkboxes | 6 roles available (PM, Dev, Rev, Des, Tester, Admin) | | PENDING | Role options
+ADD-004 | 4 | Enter test user data | username: testuser, password: test123 | | PENDING | Data entry
+ADD-005 | 5 | Enter email | testuser@time.local | | PENDING | Email format
+ADD-006 | 6 | Select 1 role | Check "Developer" checkbox | | PENDING | Role selection
+ADD-007 | 7 | Leave Active checked | Default ✓ Active | | PENDING | Default state
+ADD-008 | 8 | Click [SAVE USER] | Form closes, new user appears in table | | PENDING | Add success
+ADD-009 | 9 | Verify in table | testuser row displays with all data | | PENDING | Data verification
+ADD-010 | 10 | Try duplicate | Enter username "R18", click Save | Error message | | PENDING | Duplicate check
+
+TEST_CATEGORY: Users Tab - Edit User
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 5), Requirements.txt HJ-ID1RS7RS
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+EDIT-001 | 1 | Click [EDIT] on Maximus | Edit form opens with pre-filled data | | PENDING | Form population
+EDIT-002 | 2 | Check username | Field shows "Maximus" (read-only or display) | | PENDING | Username locked
+EDIT-003 | 3 | Modify password | Change to "newpass123" | | PENDING | Password editable
+EDIT-004 | 4 | Modify email | Change to "max.modified@time.local" | | PENDING | Email editable
+EDIT-005 | 5 | Change role | Uncheck "Developer", check "Designer" | | PENDING | Role change
+EDIT-006 | 6 | Click [SAVE] | Form closes, table updates | | PENDING | Edit success
+EDIT-007 | 7 | Verify changes | New email and roles display in table | | PENDING | Data verification
+EDIT-008 | 8 | Try self-edit | Click [EDIT] on admin user | Warning: Cannot edit own account | | PENDING | Protection logic
+
+TEST_CATEGORY: Users Tab - Reset Password
+REF_FILE: Requirements.txt HJ-ID1RS7RS (line 245)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+RESET-001 | 1 | Click [RESET] on Joel | Password prompt appears | | PENDING | Prompt modal
+RESET-002 | 2 | Enter new password | newpassword123 | | PENDING | Input field
+RESET-003 | 3 | Click confirm | User password changes | | PENDING | Reset applied
+RESET-004 | 4 | Verify message | "Password reset successfully for Joel" | | PENDING | Confirmation
+RESET-005 | 5 | Try login with new pass | Old password fails, new password works | | PENDING | Functional verification
+
+TEST_CATEGORY: Users Tab - Delete User
+REF_FILE: Requirements.txt HJ-ID1RS7RS (line 241)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+DELETE-001 | 1 | Click [DELETE] on testuser | Confirmation dialog appears | | PENDING | Safety check
+DELETE-002 | 2 | Confirm deletion | User removed from table | | PENDING | Delete success
+DELETE-003 | 3 | Try delete admin | Cannot delete your own account | | PENDING | Protection logic
+DELETE-004 | 4 | Verify list | Remaining 3-4 users display | | PENDING | List update
+
+TEST_CATEGORY: Login Logs Tab
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 6), HJ-ID1RS7D_xlsx.txt (Login Logs)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+LOGS-001 | 1 | Click 📋 LOGIN LOGS tab | Log viewer displays | | PENDING | Tab switch
+LOGS-002 | 2 | Check log entries | Timestamp | username | status format | | PENDING | Log format
+LOGS-003 | 3 | Check for admin entry | [2026-01-29 HH:MM:SS] | admin | SUCCESS | | PENDING | Current login logged
+LOGS-004 | 4 | Filter by username | Enter "R18" in filter | Shows only R18 entries | | PENDING | Filter works
+LOGS-005 | 5 | Filter by type | Select "SUCCESS" | Shows only successful logins | | PENDING | Type filter
+LOGS-006 | 6 | Color coding | SUCCESS entries green, FAILED red | | PENDING | Visual distinction
+
+TEST_CATEGORY: Sessions Tab
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 7), HJ-ID1RS7D_xlsx.txt (Sessions)
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+SESS-001 | 1 | Click 🔒 SESSIONS tab | Session table displays | | PENDING | Tab switch
+SESS-002 | 2 | Check columns | USERNAME, LOGIN_TIME, IP, DEVICE | | PENDING | Table columns
+SESS-003 | 3 | Check current session | admin | Jan 29 10:XX | 127.0.0.1 | Chrome | | PENDING | Current user session
+SESS-004 | 4 | Check TOTAL ACTIVE | Shows 1 or more | | PENDING | Session count
+
+================================================================================
+TEST PLAN - INVITATIONS (HJ-ID1RS10)
+================================================================================
+
+TEST_CATEGORY: Invitations Tab Access
+REF_FILE: Requirements.txt HJ-ID1RS10RS, kanban.html invitations functions
+KANBAN_ID: HJ-ID1RS10
+RESPONSIBLE: USER (Testing), AI (Support)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+INV-001 | 1 | Click ✉️ INVITATIONS tab | Invitations tab displays | | PENDING | Tab switch
+INV-002 | 2 | Check button | [Send Invitation] button visible | | PENDING | Action button
+INV-003 | 3 | Check table | Empty initially or shows previous invites | | PENDING | Table state
+
+TEST_CATEGORY: Send Invitation Form
+REF_FILE: HJ-ID1RS7D_xlsx.txt (Invitations Form), Requirements.txt HJ-ID1RS10RS
+KANBAN_ID: HJ-ID1RS10
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+SENDINV-001 | 1 | Click [Send Invitation] | Invitation form modal opens | | PENDING | Form visibility
+SENDINV-002 | 2 | Check fields | Email, Message, ExpireDays, ForcePasswordChange, Roles | | PENDING | Form fields
+SENDINV-003 | 3 | Enter recipient email | newuser@example.com | | PENDING | Email input
+SENDINV-004 | 4 | Enter custom message | "Welcome to Time Project!" | | PENDING | Optional field
+SENDINV-005 | 5 | Set expiration | 7 days (default) | | PENDING | Default value
+SENDINV-006 | 6 | Check "Force password" | Checked by default | | PENDING | Default state
+SENDINV-007 | 7 | Select role | Check "Developer" | | PENDING | Role selection
+SENDINV-008 | 8 | Click [Generate & Send] | Modal closes, invitation appears in table | | PENDING | Invitation created
+SENDINV-009 | 9 | Check table | Email, TempUsername (random), Status: Sent | | PENDING | Invitation details
+
+TEST_CATEGORY: Invitation Email Generation
+REF_FILE: Requirements.txt HJ-ID1RS10RS (Invitation Email Template), kanban.html generateInvitationEmail()
+KANBAN_ID: HJ-ID1RS10
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+EMAIL-001 | 1 | Click [✉️ Email] button | mailto: link opens email client | | PENDING | Email redirect
+EMAIL-002 | 2 | Check subject | "You're Invited to Join Time Project Kanban" | | PENDING | Subject line
+EMAIL-003 | 3 | Check body | Includes login URL, temp username, temp password | | PENDING | Email content
+EMAIL-004 | 4 | Check template | Formatted text with sections | | PENDING | Structure
+EMAIL-005 | 5 | Check custom message | User's message appears in email | | PENDING | Personalization
+EMAIL-006 | 6 | Check expiration | "Expires on: [date+7 days]" | | PENDING | Expiration info
+
+TEST_CATEGORY: Invitation Clipboard Copy
+REF_FILE: kanban.html copyToClipboard()
+KANBAN_ID: HJ-ID1RS10
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+COPY-001 | 1 | Click [📋 Copy] button | Alert: "Copied to clipboard!" | | PENDING | Confirmation
+COPY-002 | 2 | Open text editor | Paste (Ctrl+V) | Full email text appears | | PENDING | Clipboard content
+COPY-003 | 3 | Verify format | Subject + Body + Credentials | | PENDING | Format check
+
+TEST_CATEGORY: Invitation Revocation
+REF_FILE: kanban.html revokeInvitation()
+KANBAN_ID: HJ-ID1RS10
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+REVOKE-001 | 1 | Click [Revoke] on pending invite | Status changes to "Revoked" | | PENDING | Status update
+REVOKE-002 | 2 | Check buttons | Email/Copy buttons disappear, show "Revoked" | | PENDING | UI update
+REVOKE-003 | 3 | Try sending again | New invitation can be generated | | PENDING | Re-invite allowed
+
+================================================================================
+TEST PLAN - UI/UX VERIFICATION
+================================================================================
+
+TEST_CATEGORY: Button Sizing Hierarchy
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 8), Design.txt
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+BTN-001 | 1 | View tab buttons | Standard size, readable | | PENDING | Tab appearance
+BTN-002 | 2 | View [ADD NEW USER] | 1.5x larger than tabs | | PENDING | Medium emphasis
+BTN-003 | 3 | View [EDIT/RESET/DELETE] | 2x larger than tabs | | PENDING | Large emphasis
+BTN-004 | 4 | View main title | 24px bold centered | | PENDING | Title size
+BTN-005 | 5 | View section titles | 16px bold in tabs | | PENDING | Section headers
+
+TEST_CATEGORY: Color Scheme
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 9), Design.txt
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+COLOR-001 | 1 | Check primary buttons | Blue (#667eea) for Add/Save/Login | | PENDING | Primary color
+COLOR-002 | 2 | Check danger buttons | Red (#ef4444) for Delete | | PENDING | Danger color
+COLOR-003 | 3 | Check reset buttons | Orange (#f59e0b) for Reset | | PENDING | Reset color
+COLOR-004 | 4 | Check secondary buttons | Gray (#6b7280) for Cancel/Close | | PENDING | Secondary color
+COLOR-005 | 5 | Check success status | Green for ✓ Active | | PENDING | Success color
+
+TEST_CATEGORY: Responsive Design
+REF_FILE: HJ-ID1RS7D-AdminUI.txt (Step 10), Design.txt
+KANBAN_ID: HJ-ID1RS7
+RESPONSIBLE: USER (Testing)
+
+TEST_CASE | STEP | ACTION | EXPECTED_RESULT | ACTUAL_RESULT | PASS/FAIL | NOTES
+----------|------|--------|-----------------|---------------|-----------|-------
+RESP-001 | 1 | Test mobile (320px width) | Modal width 95%, tabs scroll | | PENDING | Mobile layout
+RESP-002 | 2 | Test tablet (800px width) | Modal width 90%, compact table | | PENDING | Tablet layout
+RESP-003 | 3 | Test desktop (1400px width) | Modal width 900px, full layout | | PENDING | Desktop layout
+RESP-004 | 4 | Mobile: user table | Card layout, vertical buttons | | PENDING | Mobile cards
+RESP-005 | 5 | Tablet: user table | Compact cells, side-by-side buttons | | PENDING | Tablet table
+RESP-006 | 6 | Desktop: user table | Full table, standard layout | | PENDING | Desktop table
+
+================================================================================
+LOGGING & AUDIT
+================================================================================
+
+LOG_FILE: Admin_Log.txt (not yet created, created on first action)
+LOG_FORMAT: [YYYY-MM-DD HH:MM:SS] | [ADMIN_NAME] | [ACTION] | [DETAILS]
+
+LOGGED_ACTIONS:
+- ADD_USER: Admin creates new user
+- EDIT_USER: Admin modifies user details
+- DELETE_USER: Admin removes user
+- RESET_PASSWORD: Admin resets user password
+- SEND_INVITATION: Admin sends invitation
+- EMAIL_SENT: Invitation sent via email
+- INVITE_COPIED: Invitation copied to clipboard
+- REVOKE_INVITATION: Invitation revoked
+
+EXPECTED_LOG_ENTRIES:
+[2026-01-29 HH:MM:SS] | admin | SEND_INVITATION | Sent invitation to: newuser@example.com (expires in 7 days)
+[2026-01-29 HH:MM:SS] | admin | EMAIL_SENT | Sent invitation email to: newuser@example.com
+[2026-01-29 HH:MM:SS] | admin | ADD_USER | Added new user: testuser (Developer)
+
+================================================================================
+SUMMARY - WHAT TO TEST
+================================================================================
+
+TOTAL_TEST_CASES: 70+
+CRITICAL_TESTS: 15 (Auth, Admin Access, Add/Edit/Delete User, Invitations)
+IMPORTANT_TESTS: 25 (Tab switching, Filtering, Email)
+NICE_TO_HAVE_TESTS: 30+ (UI/UX, Responsiveness, Logging)
+
+ESTIMATED_TIME: 1-2 hours for comprehensive testing
+
+AFTER_TESTING:
+- Document any bugs/issues found
+- Note any UX improvements needed
+- Confirm all features work as designed
+- Update PASS/FAIL column for each test case
+- Report to AI for fixes if needed
+
+================================================================================
+NEXT_STEPS
+================================================================================
+
+ACTION | OWNER | DEADLINE | STATUS
+--------|-------|----------|--------
+Execute test cases | USER | 2026-01-30 | PENDING
+Document results | USER | 2026-01-30 | PENDING
+Report issues | USER | 2026-01-30 | PENDING
+Fix bugs (if any) | AI | 2026-01-31 | PENDING
+Move to Done (if passed) | AI | 2026-02-01 | PENDING
+
+================================================================================
+EOF - TEST_PLAN.txt
+================================================================================

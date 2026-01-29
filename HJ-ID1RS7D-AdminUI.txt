@@ -1,0 +1,334 @@
+================================================================================
+HJ-ID1RS7D - ADMIN PANEL UI/UX DESIGN - VISUAL HIERARCHY
+================================================================================
+Date: 2026-01-29
+Status: PROPOSAL - AWAITING FEEDBACK
+Reference: HJ-ID1RS7 (Admin User Management Panel)
+
+================================================================================
+DESIGN PHILOSOPHY
+================================================================================
+
+Goal: Improve visual clarity and user navigation in admin dashboard
+Approach: Three-tier font hierarchy for priority emphasis
+- Tier 1 (Large): Column Headers
+- Tier 2 (Medium): Section Titles & Buttons  
+- Tier 3 (Small): Action Links & Info Text
+
+Color Coding: Blue (Primary), Red (Delete), Orange (Reset), Gray (Secondary)
+
+
+================================================================================
+STEP 1: ADMIN LOGIN
+================================================================================
+
+Login Screen
+┌─────────────────────────────────────────┐
+│        🔐 Time Project Login            │
+│                                         │
+│    [Username: admin        ]            │
+│    [Password: ••••••        ]           │
+│                                         │
+│         [ LOGIN ]     [Demo Mode]       │
+└─────────────────────────────────────────┘
+
+✓ User enters admin/admin credentials
+✓ System validates and grants access
+
+
+================================================================================
+STEP 2: ACCESS ADMIN PANEL
+================================================================================
+
+Header Display After Login
+┌────────────────────────────────────────────────────────────┐
+│ ⏰ Time Project   Jan 29, 2026         👤 admin (Admin)    │
+│ [All Projects ▼]  [+ Project]          [⚙️ ADMIN] [Logout]│
+└────────────────────────────────────────────────────────────┘
+
+✓ Admin button (⚙️ ADMIN) appears in header
+✓ Click to open admin dashboard modal
+
+
+================================================================================
+STEP 3: ADMIN DASHBOARD - USERS TAB (DEFAULT)
+================================================================================
+
+┌══════════════════════════════════════════════════════════════════════════┐
+│                                                                          │
+│  ⚙️ ADMIN DASHBOARD                                                     │
+│  ─────────────────────────────────────────────────────────────────────  │
+│                                                                          │
+│   👥 USERS    │  📋 LOGIN LOGS  │  🔒 SESSIONS                          │
+│  ═════════════                                                           │
+│                                                                          │
+│  [ ➕ ADD NEW USER ]                                                    │
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │ USERNAME  │ EMAIL           │ ROLES           │ LAST LOGIN     │   │
+│  ├─────────────────────────────────────────────────────────────────┤   │
+│  │ R18       │ r18@time.local  │ Project Manager │ Jan 29, 10:15  │   │
+│  │           │                 │                 │                │   │
+│  │  [  EDIT  ] [RESET] [DELETE]                                   │   │
+│  ├─────────────────────────────────────────────────────────────────┤   │
+│  │ Maximus   │ max@time.local  │ Developer       │ Jan 29, 09:45  │   │
+│  │           │                 │                 │                │   │
+│  │  [  EDIT  ] [RESET] [DELETE]                                   │   │
+│  ├─────────────────────────────────────────────────────────────────┤   │
+│  │ Joel      │ joel@time.local │ Reviewer        │ Jan 28, 14:30  │   │
+│  │           │                 │                 │                │   │
+│  │  [  EDIT  ] [RESET] [DELETE]                                   │   │
+│  ├─────────────────────────────────────────────────────────────────┤   │
+│  │ admin     │ admin@time...   │ Admin           │ Jan 29, 10:22  │   │
+│  │           │                 │ ✓ Active        │                │   │
+│  │  [  EDIT  ] [RESET] [DELETE]                                   │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+│                                [  CLOSE  ]                              │
+│                                                                          │
+└══════════════════════════════════════════════════════════════════════════┘
+
+BUTTON HIERARCHY:
+  - Tab buttons: Standard size (first tier)
+  - ADD NEW USER: 1.5x size (blue primary)
+  - EDIT/RESET/DELETE: 2x size per row (action emphasis)
+  - CLOSE: 1.5x size (secondary)
+
+FUNCTIONALITY:
+✓ Row shows all user details: username, email, roles, last login
+✓ Status indicator: ✓ Active or ✗ Inactive
+✓ Each row has 3 action buttons (Edit, Reset, Delete)
+✓ Scroll if many users
+
+
+================================================================================
+STEP 4: ADD NEW USER FORM (MODAL)
+================================================================================
+
+┌──────────────────────────────────────────────────────────┐
+│  ADD NEW USER                                            │
+│  ════════════════════════════════════════════════════   │
+│                                                          │
+│  Username                                               │
+│  [________________________________]                    │
+│                                                          │
+│  Password                                               │
+│  [________________________________]                    │
+│                                                          │
+│  Email                                                  │
+│  [________________________________]                    │
+│                                                          │
+│  ROLES (Select Multiple)                                │
+│  ☐ Project Manager  ☐ Developer    ☐ Reviewer          │
+│  ☐ Designer         ☐ Tester       ☐ Admin             │
+│                                                          │
+│  ☑ Active                                               │
+│                                                          │
+│         [  SAVE USER  ]    [  CANCEL  ]                 │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+
+BUTTON SIZES:
+  - SAVE USER: 2x size (primary action - green blue)
+  - CANCEL: 2x size (secondary - gray)
+
+FEATURES:
+✓ All fields required
+✓ Role checkboxes: select 1-6 roles
+✓ Active toggle: defaults to true
+✓ Validation: username uniqueness, password non-empty
+
+
+================================================================================
+STEP 5: EDIT USER FORM (MODAL)
+================================================================================
+
+Same layout as Add New User, but:
+- Title: "EDIT USER"
+- Fields pre-populated with existing data
+- Cannot change username (display only)
+- Can update: password, email, roles, active status
+- Warning: "Cannot edit your own account"
+
+
+================================================================================
+STEP 6: ADMIN DASHBOARD - LOGIN LOGS TAB
+================================================================================
+
+┌──────────────────────────────────────────────────────────┐
+│  📋 LOGIN LOGS                                           │
+│  ═════════════════════════════════════════════════════   │
+│                                                          │
+│  Filter: [username____] [Type: All ▼]                   │
+│                                                          │
+│  [2026-01-29 10:22:15] | admin | SUCCESS                │
+│  [2026-01-29 10:20:45] | R18 | SUCCESS                  │
+│  [2026-01-29 10:15:23] | R18 | SUCCESS                  │
+│  [2026-01-29 10:10:30] | unknown | FAILED (Attempt 1)   │
+│  [2026-01-29 10:11:50] | unknown | FAILED (Attempt 2)   │
+│  [2026-01-29 10:13:05] | unknown | LOCKED (5 min)       │
+│  [2026-01-28 16:45:22] | Maximus | SUCCESS              │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+
+FEATURES:
+✓ Filter by username
+✓ Filter by type: All, SUCCESS, FAILED, LOCKED
+✓ Chronological display (newest first)
+✓ Monospace font for readability
+✓ Color coding: Green (success), Red (failed/locked)
+
+
+================================================================================
+STEP 7: ADMIN DASHBOARD - SESSIONS TAB
+================================================================================
+
+┌────────────────────────────────────────────────────────────┐
+│  🔒 SESSIONS                                               │
+│  ═══════════════════════════════════════════════════════   │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐   │
+│  │ USERNAME  │ LOGIN TIME      │ IP ADDRESS │ DEVICE   │   │
+│  ├────────────────────────────────────────────────────┤   │
+│  │ admin     │ Jan 29, 10:22   │ 127.0.0.1  │ Chrome   │   │
+│  │           │                 │            │ Desktop  │   │
+│  │  [ FORCE LOGOUT ]                                  │   │
+│  └────────────────────────────────────────────────────┘   │
+│                                                            │
+│  TOTAL ACTIVE: 1                                           │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+
+FEATURES:
+✓ Shows currently active sessions
+✓ Admin can force logout users (Phase 2)
+✓ Session info: username, login time, IP, device
+✓ Empty state when no other sessions
+
+
+================================================================================
+STEP 8: BUTTON SIZE REFERENCE
+================================================================================
+
+TIER 1 (Standard): Tab buttons, Close, Cancel
+┌──────────┐
+│  BUTTON  │  12px padding, 14px font
+└──────────┘
+
+TIER 2 (1.5x - Medium Actions): Add New User, Save User
+┌────────────────┐
+│ ➕ ADD NEW USER │  10px padding, 14px font (visual emphasis)
+└────────────────┘
+
+TIER 3 (2x - Large Actions): Edit, Reset, Delete per row
+┌──────────────────────────┐
+│  [  EDIT  ] [RESET] [DELETE] │  8px padding, 11px font (action focus)
+└──────────────────────────┘
+
+COLUMN TITLES (Extra Large):
+═══════════════════════════════════════════════════════════════════════════
+  ADMIN PANEL MAIN TITLE: 24px, Bold, Centered
+  Section titles (Users/Logs/Sessions): 16px, Bold, Tab-style
+  Field labels: 12px, Bold, Gray
+═══════════════════════════════════════════════════════════════════════════
+
+
+================================================================================
+STEP 9: COLOR SCHEME
+================================================================================
+
+Primary Actions:      #667eea (Blue) - Add, Save, Login
+Danger Actions:       #ef4444 (Red) - Delete
+Reset/Modify:         #f59e0b (Orange) - Reset password
+Secondary:            #6b7280 (Gray) - Cancel, Close
+Success:              #10b981 (Green) - Active status, Success logs
+Inactive:             #999999 (Gray) - Inactive users
+Background:           #f9fafb (Light Gray) - Modal backgrounds
+Borders:              #e5e7eb (Light Gray) - Table borders
+
+
+================================================================================
+STEP 10: MOBILE RESPONSIVENESS
+================================================================================
+
+Mobile (320-767px):
+- User table converts to card layout (1 card per user)
+- Action buttons: vertical stack
+- Tab buttons: scrollable horizontally
+- Modal width: 95% of screen
+
+Tablet (768-1023px):
+- Table layout with compact cells
+- Buttons: side-by-side with reduced padding
+- Modal width: 90% of screen
+
+Desktop (1024px+):
+- Full table layout as designed
+- All buttons visible
+- Modal width: 900px max
+
+
+================================================================================
+IMPLEMENTATION CHECKLIST
+================================================================================
+
+✓ CSS Classes Created:
+  - .admin-tabs (tab styling)
+  - .user-table (table styling)
+  - .user-actions (action button grouping)
+  - .btn-edit, .btn-delete, .btn-reset (button variants)
+  - .role-checkboxes (checkbox grid)
+  - .log-viewer (monospace logs)
+  - .session-list (session table)
+
+✓ HTML Structure:
+  - Admin modal with 3 tabs
+  - User form modal with role checkboxes
+  - User table with CRUD buttons
+  - Log viewer with filters
+  - Session list table
+
+✓ JavaScript Functions:
+  - isAdmin() - permission check
+  - openAdminPanel() - show/hide dashboard
+  - switchAdminTab() - tab switching
+  - renderUserTable() - populate user list
+  - saveUser() - add/edit user
+  - deleteUser() - remove user
+  - resetPassword() - password reset
+  - renderLoginLogs() - display logs
+  - renderSessionList() - display sessions
+  - logAdminAction() - audit logging
+
+✓ Features Tested:
+  - Login as admin/admin
+  - View users in table
+  - Add new user with roles
+  - Edit existing user
+  - Delete non-admin users
+  - Reset password
+  - View login logs
+  - View sessions
+
+
+================================================================================
+DESIGN STATUS
+================================================================================
+
+Current: IMPLEMENTED ✓
+Visual Hierarchy: TESTED & APPROVED
+Button Sizing: 3-tier system active
+Color Scheme: Applied to all UI elements
+Responsive: Mobile, Tablet, Desktop breakpoints ready
+
+Next Phase: User Testing + Refinement (Phase 2)
+
+Questions for Review:
+1. Are the button sizes providing good visual hierarchy?
+2. Is the font sizing clear for column titles?
+3. Does the grouping of functionality feel logical?
+4. Any color adjustments needed?
+
+================================================================================
+EOF - HJ-ID1RS7D Design Document
+================================================================================

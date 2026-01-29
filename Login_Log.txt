@@ -1,0 +1,67 @@
+================================================================================
+LOGIN_LOG - Password Protection Audit Trail (HJ-ID1RS5)
+================================================================================
+
+PURPOSE: Track all login attempts, successes, failures, and lockouts for security
+
+FORMAT: [Timestamp] | Username | Status | Attempt # | Notes
+
+STATUS VALUES:
+  SUCCESS  - Valid credentials accepted
+  FAILED   - Invalid credentials rejected
+  LOCKED   - Account locked after 3 failed attempts (5-minute timeout)
+  LOGOUT   - User manually logged out
+
+================================================================================
+EXAMPLE ENTRIES (For Reference)
+================================================================================
+
+[1/29/2026, 2:15:32 PM] | R18 | SUCCESS | 1 | Initial login (password: R18)
+[1/29/2026, 2:18:45 PM] | Maximus | FAILED | 1 | Wrong password attempt
+[1/29/2026, 2:19:12 PM] | Maximus | FAILED | 2 | Wrong password again
+[1/29/2026, 2:20:05 PM] | Maximus | FAILED | 3 | Wrong password - account locked
+[1/29/2026, 2:20:08 PM] | Maximus | LOCKED | 3 | Locked for 5 minutes
+[1/29/2026, 2:25:15 PM] | Maximus | SUCCESS | 1 | Login after lockout (password: Maximus)
+[1/29/2026, 2:30:40 PM] | Joel | SUCCESS | 1 | New user login (password: Joel)
+[1/29/2026, 2:35:00 PM] | R18 | LOGOUT | 1 | User logged out manually
+
+================================================================================
+TEST USERS (From CMD.txt - Updated 2026-01-29)
+================================================================================
+
+User 1: R18
+  Password: R18
+  Role: Project Manager
+
+User 2: Maximus
+  Password: Maximus
+  Role: Developer
+
+User 3: Joel
+  Password: Joel
+  Role: Reviewer
+
+================================================================================
+SECURITY RULES (HJ-ID1RS5)
+================================================================================
+
+✓ Passwords stored in validUsers array (client-side, no encryption yet)
+✓ Failed login counter increments per session
+✓ After 3 failed attempts: 5-minute lockout
+✓ Sessions expire on page close (no persistent token yet)
+✓ Demo Mode button for testing (should remove in production)
+✓ Logout button visible in header when logged in
+✓ Login attempt details logged to console
+
+FUTURE ENHANCEMENTS:
+□ AES-256 encryption for passwords
+□ SHA-256 password hashing
+□ Backend persistence for Login_Log.txt
+□ Email notifications for suspicious activity
+□ IP tracking / geolocation logging
+□ TOTP 2-factor authentication
+
+================================================================================
+LIVE ENTRIES BEGIN HERE (Below this line)
+================================================================================
+

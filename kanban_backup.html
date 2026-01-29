@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Project - Kanban Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Top Header Frame */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .project-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .timestamp {
+            font-size: 14px;
+            color: #666;
+            padding: 5px 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Kanban Board Container */
+        .kanban-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            padding: 20px;
+            height: calc(100vh - 70px);
+            margin-top: 70px;
+            overflow-x: auto;
+        }
+
+        /* Column Styling */
+        .kanban-column {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            padding: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Column-specific colors */
+        .idea .column-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .todo .column-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .planning .column-header {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .design .column-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .test .column-header {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .completed .column-header {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .cancelled .column-header {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        }
+
+        .column-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        .column-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .column-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .column-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .column-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Task Card */
+        .task-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-id {
+            font-size: 11px;
+            color: #888;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .task-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .task-description {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .task-priority {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-low {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        /* Empty Column Message */
+        .empty-message {
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .kanban-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .kanban-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .kanban-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                height: auto;
+                gap: 10px;
+            }
+            
+            .header-left {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header Frame -->
+    <div class="header">
+        <div class="header-left">
+            <div class="project-title">⏰ Time Project - Kanban Board</div>
+            <div class="timestamp" id="timestamp">Loading...</div>
+        </div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="time_2026Q1.txt" class="nav-btn">Overview</a>
+            <a href="Legend.txt" class="nav-btn">Legend</a>
+            <button class="nav-btn" onclick="refreshTimestamp()">Refresh</button>
+        </div>
+    </div>
+
+    <!-- Kanban Board - 7 Vertical Columns -->
+    <div class="kanban-container">
+        <!-- Column 1: IDEA -->
+        <div class="kanban-column idea">
+            <div class="column-header">💡 Idea</div>
+            <div class="column-content">
+                <div class="task-card">
+                    <div class="task-id">HJ IDEA1</div>
+                    <div class="task-title">Kanban HTML Web Page</div>
+                    <div class="task-description">
+                        Visual Kanban board for Time project workflow with 7 columns and timestamp
+                    </div>
+                    <span class="task-priority priority-high">EXECUTING</span>
+                </div>
+                <div class="empty-message">Add new ideas here</div>
+            </div>
+        </div>
+
+        <!-- Column 2: TODO -->
+        <div class="kanban-column todo">
+            <div class="column-header">📋 Todo</div>
+            <div class="column-content">
+                <div class="task-card">
+                    <div class="task-id">AI TD11</div>
+                    <div class="task-title">Create GitHub Repository</div>
+                    <div class="task-description">
+                        Set up GitHub repository and configure GitHub Pages
+                    </div>
+                    <span class="task-priority priority-high">HIGH</span>
+                </div>
+                <div class="task-card">
+                    <div class="task-id">AI TD12</div>
+                    <div class="task-title">Project Directory Structure</div>
+                    <div class="task-description">
+                        Create folder structure for CSS, JavaScript, and assets
+                    </div>
+                    <span class="task-priority priority-high">HIGH</span>
+                </div>
+                <div class="task-card">
+                    <div class="task-id">AI TD13</div>
+                    <div class="task-title">Base HTML Template</div>
+                    <div class="task-description">
+                        Create index.html with basic structure and meta tags
+                    </div>
+                    <span class="task-priority priority-high">HIGH</span>
+                </div>
+                <div class="task-card">
+                    <div class="task-id">AI TD15</div>
+                    <div class="task-title">Interactive Calendar</div>
+                    <div class="task-description">
+                        Calendar widget with navigation, events, and today highlight
+                    </div>
+                    <span class="task-priority priority-high">HIGH</span>
+                </div>
+                <div class="task-card">
+                    <div class="task-id">AI TD16</div>
+                    <div class="task-title">Doomsday Clock Display</div>
+                    <div class="task-description">
+                        Show current Doomsday Clock with countdown and info
+                    </div>
+                    <span class="task-priority priority-high">HIGH</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 3: PLANNING -->
+        <div class="kanban-column planning">
+            <div class="column-header">📊 Planning</div>
+            <div class="column-content">
+                <div class="empty-message">Tasks will appear here after analysis</div>
+            </div>
+        </div>
+
+        <!-- Column 4: DESIGN -->
+        <div class="kanban-column design">
+            <div class="column-header">🎨 Design</div>
+            <div class="column-content">
+                <div class="task-card">
+                    <div class="task-id">HJ IDEA1</div>
+                    <div class="task-title">Kanban Board Design</div>
+                    <div class="task-description">
+                        HTML/CSS layout with 7 columns, scrollbars, and responsive design
+                    </div>
+                    <span class="task-priority priority-high">IN PROGRESS</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 5: TEST -->
+        <div class="kanban-column test">
+            <div class="column-header">🧪 Test</div>
+            <div class="column-content">
+                <div class="empty-message">Features will appear here during testing</div>
+            </div>
+        </div>
+
+        <!-- Column 6: COMPLETED -->
+        <div class="kanban-column completed">
+            <div class="column-header">✅ Completed</div>
+            <div class="column-content">
+                <div class="task-card">
+                    <div class="task-id">AI TD1-10</div>
+                    <div class="task-title">Web Component Reference Guide</div>
+                    <div class="task-description">
+                        Created 10 basic web component building blocks
+                    </div>
+                    <span class="task-priority priority-medium">COMPLETE</span>
+                </div>
+                <div class="task-card">
+                    <div class="task-id">WORKFLOW</div>
+                    <div class="task-title">Workflow System Established</div>
+                    <div class="task-description">
+                        Created 8 text files with Kanban workflow and indexing system
+                    </div>
+                    <span class="task-priority priority-medium">COMPLETE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 7: CANCELLED -->
+        <div class="kanban-column cancelled">
+            <div class="column-header">❌ Cancelled</div>
+            <div class="column-content">
+                <div class="empty-message">No cancelled tasks yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('timestamp').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        function refreshTimestamp() {
+            updateTimestamp();
+        }
+
+        // Initialize timestamp
+        updateTimestamp();
+        
+        // Update timestamp every second
+        setInterval(updateTimestamp, 1000);
+
+        // Add drag and drop functionality (future enhancement)
+        // This is a placeholder for future JavaScript enhancements
+        
+        console.log('Time Project Kanban Board initialized');
+        console.log('Timestamp updates every second');
+    </script>
+</body>
+</html>

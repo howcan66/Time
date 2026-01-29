@@ -1,0 +1,72 @@
+================================================================================
+CANCELLED - ABANDONED OR REJECTED TASKS
+================================================================================
+
+================================================================================
+Adding Cancelled Items Below
+================================================================================
+
+
+
+================================================================================
+Adding Cancelled Items Above
+================================================================================
+
+
+
+DATE CREATED: January 28, 2026
+LAST UPDATED: January 28, 2026
+
+Tasks or features that were started but cancelled, or ideas that were rejected.
+Kept for reference and learning purposes.
+
+================================================================================
+STATUS: Empty - No cancelled tasks yet
+================================================================================
+
+When cancelling tasks, include:
+
+TASK ID: T-CANCEL-XXX or AI TD# or HJ TD#
+================================================================================
+Title: [Feature/Task Name]
+
+ORIGINAL GOAL:
+- What was supposed to be built
+- Why it seemed like a good idea
+
+CANCELLATION DATE: [YYYY-MM-DD]
+
+REASON FOR CANCELLATION:
+- Why was it cancelled?
+- Technical blocker
+- Changed requirements
+- Better alternative found
+- Out of scope
+
+WORK COMPLETED BEFORE CANCELLATION:
+- What was done before cancelling
+- Files created (if any)
+- Time invested
+
+LESSONS LEARNED:
+- What did we learn from this?
+- What would we do differently?
+- Any reusable components?
+
+ALTERNATIVES PURSUED:
+- What replaced this task (if anything)?
+- Better approach taken
+
+MOVED FROM: [Original file: Todo.txt, Planning.txt, etc.]
+TIMESTAMP: [YYYY-MM-DD HH:MM]
+================================================================================
+
+---
+
+NOTES:
+- Cancelled tasks are not failures - they're learning opportunities
+- Keep detailed notes for future reference
+- Some ideas may be revived later with better approach
+- Review cancelled tasks periodically for insights
+
+================================================================================

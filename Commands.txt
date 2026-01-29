@@ -1,0 +1,217 @@
+================================================================================
+STANDARD FUNCTIONALITY - COMMANDS & SHORTCUTS
+================================================================================
+DATE CREATED: January 29, 2026
+LAST UPDATED: January 29, 2026
+
+Complete reference for all commands, shortcuts, and abbreviations used in the
+Time project workflow.
+
+================================================================================
+CORE WORKFLOW COMMANDS
+================================================================================
+
+PA = Please Analyze
+- AI analyzes task/idea without executing
+- Provides detailed report on requirements, approach, dependencies
+- Example: "AI TD15 PA" → Analyze Interactive Calendar task
+
+PE = Proceed Execute / PEX = Proceed Execute All
+- Execute after analysis approval
+- PE: Execute single item
+- PEX: Execute everything pending
+- Example: "PE HJ-ID1D4" → Implement design
+
+EX = Execute
+- Direct execution without prior analysis (use cautiously)
+- Example: "EX create backup"
+
+CONFIRM = Approve and Continue
+- Confirms proposed action
+- Proceeds with implementation
+
+BLOCK = Stop/Reject
+- Rejects proposed action
+- Requires alternative approach
+
+REVISE = Modify Approach
+- Request changes to proposed solution
+- Requires new analysis
+
+RETEST = Test Again
+- Re-run tests after fixes
+- Example: "RETEST AI TD15"
+
+CLOSE = Mark Complete
+- Finalizes task as done
+- Moves to Completed.txt
+
+================================================================================
+DOCUMENTATION & REVIEW COMMANDS
+================================================================================
+
+AL = Analyze Log
+- Scan Log_all.txt for redundancy/noise
+- Propose deletions or condensed summaries
+- Example: "AL" → Review and clean logs
+
+AD = Analyze Documentation
+- Review Requirements.txt, Design.txt, Instructions.txt
+- Flag overlaps, outdated sections
+- Recommend improvements
+- Example: "AD" → Documentation audit
+
+UD = Update Documentation
+- Update cross-references and status in docs
+- Example: "UD after RS4"
+
+LA = Log All
+- Log activity to Log_all.txt
+- Example: "LA implementation complete"
+
+================================================================================
+KANBAN & TASK MANAGEMENT COMMANDS
+================================================================================
+
+UKB = Update Kanban Backlog
+- Add tasks from Todo.txt to Kanban board
+- Example: "UKB" → Sync tasks to UI
+
+UKB-Low = Update Kanban - Low Priority
+- Add low-priority tasks to Kanban
+- Example: "UKB-Low" → Add AI TD19, TD21, TD26
+
+PSC = Propose Status Change
+- AI suggests status change (requires PM approval)
+- Example: "PSC move to Test"
+
+RSC = Request Status Change
+- PM (user) approves status change
+- Example: "RSC approved → Test"
+
+================================================================================
+QUERY & INFORMATION COMMANDS
+================================================================================
+
+AQ = Ask Questions / Any Questions
+- AI asks clarifying questions before proceeding
+- Example: "AQ from you PA"
+
+CS = Copilot Suggestions
+- AI provides alternative approaches
+- Example: "CS for optimization"
+
+MS = My Suggestions
+- User provides suggestions/preferences
+- Example: "MS use dropdown instead"
+
+================================================================================
+PROPOSED NEW COMMANDS
+================================================================================
+
+CMD = Show Commands
+- Display this file or command reference
+- Example: "CMD" → Show all available commands
+
+QS = Quick Status
+- Show current project status (what's in progress, pending, done)
+- Example: "QS" → Status overview
+
+TB = Test Build
+- Run/test current implementation
+- Example: "TB kanban.html" → Open in browser
+
+BK = Backup
+- Create backup of specified file(s)
+- Example: "BK kanban.html" → Create backup
+
+RB = Rollback
+- Restore from backup
+- Example: "RB kanban.html" → Restore previous version
+
+SYNC = Synchronize
+- Sync data between files (Todo.txt ↔ Kanban)
+- Example: "SYNC Todo to Kanban"
+
+EXPORT = Export Data
+- Export from Kanban or other tool
+- Example: "EXPORT Kanban"
+
+IMPORT = Import Data
+- Import tasks/data from file
+- Example: "IMPORT tasks.txt"
+
+CLEAN = Clean/Optimize
+- Remove unused code, optimize files
+- Example: "CLEAN kanban.html"
+
+SPLIT = Split Task
+- Break large task into smaller subtasks
+- Example: "SPLIT AI TD15 into 3 tasks"
+
+MERGE = Merge Tasks
+- Combine related tasks
+- Example: "MERGE AI TD12 and TD13"
+
+ASSIGN = Assign to Project
+- Assign task to specific Idea/Project
+- Example: "ASSIGN AI TD15 to proj-2"
+
+PRIORITY = Set Priority
+- Change task priority
+- Example: "PRIORITY AI TD15 = 1"
+
+ARCHIVE = Archive Item
+- Move to archive (out of active view)
+- Example: "ARCHIVE old logs"
+
+SEARCH = Search Content
+- Search across files
+- Example: "SEARCH drag-drop"
+
+================================================================================
+ID ASSIGNMENT COMMANDS
+================================================================================
+
+Format: HJ-ID#RS# (Requirements) or HJ-ID#D# (Design)
+
+Current IDs in Use:
+- HJ ID1: Kanban Board (RS1, RS2, RS3, RS4 - Multi-Project)
+- HJ ID2: Enhanced Forms (deprecated, merged into ID1)
+- HJ ID3: Device Detection + Drag-Drop (RS3, D3)
+
+Next Available:
+- HJ ID4: Next major feature/idea
+- HJ ID5: Following feature
+- AI TD27+: Next AI task numbers
+
+================================================================================
+USAGE EXAMPLES
+================================================================================
+
+Single Command:
+"PA" → Analyze current context
+"AL" → Analyze logs
+"UKB" → Update Kanban backlog
+
+Combined Commands:
+"PA AI TD15" → Analyze task AI TD15
+"PE HJ-ID4" → Execute HJ-ID4 implementation
+"AL then AD" → Analyze logs, then documentation
+"UKB then QS" → Update backlog, show status
+
+Chained Workflow:
+"PA → (analysis provided) → PE → TEST → CLOSE"
+
+================================================================================
+BEST PRACTICES
+================================================================================
+
+1. Use PA before major changes
+2. Use AL/AD regularly to keep docs clean
+3. UKB when adding many tasks
+4. Always wait for CONFIRM before executing major changes
+5. Use AQ when uncertain about requirements
+6. Log major milestones with LA
+
+================================================================================

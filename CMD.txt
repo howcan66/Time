@@ -1,0 +1,282 @@
+================================================================================
+COMMAND REFERENCE & TEST CREDENTIALS
+================================================================================
+
+DATE: January 29, 2026
+PURPOSE: Quick command reference + Test Login Credentials for Time Project
+
+================================================================================
+QUICK COMMAND SHORTCUTS
+================================================================================
+
+WORKFLOW COMMANDS:
+  PA    - Present Analysis (describe situation, propose action)
+  PE    - Present Execution (show what will be implemented)
+  EX    - Execute (implement the changes)
+  PSC   - Please Show Changes (review before proceeding)
+  RSC   - Review & Suggest Changes (feedback loop)
+  
+REVIEW COMMANDS:
+  AL    - Analyze Log (review Log_all.txt for redundancy)
+  AD    - Analyze Documentation (review all docs for clarity)
+  UD    - Update Documentation (sync docs with implementation)
+  LA    - List All (show current state)
+
+KANBAN COMMANDS:
+  UKB   - Update Kanban Board (sync Todo.txt → Kanban)
+  UKB-Low - Update Kanban (exclude low-priority)
+  TB    - Test Build (validate functionality)
+  BK    - Backup (save current state)
+
+PROPOSED NEW COMMANDS:
+  SYNC  - Synchronize all files (auto-update references)
+  QS    - Quick Search (find text across files)
+  RB    - Rollback (revert last change)
+  SPLIT - Split task into subtasks
+  ASSIGN - Assign task to user/role
+  ARCHIVE - Move completed tasks to archive
+
+QUESTION & DECISION COMMANDS:
+  AOQ   - Any Outstanding Questions (add to CMD.txt file)
+  LQ    - List Questions (show all pending questions)
+  OBO   - One By One (answer questions sequentially)
+  NQ    - Next Question (move to next question in sequence)
+  AQ    - Analyze Question (deep dive on specific question)
+  YS    - You Select (AI decides best option)
+  YD    - You Decide (same as YS - AI chooses)
+  W8    - Wait (defer decision to later)
+  L8R   - Later (Phase 2 or future implementation)
+  AYOK  - Are You OK / Working well together (team check-in)
+
+PRINT & EXPORT ABBREVIATIONS:
+  LS    - Landscape orientation (print/PDF)
+  PT    - Portrait orientation (print/PDF/email)
+  prtot - Printer orientation (user-selectable in print dialog)
+  DT    - Demo Tour (feature walkthrough)
+  PD    - Please Describe
+
+STATUS INDICATORS:
+  Y     - Yes (approved/confirmed)
+  N     - No (rejected/declined)
+  TBD   - To Be Determined
+  MVP   - Minimum Viable Product
+  CRUD  - Create, Read, Update, Delete
+
+================================================================================
+TIME PROJECT LOGIN CREDENTIALS
+================================================================================
+Feature: HJ-ID1RS5 - Password Protection (Test Environment)
+Updated: 2026-01-29 - SIMPLIFIED PASSWORDS
+
+TEST USERS & PASSWORDS:
+  
+  User 1: R18
+  Password: R18
+  Role: Project Manager
+  Permissions: Full access, view all projects
+  
+  User 2: Maximus
+  Password: Maximus
+  Role: Developer/Executor
+  Permissions: Create/edit tasks, assign work
+  
+  User 3: Joel
+  Password: Joel
+  Role: Reviewer/Tester
+  Permissions: View, test, comment, approve tasks
+
+PLANNED ADMIN USER (HJ-ID1RS7):
+  User 4: admin
+  Password: admin
+  Role: Admin
+  Permissions: User management, logs, sessions, all features
+
+================================================================================
+NOTES FOR HJ-ID1RS5 IMPLEMENTATION
+================================================================================
+
+PASSWORD PROTECTION APPROACH:
+  Method: CryptoJS AES-256 encryption (client-side)
+  Hash: SHA-256 password verification
+  Storage: Encrypted in localStorage
+  Session: In-memory token (expires on page close)
+  Logging: Login_Log.txt for audit trail
+  
+FAILED LOGIN HANDLING:
+  1 attempt failed → Normal prompt
+  2 attempts failed → Warning message
+  3+ attempts failed → 5-minute lockout
+  
+LOGIN_LOG.txt FORMAT:
+  [timestamp] | [username] | [status] | [attempt#] | [IP/notes]
+  
+  Examples:
+  [2026-01-29 14:32:15] | R18 | SUCCESS | 1 | Initial login
+  [2026-01-29 14:35:42] | Maximus | FAILED | 2 | Wrong password attempt
+  [2026-01-29 14:36:10] | Maximus | LOCKED | 3 | Account locked 5 minutes
+
+================================================================================
+USEFUL DEVELOPMENT COMMANDS
+================================================================================
+
+Browser DevTools:
+  F12 or Ctrl+Shift+I  - Open DevTools (Console, Network, Application)
+  Application → Storage → LocalStorage → Inspect encrypted tasks
+  Console → localStorage.getItem('encryptedTasks')
+  Console → localStorage.clear() - Clear all data
+
+File Management:
+  Ctrl+Shift+P (VSCode) - Quick command palette
+  Ctrl+F - Find in current file
+  Ctrl+H - Find and replace
+  Ctrl+G - Go to line number
+
+Git Commands:
+  git status - Show current changes
+  git add . - Stage all changes
+  git commit -m "message" - Commit with message
+  git push - Push to GitHub
+  git pull - Pull from GitHub
+
+Testing:
+  Open kanban.html in browser (Ctrl+O or drag to browser)
+  Test login with credentials above
+  Check Login_Log.txt for entries
+  Test drag-drop on desktop/tablet
+  Test dropdowns on mobile
+
+================================================================================
+IMPLEMENTATION CHECKLIST - HJ-ID1RS5
+================================================================================
+
+□ Create Login_Log.txt (template)
+□ Add password prompt modal to kanban.html
+□ Implement CryptoJS AES-256 encryption
+□ Implement SHA-256 password hashing
+□ Add session token management
+□ Add failed login counter
+□ Add lockout logic (5-minute wait)
+□ Add logout button to header
+□ Add user display in header (logged in as: username)
+□ Test all three user credentials
+□ Verify encryption in localStorage
+□ Verify Login_Log.txt entries
+□ Test session expiration on page close
+
+================================================================================
+IMPLEMENTATION CHECKLIST - HJ-ID1RS6
+================================================================================
+
+□ Add users[] data store to kanban.html
+□ Add task.owner field (string)
+□ Add task.roles[] field (array: Owner, Responsible, Designer, Tester, etc)
+□ Add owner dropdown to "Add Task" modal
+□ Add role checkboxes to "Add Task" modal
+□ Add owner display on task cards
+□ Add role badges to task cards
+□ Add header filter: by owner (dropdown)
+□ Add header filter: by role (multi-select)
+□ Add column-level owner filter
+□ Add column-level role filter
+□ Test filtering logic
+□ Test role-based task assignment
+□ Implement dynamic user creation
+
+================================================================================
+OUTSTANDING QUESTIONS (AOQ) - AWAITING USER DECISIONS
+================================================================================
+
+HJ-ID1RS8 (PRINT COLUMN GROUP):
+  Q1: Print scope?
+      ☐ Per-column only
+      ☐ Entire board (all 7 columns)
+      ☐ Both options
+      
+  Q2: Include filters in printout?
+      ☐ Show applied filters (e.g., "Showing: Project 1 only")
+      ☐ Just show tasks, no filter info
+      
+  Q3: Page orientation?
+      ☐ Portrait (standard)
+      ☐ Landscape (wide columns)
+      ☐ Auto-detect based on content
+      
+  Q4: Include metadata on printout?
+      ☐ Timestamp of when printed
+      ☐ Username who printed it
+      ☐ Project name + column group data
+      ☐ None of the above
+
+HJ-ID1RS9 (EMAIL COLUMN GROUP):
+  Q1: Email sending mechanism?
+      ☐ FormSubmit.co service (free, no backend needed)
+      ☐ EmailJS library (client-side email)
+      ☐ Generate mailto: link (manual send by user)
+      ☐ Backend API (future implementation)
+      
+  Q2: PDF attachment approach?
+      ☐ Attach PDF file (requires jsPDF library)
+      ☐ Embed PDF content in email body (base64)
+      ☐ Link to exported PDF (stored server-side)
+      ☐ Plain text list of tasks (no PDF)
+      
+  Q3: Manual email entry?
+      ☐ Allow free-form text for external people
+      ☐ Require selection from user list only
+      ☐ Both (dropdown + manual fallback)
+      
+  Q4: Email history tracking?
+      ☐ Create Email_Log.txt for audit trail
+      ☐ Track who sent, when, to whom, column/project
+      ☐ Not needed for MVP
+
+FEATURE PRIORITIZATION:
+  Q1: Implementation order?
+      Current proposal: RS7 (Admin) → RS6 (Assignment) → RS8 (Print) → RS9 (Email)
+      Alternate: RS8 (Print) first (standalone, simpler)?
+      
+  Q2: MVP scope?
+      ☐ Complete all 4 features (RS6-9)
+      ☐ Just RS5 + RS7 (login + admin) for Phase 1
+      ☐ Add RS6, RS8, RS9 in Phase 2
+      
+  Q3: Notifications?
+      ☐ Implement now (email when task assigned/moved)
+      ☐ Defer to Phase 2 (L8R as mentioned)
+
+GENERAL UI/UX:
+  Q1: Mobile display?
+      ☐ Keep all 7 columns (horizontal scroll)
+      ☐ Show 2-3 columns at a time
+      ☐ Show 1 column (vertical scroll through columns)
+      
+  Q2: Completed/Archived tasks?
+      ☐ Show in "Done" column (current approach)
+      ☐ Archive to separate view after 30 days
+      ☐ Add trash/delete confirmation first
+      
+  Q3: Timeline/Gantt view?
+      ☐ Add timeline visualization (Phase 2)
+      ☐ Stay with 7-column Kanban only
+      
+EXTERNAL LIBRARIES:
+  Q1: Should we add jsPDF for PDF generation?
+      ☐ Yes (requires npm/package manager)
+      ☐ No (use browser print-to-PDF only)
+      ☐ Not sure (decide after HJ-ID1RS8 design)
+
+================================================================================
+NEXT STEPS (AWAITING CONFIRMATION)
+================================================================================
+
+ACTION ITEMS:
+1. User reviews AOQ section above and provides answers
+2. PM confirms implementation priority (RS6 → RS7 → RS8 → RS9)
+3. AI implements based on user decisions
+4. Update Requirements.txt with chosen options
+5. Create Design.txt entries for each feature
+
+STATUS: AWAITING USER INPUT ON ABOVE QUESTIONS
+
+================================================================================
+

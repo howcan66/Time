@@ -1,0 +1,221 @@
+================================================================================
+LEGEND - INDEXING & WORKFLOW SHORTCUTS
+================================================================================
+DATE CREATED: January 28, 2026
+VERSION: 1.0
+
+This file explains the indexing system and shortcuts used throughout the
+Time project documentation.
+
+================================================================================
+INDEXING SYSTEM
+================================================================================
+
+AI TD# = Artificial Intelligence Todo items (created by Copilot/AI)
+         Used for reference, analysis, and tracking
+
+HJ TD# = Human (You) Todo items (created by user)
+         When you add new tasks or items
+
+Example:
+  AI TD1 - Use <p> for paragraphs, <h1>-<h6> for headings
+  AI TD2 - Use <div> to group related content
+  HJ TD27 - Create user profile feature
+
+NUMBERING CONVENTION:
+- Continuous numbering across entire project
+- Starts at AI TD1 in Todo.txt
+- Increments through all files
+- Range allocations:
+  • AI TD1-50:   Todo.txt (web components + project tasks)
+  • AI TD51-100: Planning.txt (analysis & planning)
+  • AI TD101-150: Design.txt (design specifications)
+  • AI TD151-200: Test.txt (testing & QA)
+  • AI TD201-250: Completed.txt (finished work)
+  • AI TD251-300: Instructions.txt (workflow rules)
+  • AI TD301-350: Log_all.txt (activity log)
+  • AI TD351-400: Log_successful_analyse_implementation.txt (successes)
+
+When you add items, use:
+  • HJ TD1, HJ TD2, HJ TD3, etc. (sequential on user additions)
+  • Can appear in any file
+
+================================================================================
+WORKFLOW SHORTCUTS
+================================================================================
+
+PA = "Please Analyze"
+     Instruction: Analyze this task and provide detailed report
+     Output location: Move to Planning.txt with analysis
+
+EX = "Execute" / "Implement"
+     Instruction: Build/create this feature
+     Output location: Move to Design.txt → Implement → Move to Test.txt
+
+CONFIRM = "Yes, proceed with this approach"
+          Clears any pending questions or blockers
+
+BLOCK = "This cannot proceed due to blocker"
+        Marks task as blocked, awaiting resolution
+
+REVISE = "Make changes to this approach"
+         Instruction to go back and revise previous work
+
+RETEST = "Test again after changes"
+         Move back to Test.txt after revisions
+
+CLOSE = "Mark as complete and move to Completed.txt"
+        Task is finished and verified
+
+================================================================================
+COMBINED USAGE EXAMPLES
+================================================================================
+
+USER INSTRUCTION: "AI TD15 PA"
+  → Means: Analyze task AI TD15 (Project Directory Structure)
+  → Expected: Detailed analysis moved to Planning.txt
+
+USER INSTRUCTION: "HJ TD1 Create a contact form PA"
+  → Means: New user task - create contact form - please analyze
+  → Expected: AI analyzes and reports to Planning.txt
+
+USER INSTRUCTION: "EX AI TD12"
+  → Means: Execute/implement task AI TD12 (Base HTML Template)
+  → Expected: Files created, moved to Design.txt → Test.txt
+
+USER INSTRUCTION: "AI TD5 REVISE - simplify the requirements"
+  → Means: Revise task AI TD5 based on feedback
+  → Expected: Updated analysis and approach
+
+USER INSTRUCTION: "EX PA"
+  → Means: Execute after analyzing
+  → Expected: Full analysis + immediate implementation if confirmed
+
+USER INSTRUCTION: "AI TD18 RETEST - test on mobile only"
+  → Means: Re-run tests for AI TD18 with specific focus
+  → Expected: New test results for mobile version
+
+================================================================================
+FILE LOCATIONS & SHORTCUTS REFERENCE
+================================================================================
+
+QUICK REFERENCE TABLE:
+╔══════════════════════════════════════════════════════════════════════╗
+║ File Name                              │ Contains         │ ID Range ║
+╠══════════════════════════════════════════════════════════════════════╣
+║ Todo.txt                               │ Tasks (New)      │ AI TD1-50║
+║ Planning.txt                           │ Analyzed tasks   │ AI TD51+ ║
+║ Design.txt                             │ Designs          │ AI TD101+║
+║ Test.txt                               │ Testing          │ AI TD151+║
+║ Completed.txt                          │ Finished work    │ AI TD201+║
+║ Instructions.txt                       │ Rules & guides   │ AI TD251+║
+║ Log_all.txt                            │ All activity     │ AI TD301+║
+║ Log_successful_analyse_implement.txt   │ Successes        │ AI TD351+║
+╚══════════════════════════════════════════════════════════════════════╝
+
+================================================================================
+HOW TO USE THIS SYSTEM
+================================================================================
+
+STEP 1: Find the Item
+  - Look for "AI TD#" or "HJ TD#" prefix
+  - Reference the ID range table to know which file to check
+
+STEP 2: Give Instructions
+  - Add shortcut after item: "PA", "EX", "CONFIRM", etc.
+  - Can combine: "EX PA" or "AI TD15 PA"
+
+STEP 3: Tracking Progress
+  - Items move between files as they progress
+  - IDs stay constant throughout lifecycle
+  - Check Planning.txt to see analyzed items
+  - Check Design.txt to see ready-to-build items
+  - Check Completed.txt to see finished work
+
+STEP 4: Logging
+  - Each major action logged in Log_all.txt
+  - Successful completions logged in Log_successful_analyse_implementation.txt
+  - Use AI TD# in log entries for traceability
+
+================================================================================
+STATUS INDICATORS (Optional Enhancement)
+================================================================================
+
+Current Status Tags (used in files):
+  ✓ COMPLETE - Task finished
+  → IN PROGRESS - Currently being worked on
+  ✗ BLOCKED - Cannot proceed
+  ⚠ PARTIAL - Partially done
+  ○ NOT STARTED - Awaiting action
+  ◐ PLANNING - In analysis phase
+  ◑ DESIGNED - Design complete, ready to build
+
+Can be combined with shortcuts:
+  "AI TD5 ✓ COMPLETE CLOSE"  → Mark as complete and close
+  "AI TD7 ✗ BLOCKED - Awaiting design decision"
+
+================================================================================
+COMMUNICATION TIPS
+================================================================================
+
+CLEAR INSTRUCTIONS:
+  ✓ Good: "AI TD15 PA - focus on technology choices"
+  ✓ Good: "HJ TD1 Create dashboard PA"
+  ✗ Unclear: "Do the thing"
+
+EFFICIENT TRACKING:
+  ✓ Use AI TD# to reference items precisely
+  ✓ Use PA/EX to clarify intent
+  ✓ Include brief context if needed
+
+WHEN TO USE WHICH:
+  - PA: When you want analysis before building
+  - EX: When you're ready for implementation
+  - EX PA: When unsure but want analysis then building
+  - CONFIRM: After analysis shows you agree with approach
+  - BLOCK: If something prevents progress
+
+================================================================================
+QUICK START COMMANDS
+================================================================================
+
+"AI TD1 PA"
+  → Analyze web component: Text Display
+
+"EX AI TD11"
+  → Build task: Create GitHub Repository
+
+"HJ TD1 Set up team roles PA"
+  → User adds new task: Set up team roles (analyze it)
+
+"AI TD15 REVISE - make it simpler"
+  → Revise the planned approach for task 15
+
+"AI TD18 RETEST - check mobile compatibility"
+  → Re-test task 18 focusing on mobile
+
+"AI TD25 CONFIRM CLOSE"
+  → Confirm approach is good and close the task
+
+================================================================================
+VERSION HISTORY
+================================================================================
+
+v1.0 - January 28, 2026
+  - Initial system created
+  - 8 shortcut types defined
+  - Numbering ranges allocated
+  - Examples provided
+
+================================================================================
+NOTES & FUTURE IMPROVEMENTS
+================================================================================
+
+- IDs are permanent references (never reused)
+- User can add HJ items at any time
+- Keep this file handy for reference
+- If new shortcuts needed, add to this Legend
+- Numbering ranges can expand as project grows
+- Consider adding checksum or auto-increment in future
+
+================================================================================
