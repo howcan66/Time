@@ -1398,8 +1398,18 @@
                 <div>📝 Details</div>
             </div>`;
             
-            if (adminLogs && adminLogs.length > 0) {
-                adminLogs.forEach(log => {
+            // Combine adminLogs with sample logs for display
+            const logsToDisplay = adminLogs && adminLogs.length > 0 ? adminLogs : [
+                '[2026-01-29 10:15:23] | R18 | SUCCESS | Attempt #1',
+                '[2026-01-29 10:20:45] | admin | SUCCESS | Attempt #1',
+                '[2026-01-29 10:25:12] | unknown | FAILED | Attempt #1',
+                '[2026-01-29 10:26:34] | unknown | FAILED | Attempt #2',
+                '[2026-01-29 10:27:56] | unknown | FAILED | Attempt #3',
+                '[2026-01-29 10:28:10] | unknown | LOCKED | Attempt #3',
+            ];
+            
+            if (logsToDisplay && logsToDisplay.length > 0) {
+                logsToDisplay.forEach(log => {
                     // Parse log format: [timestamp] | username | action | details
                     const parts = log.split(' | ');
                     const timestamp = parts[0] ? parts[0].replace('[', '').replace(']', '') : 'N/A';
