@@ -155,6 +155,9 @@
         }
         .collapse-icon { cursor: pointer; font-size: 16px; position: absolute; right: 8px; opacity: 0.7; padding: 2px 6px; border-radius: 3px; }
         .collapse-icon:hover { opacity: 1; background: rgba(255,255,255,0.3); }
+        .kanban-column.collapsed .column-content { display: none; }
+        .kanban-column.collapsed .project-filter { display: none; }
+        .kanban-column.collapsed .add-task-btn { display: none; }
 
         .idea .column-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .todo .column-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
@@ -999,6 +1002,7 @@
         let tasks = defaultTasks.map(task => ({ ...task }));
         let taskIdCounter = 24;
         let compactViewTasks = localStorage.getItem('compactViewTasks') ? JSON.parse(localStorage.getItem('compactViewTasks')) : {}; // { taskId: true/false }
+        let collapsedColumns = localStorage.getItem('collapsedColumns') ? JSON.parse(localStorage.getItem('collapsedColumns')) : {}; // { columnNum: true/false }
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
         // ENHANCED SCHEMA (HJ-ID1RS7) - email, roles array, active, lastLogin
@@ -2046,10 +2050,29 @@ ${projectUrl}`;
             }
         }
 
+        function applyColumnCollapseState(columnNum) {
+            const columnEl = document.querySelector(`.kanban-column[data-column="${columnNum}"]`);
+            if (!columnEl) return;
+
+            const isCollapsed = collapsedColumns[columnNum] === true;
+            columnEl.classList.toggle('collapsed', isCollapsed);
+
+            const iconEl = columnEl.querySelector('.collapse-icon');
+            if (iconEl) {
+                iconEl.textContent = isCollapsed ? '▶️' : '▼';
+            }
+        }
+
+        function applyAllColumnCollapseStates() {
+            for (let i = 1; i <= 7; i++) {
+                applyColumnCollapseState(i);
+            }
+        }
+
         function toggleColumnCollapse(columnNum) {
-            // TODO: Placeholder for swimlane collapse functionality (Improvement #12)
-            // Will toggle column visibility/collapse state
-            console.log('Column collapse icon clicked:', columnNum);
+            collapsedColumns[columnNum] = !collapsedColumns[columnNum];
+            localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
+            applyColumnCollapseState(columnNum);
         }
 
         // ===== GITHUB SYNC CONFIGURATION =====
@@ -2445,6 +2468,7 @@ ${projectUrl}`;
         function renderAllColumns() {
             for (let i = 1; i <= 7; i++) renderColumn(i);
             updateDragDropState();
+            applyAllColumnCollapseStates();
         }
 
         function exportAll() {
