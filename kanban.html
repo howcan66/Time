@@ -502,12 +502,40 @@
     <!-- DOCUMENTATION MODAL (Feature 15) -->
     <div id="docModal" class="modal">
         <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
-            <div class="modal-header">📖 Documentation & Setup Guide</div>
+            <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span>📖 Documentation & Setup Guide</span>
+                <button onclick="document.getElementById('docModal').classList.remove('active')" style="padding: 6px 10px; background: #6b7280; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✖ Close</button>
+            </div>
             <div style="padding: 20px; font-size: 14px; line-height: 1.6;">
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                    <button onclick="document.getElementById('docModal').classList.remove('active')" style="padding: 6px 10px; background: #6b7280; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✖ Close</button>
+                </div>
+
+                <!-- INDEX -->
+                <div id="docIndex" style="background: #f3f4f6; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 10px 0; font-size: 15px; color: #111827;">📌 Index</h3>
+                    <ul style="margin: 0; padding-left: 18px; color: #374151;">
+                        <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+                            <span>🔐 GitHub Token Setup (Feature 15)</span>
+                            <button onclick="document.getElementById('doc-github').scrollIntoView({behavior: 'smooth'})" style="padding: 2px 6px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">Jump</button>
+                        </li>
+                        <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+                            <span>🔧 Troubleshooting</span>
+                            <button onclick="document.getElementById('doc-troubleshooting').scrollIntoView({behavior: 'smooth'})" style="padding: 2px 6px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">Jump</button>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 8px;">
+                            <span>✨ What This Enables</span>
+                            <button onclick="document.getElementById('doc-benefits').scrollIntoView({behavior: 'smooth'})" style="padding: 2px 6px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">Jump</button>
+                        </li>
+                    </ul>
+                </div>
                 
                 <!-- GITHUB SYNC SETUP SECTION -->
-                <div style="margin-bottom: 30px;">
-                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔐 GitHub Token Setup (Feature 15)</h2>
+                <div id="doc-github" style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔐 GitHub Token Setup (Feature 15)</h2>
+                        <button onclick="document.getElementById('docIndex').scrollIntoView({behavior: 'smooth'})" style="padding: 4px 8px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">↩ Index</button>
+                    </div>
                     <p style="color: #666; margin-bottom: 15px;">
                         Enable cross-device synchronization. Your tasks will automatically sync across Desktop, Mobile, Tablet, and Laptop.
                     </p>
@@ -581,8 +609,11 @@
                 </div>
 
                 <!-- TROUBLESHOOTING -->
-                <div style="margin-bottom: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
-                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔧 Troubleshooting</h2>
+                <div id="doc-troubleshooting" style="margin-bottom: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">🔧 Troubleshooting</h2>
+                        <button onclick="document.getElementById('docIndex').scrollIntoView({behavior: 'smooth'})" style="padding: 4px 8px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">↩ Index</button>
+                    </div>
                     
                     <div style="margin-bottom: 12px;">
                         <strong style="color: #dc2626;">❌ "GitHub push failed: 401"</strong><br>
@@ -606,8 +637,11 @@
                 </div>
 
                 <!-- FEATURES & BENEFITS -->
-                <div style="border-top: 1px solid #ddd; padding-top: 20px;">
-                    <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">✨ What This Enables</h2>
+                <div id="doc-benefits" style="border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <h2 style="color: #1f2937; font-size: 18px; margin-bottom: 12px;">✨ What This Enables</h2>
+                        <button onclick="document.getElementById('docIndex').scrollIntoView({behavior: 'smooth'})" style="padding: 4px 8px; font-size: 11px; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer;">↩ Index</button>
+                    </div>
                     <ul style="padding-left: 20px; color: #666;">
                         <li style="margin-bottom: 8px;">📱 Work on desktop → lunch break → update on mobile → tasks sync automatically</li>
                         <li style="margin-bottom: 8px;">✏️ Edit on tablet → changes appear on laptop instantly</li>
@@ -615,6 +649,10 @@
                         <li style="margin-bottom: 8px;">🔄 Manual sync button (🔄) available in header</li>
                         <li style="margin-bottom: 8px;">🛡️ Secure: Token stored in browser, only on YOUR device</li>
                     </ul>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button onclick="document.getElementById('docModal').classList.remove('active')" style="padding: 8px 12px; background: #6b7280; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✖ Close</button>
                 </div>
 
             </div>
