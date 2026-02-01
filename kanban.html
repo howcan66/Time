@@ -647,6 +647,7 @@
 
             <div class="modal-buttons">
                 <button class="btn-secondary" onclick="closeAdminPanel()">Close</button>
+                <button class="btn-delete" onclick="resetUserDataToDefaults()" style="margin-left: auto;" title="Emergency reset to default users">🔄 Reset to Defaults</button>
             </div>
         </div>
     </div>
@@ -991,12 +992,38 @@
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
         // ENHANCED SCHEMA (HJ-ID1RS7) - email, roles array, active, lastLogin
-        let validUsers = localStorage.getItem('validUsers') ? JSON.parse(localStorage.getItem('validUsers')) : [
-            { username: 'R18', password: 'R18', email: 'r18@time.local', roles: ['Project Manager'], active: true, lastLogin: null },
-            { username: 'Maximus', password: 'Maximus', email: 'maximus@time.local', roles: ['Developer'], active: true, lastLogin: null },
-            { username: 'Joel', password: 'Joel', email: 'joel@time.local', roles: ['Reviewer'], active: true, lastLogin: null },
-            { username: 'admin', password: 'admin', email: 'admin@time.local', roles: ['Admin'], active: true, lastLogin: null }
-        ];
+        function getDefaultUsers() {
+            return [
+                { username: 'R18', password: 'R18', email: 'r18@time.local', roles: ['Project Manager'], active: true, lastLogin: null },
+                { username: 'Maximus', password: 'Maximus', email: 'maximus@time.local', roles: ['Developer'], active: true, lastLogin: null },
+                { username: 'Joel', password: 'Joel', email: 'joel@time.local', roles: ['Reviewer'], active: true, lastLogin: null },
+                { username: 'admin', password: 'admin', email: 'admin@time.local', roles: ['Admin'], active: true, lastLogin: null }
+            ];
+        }
+        
+        function loadValidUsers() {
+            try {
+                const stored = localStorage.getItem('validUsers');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    // Validate that array has users with required fields
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        // Ensure each user has roles array
+                        const validated = parsed.map(u => ({
+                            ...u,
+                            roles: Array.isArray(u.roles) ? u.roles : [u.role || 'User'],
+                            active: u.active !== false
+                        }));
+                        return validated;
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading validUsers from localStorage:', e);
+            }
+            return getDefaultUsers();
+        }
+        
+        let validUsers = loadValidUsers();
         let currentUser = null;
         // PER-USER LOCKOUT TRACKING - Use localStorage so it resets on page reload
         let loginAttemptsByUser = {}; // { username: { attempts: 0, locked: false, lockUntil: null } }
@@ -1310,6 +1337,16 @@
             editingUserId = null;
         }
 
+        function resetUserDataToDefaults() {
+            if (confirm('⚠️ EMERGENCY RESET: This will restore all users to default values and erase any changes. Continue?')) {
+                validUsers = getDefaultUsers();
+                localStorage.setItem('validUsers', JSON.stringify(validUsers));
+                logAdminAction('RESET_DATA', 'User data reset to defaults');
+                renderUserTable();
+                alert('✅ User data reset to defaults. All changes have been erased.');
+            }
+        }
+
         function saveUser() {
             const username = document.getElementById('userFormUsername').value.trim();
             const password = document.getElementById('userFormPassword').value.trim();
@@ -1318,7 +1355,7 @@
             
             // Get selected roles
             const roles = [];
-            document.querySelectorAll('.role-checkboxes input:checked').forEach(cb => {
+            document.querySelectorAll('.role-checkboxes input[type="checkbox"][value]:checked').forEach(cb => {
                 roles.push(cb.value);
             });
             
@@ -1336,7 +1373,7 @@
                 username,
                 password,
                 email,
-                roles,
+                roles: Array.isArray(roles) ? roles : ['User'],
                 active,
                 lastLogin: null
             };
@@ -1356,8 +1393,14 @@
                 logAdminAction('ADD_USER', `Added new user: ${username} (${roles.join(', ')})`);
             }
             
-            // Save validUsers to localStorage
-            localStorage.setItem('validUsers', JSON.stringify(validUsers));
+            // Save validUsers to localStorage with validation
+            try {
+                localStorage.setItem('validUsers', JSON.stringify(validUsers));
+                console.log('✅ User data saved successfully:', userData);
+            } catch (e) {
+                console.error('❌ Failed to save user data:', e);
+                alert('Error saving user data. Check browser storage.');
+            }
             
             closeUserForm();
             renderUserTable();
