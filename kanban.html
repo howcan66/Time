@@ -362,6 +362,8 @@
         .task-row2.compact-hidden { display: none; }
         .task-compact-toggle { font-size: 12px; color: #999; cursor: pointer; padding: 2px 4px; border-radius: 2px; }
         .task-compact-toggle:hover { background: #f0f0f0; color: #333; }
+        .task-description { font-size: 12px; color: #666; margin-bottom: 5px; padding: 4px 6px; background: #f9fafb; border-radius: 4px; line-height: 1.4; font-style: italic; }
+        .task-description.hidden { display: none; }
 
         .task-row3 { display: flex; gap: 5px; align-items: center; }
         .move-select { flex: 1; padding: 3px 5px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; }
@@ -1073,6 +1075,7 @@
         let tasks = defaultTasks.map(task => ({ ...task }));
         let taskIdCounter = 24;
         let compactViewTasks = localStorage.getItem('compactViewTasks') ? JSON.parse(localStorage.getItem('compactViewTasks')) : {}; // { taskId: true/false }
+        let descriptionVisibility = localStorage.getItem('descriptionVisibility') ? JSON.parse(localStorage.getItem('descriptionVisibility')) : {}; // { taskId: true/false }
         let collapsedColumns = localStorage.getItem('collapsedColumns') ? JSON.parse(localStorage.getItem('collapsedColumns')) : {}; // { columnNum: true/false }
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
@@ -2121,6 +2124,18 @@ ${projectUrl}`;
             }
         }
 
+        function toggleDescriptionVisibility(taskId) {
+            // Toggle description visibility for this task
+            descriptionVisibility[taskId] = !descriptionVisibility[taskId];
+            localStorage.setItem('descriptionVisibility', JSON.stringify(descriptionVisibility));
+            
+            // Re-render the task's column
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                renderColumn(task.column);
+            }
+        }
+
         function applyColumnCollapseState(columnNum) {
             const columnEl = document.querySelector(`.kanban-column[data-column="${columnNum}"]`);
             if (!columnEl) return;
@@ -2542,6 +2557,10 @@ ${projectUrl}`;
             const isCompact = compactViewTasks[task.id] === true;
             const toggleIcon = isCompact ? '▶️' : '▼';
             
+            // Description visibility toggle
+            const showDescription = descriptionVisibility[task.id] !== false; // default: true
+            const hasDescription = task.whatDescription && task.whatDescription.trim() !== '';
+            
             return `
                 <div class="task-card" data-task-id="${task.id}" data-creator="${creator}" draggable="${deviceInfo.isDesktop || deviceInfo.isTablet}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <div class="task-row1">
@@ -2550,12 +2569,14 @@ ${projectUrl}`;
                         <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
                         <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
                         <div class="action-buttons">
+                            ${hasDescription ? `<button class="icon-btn" onclick="toggleDescriptionVisibility('${task.id}')" title="Toggle description">${showDescription ? '🔽' : '🔼'}</button>` : ''}
                             <button class="icon-btn task-compact-toggle" onclick="toggleCompactView('${task.id}')" title="Toggle compact view">${toggleIcon}</button>
                             <button class="icon-btn" onclick="viewTask('${task.id}')">👁️</button>
                             <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
                         </div>
                     </div>
                     <div class="task-row2 ${isCompact ? 'compact-hidden' : ''}" onclick="viewTask('${task.id}')">${task.what}</div>
+                    ${hasDescription && showDescription && !isCompact ? `<div class="task-description">${task.whatDescription}</div>` : ''}
                     ${isCompact ? '' : assigneeDisplay}
                     <div class="task-row3 ${isCompact ? 'compact-hidden' : ''}">
                         <select class="move-select" onchange="moveTask('${task.id}', this.value)">
