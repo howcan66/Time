@@ -1119,6 +1119,52 @@ BENEFIT: HIGH (faster workflow + cleaner UI)
 STATUS: PROPOSED (ready for implementation)
 
 ================================================================================
+IMPROVEMENT #20: Secure Task ID Change (User ID + Password Gate)
+===============================================================
+CURRENT STATE:
+  Task ID can be edited freely in the task edit modal
+  No authentication is required to change an assigned Task ID
+  Risk of accidental or unauthorized ID changes
+
+PROPOSED SOLUTION:
+  Require user ID + password verification before Task ID field can be edited
+  Add an "Unlock Task ID" button next to Task ID in the edit modal
+  On click, prompt for credentials (re-auth) and verify before enabling edit
+  Optionally restrict: only Admin or Task Assignee can unlock Task ID changes
+
+UI BEHAVIOR:
+  Default: Task ID field is read-only
+  User clicks "Unlock Task ID" → modal prompts for username + password
+  If verified → Task ID field becomes editable for this session
+  If failed → show error, keep Task ID locked
+
+WHERE TO IMPLEMENT:
+  File: kanban.html
+  Location: Task edit modal (Task ID field section)
+  Functions: Add verifyTaskIdUnlock() and re-lock on modal close
+
+BENEFITS:
+  ✅ Prevents accidental Task ID changes
+  ✅ Adds accountability and security for identifier edits
+  ✅ Protects links/references to Task IDs
+  ✅ Clear audit trail if combined with adminLogs
+
+IMPLEMENTATION STEPS:
+  1. Add "Unlock Task ID" button near Task ID field
+  2. Add a small credential prompt modal or inline prompt
+  3. Verify credentials against validUsers
+  4. If success → enable Task ID input
+  5. If fail → show error and keep locked
+  6. Re-lock Task ID when modal closes
+  7. (Optional) Log Task ID change in adminLogs
+
+PRIORITY: MEDIUM
+EFFORT: MEDIUM (30-45 minutes)
+BENEFIT: HIGH (security + data integrity)
+
+STATUS: PROPOSED (ready for implementation)
+
+================================================================================
 CONCLUSION
 ================================================================================
 
