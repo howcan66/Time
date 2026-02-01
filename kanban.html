@@ -1870,6 +1870,7 @@ ${projectUrl}`;
         document.getElementById('taskForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const taskId = document.getElementById('taskId').value || `HJ TD${taskIdCounter++}`;
+            const previousTask = editingTaskId ? tasks.find(t => t.id === editingTaskId) : null;
             
             // Get assignee data (Step 3)
             const selectedAssignee = document.getElementById('taskAssignee').value;
@@ -1898,6 +1899,12 @@ ${projectUrl}`;
                 assignedDate: assigneeUser ? new Date().toISOString().split('T')[0] : null,
                 assignedBy: assigneeUser ? currentUser.username : null
             };
+
+            // Step 6: Admin log for task assignment
+            if (assigneeUser && (!previousTask || previousTask.assignee !== assigneeUser.username)) {
+                logAdminAction('ASSIGN_TASK', `Task ${taskData.id} assigned to ${assigneeUser.username}`);
+            }
+
             if (editingTaskId) {
                 tasks[tasks.findIndex(t => t.id === editingTaskId)] = taskData;
             } else {
