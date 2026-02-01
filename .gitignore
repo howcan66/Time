@@ -1,0 +1,50 @@
+# Operating System
+.DS_Store
+Thumbs.db
+*.log
+
+# VS Code
+.vscode/launch.json
+.vscode/tasks.json
+*.code-workspace
+
+# Editor Temp Files
+~*
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Node (if ever used)
+node_modules/
+package-lock.json
+npm-debug.log
+
+# IDEs
+*.sublime-project
+*.sublime-workspace
+.idea/
+
+# OS Cache
+$RECYCLE.BIN/
+.Trash/
+
+# Personal Notes
+NOTES.txt
+TODO_personal.txt
+.personal/
+
+# Build & Dist
+dist/
+build/
+*.min.js.map
+*.min.css.map
+
+# Environment
+.env
+.env.local
+
+# Temporary
+temp/
+tmp/
+*.tmp~

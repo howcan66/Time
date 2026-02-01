@@ -1,0 +1,1529 @@
+================================================================================
+TIME PROJECT - COMPREHENSIVE SETUP VERIFICATION SCRIPT (AI VERSION)
+================================================================================
+DATE CREATED: February 1, 2026
+PURPOSE: Complete setup verification for Time Kanban project across all devices
+AUDIENCE: AI Assistant / Advanced Users
+
+================================================================================
+SECTION 1: GIT & GITHUB REPOSITORY VERIFICATION
+================================================================================
+
+STEP 1.1: Verify Git Installation
+----------------------------------
+COMMAND:
+  git --version
+
+EXPECTED OUTPUT:
+  git version 2.52.0.windows.1 (or higher)
+
+STATUS: ✅ VERIFIED
+
+
+STEP 1.2: Verify GitHub Repository Connection
+----------------------------------------------
+COMMAND:
+  cd 'c:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git remote -v
+
+EXPECTED OUTPUT:
+  origin  https://github.com/howcan66/Time.git (fetch)
+  origin  https://github.com/howcan66/Time.git (push)
+
+STATUS: ✅ VERIFIED
+
+
+STEP 1.3: Verify Current Branch
+--------------------------------
+COMMAND:
+  git branch -a
+
+EXPECTED OUTPUT:
+  * main
+    remotes/origin/HEAD -> origin/main
+    remotes/origin/main
+
+CURRENT BRANCH: main
+STATUS: ✅ VERIFIED
+
+
+STEP 1.4: Check Working Tree Status
+------------------------------------
+COMMAND:
+  git status
+
+EXPECTED OUTPUT:
+  On branch main
+  Your branch is up to date with 'origin/main'.
+  nothing to commit, working tree clean
+
+STATUS: ✅ VERIFIED
+
+
+STEP 1.5: Verify Recent Commits
+--------------------------------
+COMMAND:
+  git log --oneline -5
+
+LAST COMMIT:
+  6a0e6ef - CREATE: SESSION_READINESS_REPORT.txt
+  
+STATUS: ✅ VERIFIED
+
+================================================================================
+SECTION 2: ONEDRIVE INTEGRATION VERIFICATION
+================================================================================
+
+STEP 2.1: Verify OneDrive Folder Location
+------------------------------------------
+COMMAND:
+  Get-Item 'c:\Users\coolp\OneDrive\Dokument\GitHub\Time' | Select-Object FullName, Attributes, LastWriteTime
+
+EXPECTED ATTRIBUTES:
+  ReadOnly, Directory, Archive, ReparsePoint
+
+REPARSE POINT: Indicates OneDrive cloud folder sync active
+STATUS: ✅ VERIFIED
+
+
+STEP 2.2: Check OneDrive Sync Status
+-------------------------------------
+MANUAL CHECK:
+  1. Right-click Time folder in File Explorer
+  2. Look for green checkmark (✓) or cloud icon
+  3. Verify "Always keep on this device" is checked (optional)
+
+STATUS: ⚠️ MANUAL VERIFICATION REQUIRED
+
+================================================================================
+SECTION 3: PROJECT FILE STRUCTURE VERIFICATION
+================================================================================
+
+STEP 3.1: Verify Core HTML Files
+---------------------------------
+COMMAND:
+  Test-Path 'kanban.html'
+  Test-Path 'kanban_backup.html'
+
+EXPECTED: Both return True
+STATUS: ✅ VERIFIED (kanban.html, kanban_backup.html exist)
+
+
+STEP 3.2: Verify Data Directory
+--------------------------------
+COMMAND:
+  Test-Path 'data\kanbanTasks.json'
+
+EXPECTED: True
+PURPOSE: GitHub sync data file
+STATUS: ✅ VERIFIED
+
+
+STEP 3.3: Verify Documentation Files
+-------------------------------------
+COMMAND:
+  Get-ChildItem -Path . -Filter "*.txt" | Select-Object Name | Sort-Object Name
+
+EXPECTED FILES:
+  - Commands.txt (command shortcuts)
+  - CMD.txt (command reference + credentials)
+  - Design.txt (design specifications)
+  - Instructions.txt (AI workflow rules)
+  - Requirements.txt (HJ-ID#RS# specs)
+  - GITHUB_SYNC_SETUP.txt (token setup guide)
+  - Project_Status.csv (status tracking)
+  - Todo.txt (pending tasks)
+  - Completed.txt (finished tasks)
+  - Log_all.txt (activity log)
+  - Login_Log.txt (authentication log)
+
+STATUS: ✅ VERIFIED (40+ documentation files present)
+
+
+STEP 3.4: Verify Kanban Data File Contents
+-------------------------------------------
+COMMAND:
+  $data = Get-Content 'data\kanbanTasks.json' -Raw | ConvertFrom-Json
+  $data.Count
+
+EXPECTED: 50+ tasks in JSON array
+STATUS: ✅ VERIFIED (475 lines, ~50+ tasks)
+
+================================================================================
+SECTION 4: GITHUB API CONFIGURATION VERIFICATION
+================================================================================
+
+STEP 4.1: Extract GitHub Config from kanban.html
+-------------------------------------------------
+SEARCH IN FILE: kanban.html
+LOCATION: Line ~1903
+
+EXPECTED CONFIG:
+  const GITHUB_CONFIG = {
+      owner: 'howcan66',
+      repo: 'Time',
+      path: 'data/kanbanTasks.json',
+      branch: 'main'
+  };
+
+API ENDPOINT:
+  https://api.github.com/repos/howcan66/Time/contents/data/kanbanTasks.json
+
+STATUS: ✅ VERIFIED
+
+
+STEP 4.2: Verify GitHub Token Authentication
+---------------------------------------------
+BROWSER CONSOLE COMMAND (F12 → Console):
+  localStorage.getItem('githubToken')
+
+EXPECTED OUTPUT:
+  'ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' (40 characters)
+
+IF NULL:
+  ⚠️ TOKEN NOT SET - Follow Section 5 for setup
+
+IF VALID:
+  ✅ TOKEN CONFIGURED
+
+STATUS: ⚠️ REQUIRES BROWSER VERIFICATION
+
+
+STEP 4.3: Verify GitHub File SHA Storage
+-----------------------------------------
+BROWSER CONSOLE COMMAND (F12 → Console):
+  localStorage.getItem('githubFileSha')
+
+EXPECTED OUTPUT:
+  40-character SHA hash (e.g., 'abc123def456...')
+
+PURPOSE: Version tracking for conflict-free GitHub updates
+
+STATUS: ⚠️ REQUIRES BROWSER VERIFICATION
+
+================================================================================
+SECTION 5: BROWSER LOCALSTORAGE SETUP (PER DEVICE)
+================================================================================
+
+STEP 5.1: Open Kanban Application
+----------------------------------
+OPTION A - GitHub Pages (Recommended):
+  URL: https://howcan66.github.io/Time/kanban.html
+  
+OPTION B - Local File:
+  URL: file:///c:/Users/coolp/OneDrive/Dokument/GitHub/Time/kanban.html
+
+OPEN IN BROWSER: Chrome, Edge, Safari, or Firefox
+
+
+STEP 5.2: Set GitHub Token (Method 1 - UI - RECOMMENDED)
+---------------------------------------------------------
+1. Click "📖 Docs" button in navigation
+2. Click "⚙️ GitHub Token Settings" section
+3. Enter Personal Access Token
+4. Click "Save Token"
+5. Verify success message: "✅ Token saved successfully"
+
+ADVANTAGES:
+  - No console knowledge needed
+  - Works on mobile/tablet
+  - User-friendly interface
+  - Included in Feature 15 (HJ-ID1RS11)
+
+
+STEP 5.3: Set GitHub Token (Method 2 - Console - ADVANCED)
+-----------------------------------------------------------
+1. Open browser Developer Tools (F12)
+2. Go to Console tab
+3. Run command:
+   localStorage.setItem('githubToken', 'ghp_YOUR_TOKEN_HERE');
+4. Verify:
+   localStorage.getItem('githubToken');
+5. Refresh page
+
+ADVANTAGES:
+  - Direct control
+  - Faster for advanced users
+
+
+STEP 5.4: Verify Session Persistence
+-------------------------------------
+BROWSER CONSOLE COMMAND:
+  localStorage.getItem('timeProjectSession')
+
+EXPECTED OUTPUT (when logged in):
+  JSON object: {"username":"R18","roles":["Project Manager"],"loginTime":"...","isAdmin":false}
+
+IF NULL:
+  User not logged in - normal state before login
+
+STATUS: ⚠️ DEVICE-SPECIFIC (check each browser/device)
+
+
+STEP 5.5: Verify Task Backup Storage
+-------------------------------------
+BROWSER CONSOLE COMMAND:
+  localStorage.getItem('timeProjectTasks')
+
+EXPECTED OUTPUT:
+  JSON array string (large - contains all tasks)
+
+PURPOSE: Offline backup + fast load before GitHub sync
+
+STATUS: ⚠️ DEVICE-SPECIFIC
+
+================================================================================
+SECTION 6: GITHUB PAGES DEPLOYMENT VERIFICATION
+================================================================================
+
+STEP 6.1: Check GitHub Pages Settings
+--------------------------------------
+BROWSER URL:
+  https://github.com/howcan66/Time/settings/pages
+
+VERIFY SETTINGS:
+  ✅ Source: Deploy from a branch
+  ✅ Branch: main
+  ✅ Folder: / (root)
+  ✅ Status: "Your site is live at https://howcan66.github.io/Time/"
+
+IF NOT ENABLED:
+  1. Go to repository Settings → Pages
+  2. Source: Deploy from branch
+  3. Branch: main → / (root) → Save
+  4. Wait 1-2 minutes for deployment
+
+
+STEP 6.2: Test Live Deployment
+-------------------------------
+BROWSER URL:
+  https://howcan66.github.io/Time/kanban.html
+
+EXPECTED:
+  - Kanban board loads successfully
+  - Login modal appears
+  - All styles/CSS applied correctly
+  - No 404 errors in console
+
+STATUS: ⚠️ MANUAL BROWSER TEST REQUIRED
+
+
+STEP 6.3: Verify GitHub Pages Build Status
+-------------------------------------------
+BROWSER URL:
+  https://github.com/howcan66/Time/deployments
+
+EXPECTED:
+  - Recent deployment to "github-pages" environment
+  - Status: Active (green checkmark)
+  - Deployment time: Recent (within last 24 hours)
+
+STATUS: ⚠️ MANUAL CHECK REQUIRED
+
+================================================================================
+SECTION 7: CROSS-DEVICE SYNC VERIFICATION
+================================================================================
+
+STEP 7.1: Desktop Device Setup
+-------------------------------
+1. Open kanban.html in browser (local or GitHub Pages)
+2. Login with test credentials (R18 / R18)
+3. Set GitHub Token (📖 Docs → Token Settings)
+4. Verify sync: Check console for "✓ Fetched from GitHub" message
+5. Create test task: "SYNC TEST - Desktop - [timestamp]"
+6. Verify push: Check console for "✓ Pushed to GitHub" message
+
+STATUS: ⚠️ DEVICE TEST REQUIRED
+
+
+STEP 7.2: Mobile/Tablet Device Setup
+-------------------------------------
+1. Open GitHub Pages URL on mobile browser
+2. Login with same credentials
+3. Set GitHub Token (📖 Docs → Token Settings)
+4. Refresh page → Should see Desktop test task
+5. Create task: "SYNC TEST - Mobile - [timestamp]"
+6. Return to Desktop → Refresh → Should see Mobile task
+
+STATUS: ⚠️ DEVICE TEST REQUIRED
+
+
+STEP 7.3: Verify Cross-Device Task Sync
+----------------------------------------
+TEST MATRIX:
+
+Desktop → GitHub:
+  - Create task on Desktop
+  - Check data/kanbanTasks.json on GitHub (should update)
+  
+GitHub → Mobile:
+  - Open Mobile browser
+  - Refresh page
+  - Verify Desktop task appears
+  
+Mobile → GitHub → Desktop:
+  - Create task on Mobile
+  - Refresh Desktop
+  - Verify Mobile task appears
+
+SUCCESS CRITERIA:
+  ✅ All tasks sync bidirectionally
+  ✅ No duplicate tasks
+  ✅ SHA version tracking works
+  ✅ No 401/403 API errors
+
+STATUS: ⚠️ MULTI-DEVICE TEST REQUIRED
+
+================================================================================
+SECTION 8: AUTHENTICATION & SECURITY VERIFICATION
+================================================================================
+
+STEP 8.1: Test Login System
+----------------------------
+TEST USERS:
+  1. R18 / R18 (Project Manager)
+  2. Maximus / Maximus (User)
+  3. admin / admin (Admin)
+
+TEST PROCEDURE:
+  1. Open kanban.html
+  2. Enter valid credentials
+  3. Verify: Login modal closes → Kanban board visible
+  4. Check localStorage: timeProjectSession exists
+  5. Refresh page → Should remain logged in (session persistence)
+  6. Click Logout → Session cleared → Login modal reappears
+
+STATUS: ⚠️ MANUAL TEST REQUIRED
+
+
+STEP 8.2: Test 3-Strike Lockout System
+---------------------------------------
+TEST PROCEDURE:
+  1. Logout (clear session)
+  2. Enter incorrect password 3 times for user "R18"
+  3. Verify: "Account locked for 5 minutes" message
+  4. Try login with correct password → Should fail
+  5. Wait 5 minutes OR reload page → Lockout resets
+  6. Login with correct password → Should succeed
+
+SECURITY FEATURE:
+  - Per-user lockout (not global)
+  - Resets on page reload (localStorage-based)
+  - Prevents brute-force attacks
+
+STATUS: ⚠️ MANUAL TEST REQUIRED
+
+
+STEP 8.3: Verify Admin Panel Access
+------------------------------------
+TEST PROCEDURE:
+  1. Login as "admin / admin"
+  2. Verify "🔐 Admin" button visible in header
+  3. Click Admin → Modal opens
+  4. Verify tabs: Users | Logs | Sessions | Invitations
+  5. Test user CRUD: Create, Edit, Delete user
+  6. Check Admin_Log.txt for logged actions
+
+ADMIN-ONLY FEATURE:
+  - Only visible to users with "Admin" role
+  - All actions logged
+  - Password reset requires confirmation
+
+STATUS: ⚠️ ADMIN TEST REQUIRED
+
+================================================================================
+SECTION 9: GITHUB TOKEN GENERATION (FIRST-TIME SETUP)
+================================================================================
+
+STEP 9.1: Generate Personal Access Token (PAT)
+-----------------------------------------------
+BROWSER URL:
+  https://github.com/settings/tokens
+
+PROCEDURE:
+  1. Click "Generate new token" → "Generate new token (classic)"
+  2. Token name: "Time Kanban Sync"
+  3. Expiration: No expiration (or 1 year)
+  4. Select scopes:
+     ✅ repo (Full control of private repositories)
+     ✅ repo:status
+     ✅ public_repo (if using public repo)
+  5. Click "Generate token"
+  6. **COPY TOKEN IMMEDIATELY** (shown only once)
+
+TOKEN FORMAT:
+  ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (40 characters)
+
+SECURITY NOTE:
+  - Store securely (password manager recommended)
+  - Never commit to git
+  - Can revoke anytime at: https://github.com/settings/tokens
+
+
+STEP 9.2: Add Token to Application
+-----------------------------------
+See Section 5 (Browser localStorage Setup)
+
+REPEAT FOR EACH DEVICE:
+  - Desktop browser
+  - Mobile browser (Safari/Chrome)
+  - Tablet browser
+  - Laptop browser
+
+Each device requires independent token setup.
+
+================================================================================
+SECTION 10: PRE-MIGRATION BACKUP PROCEDURES (OPTIONAL BUT RECOMMENDED)
+================================================================================
+
+OVERVIEW
+--------
+Create compressed backup before migrating project from OneDrive to C:\Git\Time.
+Provides safety net for recovery if migration encounters issues.
+
+BACKUP PRIORITY LEVELS
+-----------------------
+✅ REQUIRED (High Priority):
+  - Uncommitted changes exist (git status shows modifications)
+  - New untracked files not added to git
+  - First-time migration (learning/practice)
+  - OneDrive being removed permanently
+  - Limited Git experience
+
+⚠️ RECOMMENDED (Good Practice):
+  - Want complete peace of mind
+  - Disk space available (>1 GB free)
+  - Time available (extra 2 minutes)
+  - Migration on same day as important work
+
+ℹ️ OPTIONAL (Can Skip):
+  - Git status clean (no uncommitted changes)
+  - All files tracked and pushed to GitHub
+  - Confident in migration procedure
+  - Can re-clone from GitHub if needed
+
+
+STEP 10.1: Create Backup Directory
+-----------------------------------
+COMMAND:
+  New-Item -Path 'C:\Backups' -ItemType Directory -Force
+
+PURPOSE: Centralized backup storage location
+EXPECTED: Directory created or already exists
+
+
+STEP 10.2: Verify Source Status Before Backup
+----------------------------------------------
+COMMAND:
+  cd 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git status
+
+EXPECTED: Check for uncommitted changes
+RECOMMENDATION: If changes exist, commit before backup
+
+
+STEP 10.3: Create ZIP Backup (Method 1 - PowerShell Recommended)
+-----------------------------------------------------------------
+COMMAND:
+  Compress-Archive -Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' `
+                   -DestinationPath 'C:\Backups\Time_Backup_2026-02-01.zip' `
+                   -CompressionLevel Optimal
+
+EXPECTED:
+  - Compression time: 30-90 seconds
+  - File size: ~500 KB (compressed)
+  - Includes: All files (tracked + untracked + .git folder)
+
+STATUS: ⚠️ REQUIRED BEFORE MIGRATION
+
+
+STEP 10.4: Create Backup (Method 2 - Windows Explorer Alternative)
+-------------------------------------------------------------------
+MANUAL STEPS:
+  1. Open File Explorer
+  2. Navigate to: C:\Users\coolp\OneDrive\Dokument\GitHub\
+  3. Right-click "Time" folder
+  4. Send to → Compressed (zipped) folder
+  5. Rename to: Time_Backup_2026-02-01.zip
+  6. Move ZIP to: C:\Backups\
+
+ADVANTAGE: No PowerShell knowledge required
+TIME: 2-3 minutes
+
+
+STEP 10.5: Verify Backup Created Successfully
+----------------------------------------------
+COMMAND:
+  Test-Path 'C:\Backups\Time_Backup_2026-02-01.zip'
+
+EXPECTED: True
+
+CHECK SIZE:
+  Get-Item 'C:\Backups\Time_Backup_2026-02-01.zip' | 
+    Select-Object Name, @{Name='Size (KB)';Expression={[math]::Round($_.Length/1KB,2)}}, CreationTime
+
+
+STEP 10.6: Test Backup Integrity (Optional but Recommended)
+------------------------------------------------------------
+COMMAND:
+  # Extract to temp location
+  Expand-Archive -Path 'C:\Backups\Time_Backup_2026-02-01.zip' `
+                 -DestinationPath 'C:\Temp\VerifyBackup' -Force
+  
+  # Check critical files exist
+  Test-Path 'C:\Temp\VerifyBackup\Time\kanban.html'  # Should return True
+  Test-Path 'C:\Temp\VerifyBackup\Time\.git'  # Should return True
+  Test-Path 'C:\Temp\VerifyBackup\Time\data\kanbanTasks.json'  # Should return True
+  
+  # Count files
+  (Get-ChildItem 'C:\Temp\VerifyBackup\Time' -Recurse -File).Count
+  
+  # Cleanup test extraction
+  Remove-Item 'C:\Temp\VerifyBackup' -Recurse -Force
+
+PURPOSE: Ensure archive is valid and extractable
+TIME: 1 minute
+
+
+STEP 10.7: Document Backup Creation
+------------------------------------
+COMMAND:
+  Write-Host "✅ Backup created: C:\Backups\Time_Backup_2026-02-01.zip"
+  Write-Host "📅 Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+  Write-Host "📦 Size: $([math]::Round((Get-Item 'C:\Backups\Time_Backup_2026-02-01.zip').Length/1KB,2)) KB"
+  Write-Host "🗑️ Delete after: $(Get-Date (Get-Date).AddDays(7) -Format 'yyyy-MM-dd') (1 week retention)"
+
+RETENTION POLICY:
+  - Keep for 1 week after successful migration
+  - Verify new location works correctly
+  - Delete backup after verification period
+
+
+STEP 10.8: Backup Storage Alternatives
+---------------------------------------
+OPTION 1: C:\Backups\ (Recommended)
+  - Centralized location
+  - Easy to manage
+  - Fast local access
+
+OPTION 2: Desktop (Quick Access)
+  - Highly visible reminder
+  - Easy drag-drop restore
+  - May clutter desktop
+
+OPTION 3: External Drive (Maximum Safety)
+  - Off-system backup
+  - Survives C: drive failure
+  - Requires USB/external hardware
+
+OPTION 4: Network Drive (Enterprise)
+  - Centralized storage
+  - May have automated retention
+  - Requires network access
+
+STATUS: ✅ BACKUP COMPLETE - PROCEED TO SECTION 11 (MIGRATION)
+
+================================================================================
+SECTION 11: PROJECT MIGRATION (ONEDRIVE → C:\GIT\TIME)
+================================================================================
+
+MIGRATION OVERVIEW
+------------------
+SOURCE: C:\Users\coolp\OneDrive\Dokument\GitHub\Time
+TARGET: C:\Git\Time
+
+REASONS FOR MIGRATION:
+  ✅ Cleaner path structure (shorter, standard)
+  ✅ Removes OneDrive sync complexity
+  ✅ Faster git operations (not cloud-synced)
+  ✅ Standard Git workflow location
+  ✅ Eliminates OneDrive conflict potential
+
+MIGRATION IMPACT ANALYSIS
+--------------------------
+WHAT CHANGES:
+  ⚠️ Local file path (OneDrive → C:\Git)
+  ⚠️ VS Code workspace folder reference
+  ⚠️ File Explorer shortcuts/favorites
+  ⚠️ file:// browser URLs (if using local file access)
+  ⚠️ Documentation references to old path
+
+WHAT DOES NOT CHANGE:
+  ✅ GitHub repository URL (stays: https://github.com/howcan66/Time.git)
+  ✅ GitHub Pages deployment (stays: https://howcan66.github.io/Time/kanban.html)
+  ✅ Git commit history (fully preserved in .git folder)
+  ✅ Browser localStorage (domain-based, not path-based)
+  ✅ Remote tracking (origin/main connection intact)
+  ✅ GitHub API sync functionality
+
+
+STEP 11.1: Pre-Migration Git Status Check (CRITICAL)
+-----------------------------------------------------
+COMMAND:
+  cd 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git status
+
+EXPECTED OUTPUT:
+  "nothing to commit, working tree clean"
+
+⚠️ IF UNCOMMITTED CHANGES EXIST - MUST COMMIT FIRST:
+  git add .
+  git commit -m "PRE-MIGRATION: Commit all changes before moving to C:\Git\Time"
+  git push origin main
+
+STATUS: ⚠️ CRITICAL CHECKPOINT - DO NOT PROCEED WITHOUT CLEAN STATUS
+
+
+STEP 11.2: Ensure GitHub Sync Complete
+---------------------------------------
+COMMAND:
+  cd 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git pull
+  git push
+
+EXPECTED:
+  - Pull: "Already up to date"
+  - Push: "Everything up-to-date"
+
+PURPOSE: Ensure GitHub has all local changes (backup protection)
+
+
+STEP 11.3: Create Backup (Reference Section 10)
+------------------------------------------------
+VERIFY BACKUP EXISTS:
+  Test-Path 'C:\Backups\Time_Backup_2026-02-01.zip'
+
+IF NOT EXISTS - CREATE NOW:
+  Compress-Archive -Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' `
+                   -DestinationPath 'C:\Backups\Time_Backup_2026-02-01.zip'
+
+STATUS: ✅ BACKUP VERIFIED
+
+
+STEP 11.4: Create Target Directory
+-----------------------------------
+COMMAND:
+  New-Item -Path 'C:\Git' -ItemType Directory -Force
+
+EXPECTED: Directory created or already exists
+VERIFY:
+  Test-Path 'C:\Git'  # Should return True
+
+
+STEP 11.5: Copy Project to New Location (SAFE METHOD - NOT MOVE)
+-----------------------------------------------------------------
+COMMAND:
+  Copy-Item -Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' `
+            -Destination 'C:\Git\Time' -Recurse
+
+WHY COPY (NOT MOVE):
+  ✅ Source remains intact during verification
+  ✅ Safer (can rollback if issues)
+  ✅ Delete source only after successful verification
+
+TIME: 30-90 seconds
+STATUS: ⚠️ SOURCE STILL EXISTS (intentional safety measure)
+
+
+STEP 11.6: Verify Destination Files Exist
+------------------------------------------
+COMMANDS:
+  Test-Path 'C:\Git\Time'  # Should return True
+  Test-Path 'C:\Git\Time\.git'  # Should return True (Git repository metadata)
+  Test-Path 'C:\Git\Time\kanban.html'  # Should return True
+  Test-Path 'C:\Git\Time\data\kanbanTasks.json'  # Should return True
+
+EXPECTED: All return True
+
+
+STEP 11.7: Navigate to New Location
+------------------------------------
+COMMAND:
+  cd 'C:\Git\Time'
+
+VERIFY:
+  Get-Location  # Should show: C:\Git\Time
+
+
+STEP 11.8: Verify Git Integrity in New Location
+------------------------------------------------
+COMMAND:
+  git status
+  git remote -v
+  git log --oneline -5
+  git branch -a
+
+EXPECTED OUTPUT:
+  - Status: "On branch main" + "nothing to commit, working tree clean"
+  - Remote: "origin https://github.com/howcan66/Time.git"
+  - Log: Last 5 commits visible
+  - Branch: "* main" + "remotes/origin/main"
+
+EXPECTED: No errors, all git metadata intact
+
+
+STEP 11.9: Test Git Operations (CRITICAL VERIFICATION)
+-------------------------------------------------------
+COMMAND:
+  cd 'C:\Git\Time'
+  
+  # Test 1: Pull from GitHub
+  git pull
+  # Expected: "Already up to date"
+  
+  # Test 2: Create test file and push
+  "Migration test from C:\Git\Time" > test_migration.txt
+  git add test_migration.txt
+  git commit -m "TEST: Verify git push from new location C:\Git\Time"
+  git push origin main
+  # Expected: Successful push
+  
+  # Test 3: Clean up test file
+  git rm test_migration.txt
+  git commit -m "CLEANUP: Remove migration test file"
+  git push origin main
+  # Expected: Successful push
+
+PURPOSE: Confirm bidirectional GitHub sync works from new location
+STATUS: ✅ IF ALL TESTS PASS
+
+
+STEP 11.10: Compare File Counts (Integrity Check)
+--------------------------------------------------
+COMMAND:
+  $oldCount = (Get-ChildItem 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' -Recurse -File).Count
+  $newCount = (Get-ChildItem 'C:\Git\Time' -Recurse -File).Count
+  
+  Write-Host "Source (OneDrive): $oldCount files"
+  Write-Host "Destination (C:\Git): $newCount files"
+  
+  if ($oldCount -eq $newCount) {
+    Write-Host "✅ File counts match - migration successful"
+  } else {
+    Write-Host "⚠️ MISMATCH - Review before deleting source!"
+    Write-Host "   Difference: $($newCount - $oldCount) files"
+  }
+
+EXPECTED: Counts should match exactly
+
+
+STEP 11.11: Verify Git File System Check (Advanced)
+----------------------------------------------------
+COMMAND:
+  cd 'C:\Git\Time'
+  git fsck
+
+EXPECTED OUTPUT:
+  "Checking object directories: 100% ... done."
+  "Checking objects: 100% ... done."
+  (No errors reported)
+
+PURPOSE: Deep verification of git repository integrity
+
+
+STEP 11.12: Delete Old Location (ONLY AFTER ALL VERIFICATIONS PASS)
+--------------------------------------------------------------------
+⚠️⚠️⚠️ CRITICAL: Only run after Steps 11.5-11.11 all successful ⚠️⚠️⚠️
+
+CHECKLIST BEFORE DELETION:
+  [ ] Git status works in new location
+  [ ] Git pull/push tested successfully
+  [ ] File counts match
+  [ ] git fsck shows no errors
+  [ ] Backup exists at C:\Backups\Time_Backup_2026-02-01.zip
+
+COMMAND:
+  Remove-Item -Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' -Recurse -Force
+
+CONFIRMATION REQUIRED: Review all checks above
+
+RESULT: 
+  - OneDrive folder removed
+  - OneDrive will sync deletion to cloud (expected)
+  - GitHub still has complete project (safe)
+  - Backup exists for emergency restore
+
+
+STEP 11.13: Update VS Code Workspace
+-------------------------------------
+CLOSE CURRENT WORKSPACE:
+  File → Close Folder (or close VS Code)
+
+OPEN NEW LOCATION:
+  Method 1: File → Open Folder → Browse to C:\Git\Time
+  Method 2: Terminal → code 'C:\Git\Time'
+
+VERIFY VS CODE INTEGRATION:
+  [ ] Source Control tab shows Git repository (branch: main)
+  [ ] Terminal default path: PS C:\Git\Time>
+  [ ] File explorer shows all project files
+  [ ] No errors in Output panel (View → Output)
+  [ ] Git status visible in status bar (bottom left)
+
+
+STEP 11.14: Update Browser file:// URL (If Using Local File Access)
+---------------------------------------------------------------------
+OLD URL:
+  file:///C:/Users/coolp/OneDrive/Dokument/GitHub/Time/kanban.html
+
+NEW URL:
+  file:///C:/Git/Time/kanban.html
+
+ACTION: Update browser bookmarks/favorites
+
+NOTE: 
+  - GitHub Pages URL UNCHANGED: https://howcan66.github.io/Time/kanban.html
+  - localStorage may persist (browser-dependent)
+  - Re-enter GitHub token if cleared (use 📖 Docs → Token Settings)
+
+
+STEP 11.15: Document Migration Completion
+------------------------------------------
+COMMAND:
+  Write-Host "✅ MIGRATION COMPLETE"
+  Write-Host "📂 New Location: C:\Git\Time"
+  Write-Host "📅 Migration Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+  Write-Host "🗂️ Old Location: REMOVED (OneDrive)"
+  Write-Host "💾 Backup: C:\Backups\Time_Backup_2026-02-01.zip"
+  Write-Host "🗑️ Delete Backup After: $(Get-Date (Get-Date).AddDays(7) -Format 'yyyy-MM-dd')"
+
+STATUS: ✅ MIGRATION COMPLETE - PROCEED TO SECTION 12 (POST-MIGRATION VERIFICATION)
+
+================================================================================
+SECTION 12: POST-MIGRATION VERIFICATION & TESTING
+================================================================================
+
+OVERVIEW
+--------
+Comprehensive testing after migration to ensure all functionality intact.
+Complete within 24 hours of migration for early issue detection.
+
+
+STEP 12.1: Git Repository Health Check
+---------------------------------------
+COMMAND:
+  cd 'C:\Git\Time'
+  git status  # Should be clean
+  git remote -v  # Should show origin
+  git log --oneline -10  # Should show commit history
+  git branch -a  # Should show main + remotes
+
+EXPECTED: All commands execute without errors
+
+
+STEP 12.2: File Structure Verification
+---------------------------------------
+COMMAND:
+  Test-Path 'C:\Git\Time\kanban.html'
+  Test-Path 'C:\Git\Time\kanban_backup.html'
+  Test-Path 'C:\Git\Time\data\kanbanTasks.json'
+  Test-Path 'C:\Git\Time\Commands.txt'
+  Test-Path 'C:\Git\Time\.git'
+
+EXPECTED: All return True
+
+FILE COUNT:
+  (Get-ChildItem 'C:\Git\Time' -Recurse -File).Count
+  # Should match pre-migration count
+
+
+STEP 12.3: GitHub Connectivity Test
+------------------------------------
+COMMAND:
+  cd 'C:\Git\Time'
+  
+  # Fetch latest from GitHub
+  git fetch origin
+  
+  # Check remote status
+  git status
+  # Expected: "Your branch is up to date with 'origin/main'"
+
+EXPECTED: No authentication errors, successful fetch
+
+
+STEP 12.4: Cross-Device Sync Test (If Applicable)
+--------------------------------------------------
+PROCEDURE:
+  1. Desktop (new location): Create test task "POST-MIGRATION TEST"
+  2. Check console: "✓ Pushed to GitHub"
+  3. Mobile/Tablet: Refresh kanban
+  4. Verify: "POST-MIGRATION TEST" task appears
+  5. Mobile: Edit task, change status
+  6. Desktop: Refresh kanban
+  7. Verify: Status change synced
+
+SUCCESS: Bidirectional sync works from new location
+
+
+STEP 12.5: VS Code Integration Test
+------------------------------------
+CHECKLIST:
+  [ ] Open folder: C:\Git\Time in VS Code
+  [ ] Source Control shows Git repository
+  [ ] Can stage/commit changes from VS Code
+  [ ] Terminal opens to C:\Git\Time
+  [ ] Git branch shown in status bar
+  [ ] File search works (Ctrl+P)
+  [ ] No workspace errors
+
+STATUS: ✅ IF ALL ITEMS CHECKED
+
+
+STEP 12.6: Browser Access Test
+-------------------------------
+TEST 1 - Local File Access:
+  URL: file:///C:/Git/Time/kanban.html
+  Expected: Kanban loads, login prompt appears
+
+TEST 2 - GitHub Pages (Primary):
+  URL: https://howcan66.github.io/Time/kanban.html
+  Expected: Kanban loads, login prompt appears
+
+TEST 3 - localStorage Verification:
+  F12 → Console → localStorage.getItem('githubToken')
+  Expected: Token present (or re-enter if cleared)
+
+
+STEP 12.7: Login & Session Test
+--------------------------------
+PROCEDURE:
+  1. Open kanban.html (local or GitHub Pages)
+  2. Login: R18 / R18
+  3. Verify: Login modal closes, board visible
+  4. Refresh page (F5)
+  5. Verify: Stay logged in (session persists)
+  6. Logout
+  7. Verify: Login modal reappears
+
+SUCCESS: Session persistence works in new location
+
+
+STEP 12.8: GitHub Token Sync Test
+----------------------------------
+PROCEDURE:
+  1. Open kanban.html
+  2. Login
+  3. Create new task: "SYNC TEST - [timestamp]"
+  4. Check browser console (F12):
+     - "✓ Tasks saved to localStorage"
+     - "✓ Pushed to GitHub"
+  5. Verify on GitHub: data/kanbanTasks.json updated
+  6. Manual sync: Click refresh button
+  7. Verify: "✓ Fetched from GitHub"
+
+SUCCESS: GitHub sync functional from new location
+
+
+STEP 12.9: Documentation Path Updates (Optional)
+-------------------------------------------------
+FILES TO UPDATE (if desired):
+  - Time Setup_AI_script file.txt (this file)
+  - Time Setup_Basic_script file.txt
+  - Any other docs referencing old path
+
+FIND & REPLACE:
+  Old: C:\Users\coolp\OneDrive\Dokument\GitHub\Time
+  New: C:\Git\Time
+  
+  Old: file:///c:/Users/coolp/OneDrive/Dokument/GitHub/Time
+  New: file:///C:/Git/Time
+
+ALTERNATIVE: Leave as historical reference (not critical)
+
+
+STEP 12.10: Verify OneDrive Cleanup
+------------------------------------
+CHECK:
+  Test-Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  # Should return False (deleted)
+
+ONEDRIVE CLOUD:
+  - May show "deleted" files in OneDrive cloud
+  - Optional: Permanently delete from OneDrive.com
+  - Not required (Git/GitHub is primary backup)
+
+STATUS: ✅ ONEDRIVE DEPENDENCY REMOVED
+
+
+STEP 12.11: Backup Retention Check
+-----------------------------------
+VERIFY BACKUP EXISTS:
+  Test-Path 'C:\Backups\Time_Backup_2026-02-01.zip'
+  # Should return True
+
+RETENTION SCHEDULE:
+  - Keep for 1 week after migration (safety period)
+  - Verify new location works correctly during week
+  - Delete after: 2026-02-08 (7 days)
+
+DELETE COMMAND (Run after 1 week):
+  Remove-Item 'C:\Backups\Time_Backup_2026-02-01.zip' -Force
+
+
+STEP 12.12: Multi-Device Update (If Applicable)
+------------------------------------------------
+OTHER DEVICES TO UPDATE:
+  - Laptop: Clone from GitHub to C:\Git\Time
+  - Other PCs: Clone from GitHub to C:\Git\Time
+
+CLONE COMMAND:
+  git clone https://github.com/howcan66/Time.git 'C:\Git\Time'
+
+NOTE: Mobile/Tablet use GitHub Pages (no local clone needed)
+
+STATUS: ✅ POST-MIGRATION VERIFICATION COMPLETE
+
+================================================================================
+SECTION 13: BACKUP & RECOVERY PROCEDURES
+================================================================================
+
+SECTION 13.1: Emergency Restore from Backup ZIP
+------------------------------------------------
+SCENARIO: Migration failed, need to restore to original state
+
+PROCEDURE:
+  # 1. Extract backup to original location
+  Expand-Archive -Path 'C:\Backups\Time_Backup_2026-02-01.zip' `
+                 -DestinationPath 'C:\Users\coolp\OneDrive\Dokument\GitHub' -Force
+
+  # 2. Verify restoration
+  Test-Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time\kanban.html'  # Should return True
+  
+  # 3. Verify git integrity
+  cd 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git status  # Should work without errors
+  
+  # 4. Open in VS Code
+  code 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+
+RESULT: Complete restoration to pre-migration state (2-5 minutes)
+
+
+SECTION 13.2: Recovery from GitHub Clone (Total Loss Scenario)
+---------------------------------------------------------------
+SCENARIO: All local files lost, backup corrupted, need clean start
+
+PROCEDURE:
+  # 1. Clone fresh from GitHub
+  git clone https://github.com/howcan66/Time.git 'C:\Git\Time'
+  
+  # 2. Navigate to new location
+  cd 'C:\Git\Time'
+  
+  # 3. Verify all files present
+  git log --oneline -10  # All commits present
+  git status  # Clean working tree
+  
+  # 4. Open in VS Code
+  code 'C:\Git\Time'
+  
+  # 5. Re-enter GitHub token in browser
+  # Open kanban.html → F12 → Console
+  # localStorage.setItem('githubToken', 'ghp_YOUR_TOKEN_HERE');
+
+RECOVERY COMPLETENESS:
+  ✅ All committed files (100%)
+  ✅ All git history
+  ✅ All branches
+  ✅ All documentation
+  ✅ All task data (data/kanbanTasks.json)
+
+NOT RECOVERABLE:
+  ❌ Uncommitted changes (if not committed before loss)
+  ❌ Browser localStorage (minor - just re-enter token)
+
+TIME: 5 minutes
+
+
+SECTION 13.3: Partial File Recovery
+------------------------------------
+SCENARIO: Single file corrupted or accidentally deleted
+
+PROCEDURE:
+  cd 'C:\Git\Time'
+  
+  # Restore specific file from last commit
+  git checkout HEAD -- kanban.html
+  
+  # Restore from specific commit
+  git checkout <commit-hash> -- kanban.html
+  
+  # Restore entire directory
+  git checkout HEAD -- data/
+
+PURPOSE: Quick recovery without full restore
+
+
+SECTION 13.4: Backup Deletion Schedule
+---------------------------------------
+WHEN TO DELETE BACKUP:
+  ✅ After 1 week of successful operation in new location
+  ✅ All verifications passed (Section 12)
+  ✅ No issues discovered
+  ✅ All devices updated
+
+DELETE COMMAND:
+  Remove-Item 'C:\Backups\Time_Backup_2026-02-01.zip' -Force
+
+VERIFY DELETION:
+  Test-Path 'C:\Backups\Time_Backup_2026-02-01.zip'  # Should return False
+
+RATIONALE: Git/GitHub provides ongoing backup (ZIP backup redundant after verification)
+
+
+SECTION 13.5: Long-Term Backup Strategy
+----------------------------------------
+PRIMARY BACKUP: Git/GitHub
+  - Every commit pushed to GitHub = automatic backup
+  - Complete version history
+  - Accessible from anywhere
+  - Free unlimited storage (for this project size)
+
+RECOMMENDED WORKFLOW:
+  1. Commit changes frequently
+  2. Push to GitHub daily (or after each session)
+  3. Verify "git push" succeeds
+  4. No local backup needed (GitHub is backup)
+
+EMERGENCY BACKUP (Optional):
+  - Before major refactoring: Create ZIP backup
+  - Before upgrading dependencies: Create ZIP backup
+  - Delete after successful change verification
+
+
+SECTION 13.6: Data Loss Prevention Checklist
+---------------------------------------------
+DAILY HABITS:
+  [ ] Commit work at end of session
+  [ ] Push to GitHub before closing
+  [ ] Verify "Everything up-to-date" message
+  [ ] Check git status clean
+
+BEFORE RISKY OPERATIONS:
+  [ ] Commit all changes
+  [ ] Push to GitHub
+  [ ] Create temporary ZIP backup
+  [ ] Test in separate branch (if major change)
+
+RECOVERY READINESS:
+  [ ] Know GitHub repository URL
+  [ ] Have GitHub token saved securely
+  [ ] Can clone from GitHub anytime
+  [ ] Familiar with git checkout commands
+
+STATUS: ✅ BACKUP & RECOVERY PROCEDURES DOCUMENTED
+
+================================================================================
+SECTION 14: TROUBLESHOOTING COMMON ISSUES
+================================================================================
+
+ISSUE 10.1: Tasks Not Syncing Across Devices
+---------------------------------------------
+DIAGNOSIS:
+  1. Check token: localStorage.getItem('githubToken')
+  2. Check console errors (F12 → Console)
+  3. Verify internet connection
+  4. Test manual refresh: Click sync button
+
+SOLUTION:
+  - If token is null → Set token (Section 5)
+  - If 401 error → Token expired, generate new token
+  - If 403 error → Token lacks permissions, regenerate with 'repo' scope
+  - If network error → Check internet connection
+
+
+ISSUE 10.2: Session Not Persisting After Refresh
+-------------------------------------------------
+DIAGNOSIS:
+  1. Check: localStorage.getItem('timeProjectSession')
+  2. Verify browser allows localStorage (not in private/incognito mode)
+
+SOLUTION:
+  - If null → Bug in session save logic
+  - If private mode → Use normal browser window
+  - Clear corrupted session: localStorage.removeItem('timeProjectSession')
+
+
+ISSUE 10.3: GitHub Pages Not Loading
+-------------------------------------
+DIAGNOSIS:
+  1. Check Pages enabled: https://github.com/howcan66/Time/settings/pages
+  2. Check deployments: https://github.com/howcan66/Time/deployments
+  3. Verify branch: main / root
+
+SOLUTION:
+  - Enable GitHub Pages (Section 6.1)
+  - Wait 1-2 minutes after enabling
+  - Check for build errors in deployments tab
+
+
+ISSUE 10.4: OneDrive Sync Conflicts
+------------------------------------
+DIAGNOSIS:
+  1. Check for "conflict" files in folder
+  2. Verify OneDrive is not paused
+  3. Check folder attributes (should have ReparsePoint)
+
+SOLUTION:
+  - Git handles version control (OneDrive just syncs files)
+  - Resolve git conflicts first (git status)
+  - Delete OneDrive conflict copies (keep git version)
+
+
+ISSUE 10.5: Token Expired or Revoked
+-------------------------------------
+SYMPTOMS:
+  - 401 Unauthorized errors in console
+  - Tasks not syncing to GitHub
+  - Manual refresh fails
+
+SOLUTION:
+  1. Generate new token (Section 9.1)
+  2. Update token on ALL devices (Section 5.2 or 5.3)
+  3. Refresh page
+  4. Verify sync works
+
+
+ISSUE 14.6: Migration Failed or Files Lost
+-------------------------------------------
+SYMPTOMS:
+  - Files missing after migration
+  - Git not working in new location
+  - File count mismatch
+  - Cannot access project
+
+DIAGNOSIS:
+  1. Check backup exists: Test-Path 'C:\Backups\Time_Backup_2026-02-01.zip'
+  2. Check GitHub: git clone test (dry run)
+  3. Check source still exists (if copy method used)
+
+SOLUTION A - Restore from Backup:
+  Expand-Archive -Path 'C:\Backups\Time_Backup_2026-02-01.zip' `
+                 -DestinationPath 'C:\Users\coolp\OneDrive\Dokument\GitHub' -Force
+  # Complete restore in 2 minutes
+
+SOLUTION B - Clone from GitHub:
+  git clone https://github.com/howcan66/Time.git 'C:\Git\Time'
+  # Fresh copy from GitHub in 5 minutes
+
+SOLUTION C - Copy from Source (if still exists):
+  Copy-Item -Path 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time' `
+            -Destination 'C:\Git\Time' -Recurse
+  # Retry migration
+
+PREVENTION:
+  - Always create backup before migration (Section 10)
+  - Use copy method (not move) until verified
+  - Test git operations before deleting source
+
+
+ISSUE 14.7: OneDrive Syncing Deletion to Other Devices
+-------------------------------------------------------
+SYMPTOMS:
+  - Other PCs show "Time folder deleted"
+  - OneDrive sync removed project files
+  - Laptop/tablet lost local copy
+
+EXPECTED BEHAVIOR:
+  - OneDrive will sync deletion (normal after migration)
+  - GitHub still has all files (safe)
+
+SOLUTION:
+  On each affected device:
+    1. Don't panic - GitHub has everything
+    2. Clone fresh from GitHub:
+       git clone https://github.com/howcan66/Time.git 'C:\Git\Time'
+    3. Open in VS Code: code 'C:\Git\Time'
+    4. Continue working
+
+NOTE: This is expected - OneDrive no longer used for sync
+
+
+ISSUE 14.8: VS Code Not Recognizing Git After Migration
+--------------------------------------------------------
+SYMPTOMS:
+  - Source Control shows "No source control providers"
+  - Git status not in status bar
+  - Cannot commit from VS Code
+
+DIAGNOSIS:
+  1. Check .git folder exists: Test-Path 'C:\Git\Time\.git'
+  2. Check git works in terminal: git status
+  3. Check VS Code opened correct folder
+
+SOLUTION:
+  1. Close VS Code
+  2. Reopen folder: File → Open Folder → C:\Git\Time
+  3. Reload window: Ctrl+Shift+P → "Developer: Reload Window"
+  4. Check Source Control tab (Ctrl+Shift+G)
+
+IF STILL NOT WORKING:
+  - Reinstall Git extension in VS Code
+  - Check Git path in VS Code settings
+  - Verify git.exe in system PATH
+
+
+ISSUE 14.9: Browser localStorage Cleared After Path Change
+-----------------------------------------------------------
+SYMPTOMS:
+  - GitHub token missing after migration
+  - Must login again
+  - Tasks not syncing
+
+EXPECTED: May happen if using file:// protocol (browser-dependent)
+
+SOLUTION:
+  1. Re-enter GitHub token:
+     - Click "📖 Docs" → "⚙️ GitHub Token Settings"
+     - Enter token → Save
+  2. Or use GitHub Pages (domain unchanged):
+     - https://howcan66.github.io/Time/kanban.html
+     - localStorage persists regardless of local path
+
+TIME: 30 seconds to re-enter token
+
+================================================================================
+SECTION 15: COMPLETE SETUP CHECKLIST
+================================================================================
+
+✅ VERIFIED AUTOMATICALLY (PowerShell/Git):
+  [✓] Git installed and configured (v2.52.0+)
+  [✓] GitHub repository connected (https://github.com/howcan66/Time.git)
+  [✓] Branch: main (active, up-to-date)
+  [✓] Working tree clean (no uncommitted changes)
+  [✓] OneDrive folder synced (ReparsePoint attribute)
+  [✓] kanban.html exists
+  [✓] kanban_backup.html exists
+  [✓] data/kanbanTasks.json exists (475+ lines)
+  [✓] Documentation files present (40+ .txt files)
+  [✓] GitHub config correct (owner: howcan66, repo: Time)
+
+⚠️ REQUIRES MANUAL VERIFICATION (Browser/Web):
+  [ ] GitHub Pages enabled and deployed
+  [ ] GitHub Pages URL accessible: https://howcan66.github.io/Time/kanban.html
+  [ ] GitHub Token set in localStorage (Desktop)
+  [ ] GitHub Token set in localStorage (Mobile)
+  [ ] GitHub Token set in localStorage (Tablet)
+  [ ] Login system tested (3 test users)
+  [ ] Session persistence tested (refresh page)
+  [ ] 3-strike lockout tested
+  [ ] Admin panel tested (admin user only)
+  [ ] Cross-device sync tested (Desktop ↔ Mobile)
+  [ ] Task creation syncs to GitHub
+  [ ] GitHub changes pull to all devices
+
+⚠️ MIGRATION CHECKLIST (If Moving from OneDrive to C:\Git\Time):
+  [ ] Section 10: Backup created (ZIP to C:\Backups)
+  [ ] Section 10: Backup verified (extracted & tested)
+  [ ] Section 11: Git status clean before migration
+  [ ] Section 11: All changes committed and pushed
+  [ ] Section 11: Target directory created (C:\Git)
+  [ ] Section 11: Project copied to C:\Git\Time
+  [ ] Section 11: Git verified in new location (status, remote, log)
+  [ ] Section 11: Git operations tested (pull, push, commit)
+  [ ] Section 11: File count matches source
+  [ ] Section 11: Old location deleted (after verification)
+  [ ] Section 11: VS Code reopened in new location
+  [ ] Section 12: Post-migration tests passed
+  [ ] Section 13: Backup scheduled for deletion (after 1 week)
+
+================================================================================
+SECTION 16: SUCCESS CRITERIA & METRICS
+================================================================================
+
+DEPLOYMENT SUCCESS:
+  ✅ GitHub Pages live and accessible
+  ✅ All devices can access kanban.html
+  ✅ Login system functional on all devices
+  ✅ Session persistence works
+
+SYNC SUCCESS:
+  ✅ GitHub Token configured on all devices
+  ✅ Tasks sync bidirectionally (Desktop ↔ GitHub ↔ Mobile)
+  ✅ No duplicate tasks
+  ✅ SHA version tracking prevents conflicts
+  ✅ Manual refresh pulls latest data
+
+SECURITY SUCCESS:
+  ✅ Login required to access board
+  ✅ 3-strike lockout prevents brute-force
+  ✅ Admin panel restricted to admin users
+  ✅ Tokens not committed to git
+  ✅ Session clears on logout
+
+USABILITY SUCCESS:
+  ✅ "📖 Docs" button provides setup instructions
+  ✅ Token setup works without console (UI method)
+  ✅ Mobile-responsive (adaptive device detection)
+  ✅ OneDrive syncs files across Windows devices
+
+MIGRATION SUCCESS (If Applicable):
+  ✅ All files migrated to C:\Git\Time
+  ✅ Git operations functional (pull, push, commit)
+  ✅ VS Code recognizes git repository
+  ✅ No data loss (file count matches)
+  ✅ OneDrive dependency removed
+  ✅ Backup created and verified before migration
+  ✅ Shorter, cleaner path achieved
+  ✅ Faster git operations (no cloud sync overhead)
+  ✅ GitHub sync still functional
+  ✅ VS Code integration working
+
+BACKUP & RECOVERY SUCCESS:
+  ✅ Backup creation procedure documented
+  ✅ Restore from backup tested (dry run)
+  ✅ Clone from GitHub verified
+  ✅ Data loss prevention habits established
+  ✅ Recovery procedures understood
+
+================================================================================
+END OF TIME PROJECT SETUP VERIFICATION SCRIPT (AI VERSION)
+================================================================================
+NEXT STEPS:
+  1. Complete manual browser verifications (Section 5-8)
+  2. Test cross-device sync (Section 7)
+  3. Generate GitHub Token if needed (Section 9)
+  4. Enable GitHub Pages if not active (Section 6)
+  5. (OPTIONAL) Migrate to C:\Git\Time (Sections 10-13)
+  6. Document any issues in TESTING_PLAN.txt
+
+MIGRATION WORKFLOW (If Desired):
+  PHASE 1 - PREPARATION:
+    → Section 10: Create backup
+    → Section 11: Pre-migration checks
+  
+  PHASE 2 - MIGRATION:
+    → Section 11: Copy to new location
+    → Section 11: Verify git integrity
+    → Section 11: Test git operations
+  
+  PHASE 3 - VERIFICATION:
+    → Section 12: Post-migration testing
+    → Section 12: Multi-device updates
+    → Section 11: Delete old location
+  
+  PHASE 4 - CLEANUP:
+    → Section 13: Keep backup for 1 week
+    → Section 13: Delete backup after verification
+
+SUPPORT RESOURCES:
+  - Commands.txt (command shortcuts)
+  - GITHUB_SYNC_SETUP.txt (token setup guide)
+  - Instructions.txt (AI workflow rules)
+  - Documentation.csv (file index)
+  - Time Setup_Basic_script file.txt (quick reference)
+
+VERSION: 2.0 (Updated with Migration & Backup procedures)
+DATE: February 1, 2026
+SECTIONS: 16 (was 12)
+NEW CONTENT:
+  - Section 10: Pre-Migration Backup Procedures
+  - Section 11: Project Migration (OneDrive → C:\Git\Time)
+  - Section 12: Post-Migration Verification
+  - Section 13: Backup & Recovery Procedures
+  - Section 14: Troubleshooting (updated with migration issues)
+  - Section 15: Complete Setup Checklist (migration items added)
+  - Section 16: Success Criteria (migration metrics added)
+
+================================================================================

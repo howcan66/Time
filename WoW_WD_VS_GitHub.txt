@@ -1,0 +1,746 @@
+================================================================================
+WAY OF WORKING - WEB DESIGN WITH VS CODE & GITHUB
+================================================================================
+DATE CREATED: February 1, 2026
+PURPOSE: Standard workflow for web design/development using VS Code + GitHub
+PROJECT: Time Kanban Application
+AUDIENCE: All Team Members
+
+================================================================================
+SECTION 1: WORKSPACE SETUP
+================================================================================
+
+STEP 1.1: Open Project in VS Code
+----------------------------------
+METHOD 1 - File Menu:
+  File → Open Folder → Navigate to project folder → Select Folder
+
+METHOD 2 - PowerShell:
+  code 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+
+METHOD 3 - Right-Click (if context menu enabled):
+  Right-click project folder → Open with Code
+
+VERIFY:
+  ✅ Folder name appears in top left
+  ✅ File Explorer shows all files (left sidebar)
+  ✅ Source Control icon shows git integration
+
+
+STEP 1.2: Verify Git Integration
+---------------------------------
+CHECK SOURCE CONTROL:
+  1. Click Source Control icon (left sidebar, 3rd icon)
+  2. Should show current branch (main)
+  3. Should show repository name (Time)
+  4. No errors in output
+
+VERIFY IN TERMINAL:
+  Terminal → New Terminal (Ctrl+Shift+`)
+  git status  # Should show "On branch main"
+  git remote -v  # Should show GitHub URL
+
+
+STEP 1.3: Install Recommended Extensions (One-Time Setup)
+----------------------------------------------------------
+ESSENTIAL EXTENSIONS:
+
+1. **Live Server** (ritwickdey.LiveServer)
+   - Purpose: Live preview of HTML/CSS changes
+   - Install: Extensions → Search "Live Server" → Install
+   - Usage: Right-click HTML file → "Open with Live Server"
+
+2. **HTML CSS Support** (ecmel.vscode-html-css)
+   - Purpose: CSS class/ID autocomplete in HTML
+   - Install: Extensions → Search "HTML CSS Support" → Install
+
+3. **Prettier - Code Formatter** (esbenp.prettier-vscode)
+   - Purpose: Auto-format HTML/CSS/JS
+   - Install: Extensions → Search "Prettier" → Install
+   - Config: Set as default formatter (Settings → Default Formatter)
+
+4. **GitLens** (eamodio.gitlens)
+   - Purpose: Enhanced Git integration (blame, history)
+   - Install: Extensions → Search "GitLens" → Install
+
+5. **Auto Rename Tag** (formulahendry.auto-rename-tag)
+   - Purpose: Auto-rename paired HTML tags
+   - Install: Extensions → Search "Auto Rename Tag" → Install
+
+OPTIONAL EXTENSIONS:
+  - Color Highlight (naumovs.color-highlight)
+  - Bracket Pair Colorizer (retired - now built-in)
+  - Indent Rainbow (oderwat.indent-rainbow)
+
+================================================================================
+SECTION 2: DAILY WORKFLOW - BEFORE STARTING WORK
+================================================================================
+
+STEP 2.1: Pull Latest Changes from GitHub
+------------------------------------------
+PURPOSE: Ensure you have latest code before making changes
+
+TERMINAL:
+  cd 'C:\Users\coolp\OneDrive\Dokument\GitHub\Time'
+  git pull origin main
+
+EXPECTED OUTPUT:
+  - "Already up to date" (if no changes)
+  - Or: Files updated/merged
+
+SOURCE CONTROL (Alternative):
+  Source Control → ... menu → Pull
+
+
+STEP 2.2: Check Git Status
+---------------------------
+TERMINAL:
+  git status
+
+EXPECTED: "nothing to commit, working tree clean"
+
+IF UNCOMMITTED CHANGES FROM LAST SESSION:
+  - Review changes in Source Control tab
+  - Decide: Commit or Discard
+  - Then pull latest
+
+
+STEP 2.3: Create Feature Branch (Optional - for major work)
+------------------------------------------------------------
+WHEN TO USE BRANCHES:
+  ✅ Major new feature (e.g., new page, major redesign)
+  ✅ Experimental changes
+  ✅ Multi-day work that shouldn't block others
+
+SKIP BRANCHES IF:
+  ℹ️ Small fixes (typos, minor CSS tweaks)
+  ℹ️ Solo developer (no collaboration conflicts)
+  ℹ️ Direct to main is team standard
+
+CREATE BRANCH:
+  git checkout -b feature/feature-name
+  # Example: git checkout -b feature/print-button
+
+VERIFY:
+  git branch  # Should show * feature/feature-name
+
+================================================================================
+SECTION 3: EDITING WORKFLOW - MAKING CHANGES
+================================================================================
+
+STEP 3.1: Open Files for Editing
+---------------------------------
+FILE STRUCTURE (Time Project):
+  - kanban.html (main application)
+  - kanban_backup.html (backup copy)
+  - data/kanbanTasks.json (task data)
+  - Documentation/*.txt (specs, instructions)
+
+OPEN FILE:
+  Method 1: File Explorer → Click filename
+  Method 2: Quick Open → Ctrl+P → Type filename
+  Method 3: Recent Files → Ctrl+Tab
+
+
+STEP 3.2: Live Preview (HTML/CSS Changes)
+------------------------------------------
+START LIVE SERVER:
+  1. Right-click kanban.html in File Explorer
+  2. Select "Open with Live Server"
+  3. Browser opens at http://localhost:5500/kanban.html
+
+AUTO-REFRESH:
+  - Make changes in VS Code
+  - Save file (Ctrl+S)
+  - Browser auto-refreshes (no manual reload)
+
+STOP LIVE SERVER:
+  - Bottom right status bar → "Port: 5500" → Click → "Stop Live Server"
+
+
+STEP 3.3: Code Editing Best Practices
+--------------------------------------
+FORMATTING:
+  - Auto-format on save (File → Preferences → Settings)
+  - Or manual: Shift+Alt+F (Windows)
+
+MULTI-CURSOR EDITING:
+  - Alt+Click (add cursors)
+  - Ctrl+D (select next occurrence)
+  - Ctrl+Shift+L (select all occurrences)
+
+FIND & REPLACE:
+  - Find: Ctrl+F
+  - Replace: Ctrl+H
+  - Find in Files: Ctrl+Shift+F
+
+COMMENT/UNCOMMENT:
+  - Single line: Ctrl+/
+  - Block comment: Shift+Alt+A
+
+
+STEP 3.4: Save Frequently
+--------------------------
+MANUAL SAVE:
+  Ctrl+S (single file)
+  Ctrl+K S (save all open files)
+
+AUTO-SAVE (Recommended):
+  File → Auto Save (toggle on)
+  Settings → Files: Auto Save → "afterDelay"
+
+VERIFY SAVED:
+  - No white dot on file tab (unsaved indicator)
+  - File Explorer shows no "M" (modified) marker
+
+================================================================================
+SECTION 4: TESTING CHANGES
+================================================================================
+
+STEP 4.1: Test in Browser (Live Server)
+----------------------------------------
+VERIFY:
+  ✅ Layout displays correctly
+  ✅ CSS styles applied
+  ✅ JavaScript functions work
+  ✅ No console errors (F12 → Console)
+  ✅ Responsive design (resize browser window)
+
+TEST DEVICES:
+  - Desktop view (>800px width)
+  - Mobile view (<800px width)
+  - Browser DevTools (F12 → Toggle Device Toolbar)
+
+
+STEP 4.2: Test Cross-Browser (If Major Change)
+-----------------------------------------------
+BROWSERS TO TEST:
+  1. Chrome/Edge (Chromium - primary)
+  2. Firefox (if significant change)
+  3. Safari (if available, especially for iOS users)
+
+FOCUS AREAS:
+  - CSS compatibility
+  - JavaScript functionality
+  - localStorage behavior
+
+
+STEP 4.3: Test Functionality
+-----------------------------
+FOR KANBAN CHANGES:
+  [ ] Login system works (test users: R18, Maximus, admin)
+  [ ] Task creation works
+  [ ] Task editing works
+  [ ] Drag-drop works (desktop)
+  [ ] Dropdowns work (mobile)
+  [ ] GitHub sync works (if applicable)
+  [ ] Session persistence works (refresh page)
+
+CHECK CONSOLE (F12):
+  - No red errors
+  - Expected success messages (e.g., "✓ Tasks saved")
+
+================================================================================
+SECTION 5: COMMITTING CHANGES TO GIT
+================================================================================
+
+STEP 5.1: Review Changes in Source Control
+-------------------------------------------
+OPEN SOURCE CONTROL:
+  - Click Source Control icon (left sidebar)
+  - Or: Ctrl+Shift+G
+
+VIEW CHANGES:
+  - Modified files shown in "Changes" section
+  - Click file to see diff (red = removed, green = added)
+  - Review all changes before committing
+
+DISCARD UNWANTED CHANGES:
+  - Right-click file → Discard Changes (irreversible!)
+
+
+STEP 5.2: Stage Changes
+------------------------
+STAGE ALL FILES:
+  - Hover over "Changes" → Click "+" icon
+  - Or: Terminal → git add .
+
+STAGE SPECIFIC FILES:
+  - Hover over filename → Click "+" icon
+  - Or: Terminal → git add filename.html
+
+VERIFY STAGED:
+  - Files move to "Staged Changes" section
+  - Green "A" (added) or "M" (modified)
+
+
+STEP 5.3: Write Commit Message
+-------------------------------
+COMMIT MESSAGE FORMAT:
+
+**Standard Format:**
+  TYPE: Brief description (50 chars max)
+  
+  Optional longer explanation (if needed)
+
+**Types:**
+  - FEAT: New feature
+  - FIX: Bug fix
+  - STYLE: CSS/formatting changes
+  - DOCS: Documentation updates
+  - TEST: Testing changes
+  - REFACTOR: Code restructuring
+  - CHORE: Maintenance tasks
+
+**Examples:**
+  FEAT: Add print button to kanban board
+  FIX: Resolve mobile layout spacing issue
+  STYLE: Update header colors and button styles
+  DOCS: Add setup instructions to README
+
+**Time Project Standard (Current):**
+  - CREATE: New file created
+  - UPDATE: File modified
+  - FIX: Bug resolved
+  - FEAT: New feature implemented
+  - TEST: Testing/verification
+
+
+STEP 5.4: Commit Changes
+-------------------------
+VS CODE METHOD:
+  1. Type commit message in text box (top of Source Control)
+  2. Click ✓ (checkmark) or press Ctrl+Enter
+  3. Changes committed to local git
+
+TERMINAL METHOD:
+  git commit -m "FEAT: Add print button to kanban board"
+
+VERIFY COMMIT:
+  - Source Control shows "No changes"
+  - Timeline/GitLens shows new commit
+
+
+STEP 5.5: Best Practices for Commits
+-------------------------------------
+WHEN TO COMMIT:
+  ✅ After completing logical unit of work
+  ✅ Before switching tasks
+  ✅ At end of work session
+  ✅ Before pulling from remote
+
+HOW OFTEN:
+  - Small commits preferred (easier to review/revert)
+  - 1-3 commits per hour (active development)
+  - Commit before risky changes
+
+WHAT TO AVOID:
+  ❌ Committing broken code (test first!)
+  ❌ Committing sensitive data (passwords, tokens)
+  ❌ Committing large binary files (images >1MB)
+  ❌ Vague messages ("fix stuff", "updates")
+
+================================================================================
+SECTION 6: PUSHING TO GITHUB
+================================================================================
+
+STEP 6.1: Push Commits to GitHub
+---------------------------------
+VS CODE METHOD:
+  Source Control → ... menu → Push
+  Or: Click "Sync Changes" (cloud icon with number)
+
+TERMINAL METHOD:
+  git push origin main
+  # Or: git push origin feature/feature-name (if on branch)
+
+EXPECTED OUTPUT:
+  - "Writing objects: 100%"
+  - "Branch 'main' set up to track 'origin/main'"
+  - No errors
+
+AUTHENTICATION (If Required):
+  - May prompt for GitHub credentials
+  - Use Personal Access Token (not password)
+
+
+STEP 6.2: Verify Push on GitHub.com
+------------------------------------
+BROWSER:
+  1. Navigate to: https://github.com/howcan66/Time
+  2. Check "Commits" tab → See your commit
+  3. Check "Code" tab → See updated files
+  4. Check "Actions" (if GitHub Actions enabled)
+
+VERIFY:
+  ✅ Commit message visible
+  ✅ Files updated
+  ✅ Timestamp correct
+
+
+STEP 6.3: GitHub Pages Auto-Deploy (If Enabled)
+------------------------------------------------
+DEPLOYMENT:
+  - GitHub Pages auto-deploys from main branch
+  - Wait 1-2 minutes for deployment
+  - Check: https://github.com/howcan66/Time/deployments
+
+VERIFY LIVE:
+  - Open: https://howcan66.github.io/Time/kanban.html
+  - Refresh (Ctrl+Shift+R to clear cache)
+  - Verify changes visible
+
+================================================================================
+SECTION 7: COLLABORATION WORKFLOW (MULTI-USER)
+================================================================================
+
+STEP 7.1: Pull Before Push (Critical)
+--------------------------------------
+ALWAYS RUN:
+  git pull origin main
+
+BEFORE:
+  - Starting work each day
+  - Pushing your changes
+  - Switching branches
+
+HANDLES CONFLICTS:
+  - If someone else pushed changes
+  - Git will merge or show conflicts
+
+
+STEP 7.2: Resolve Merge Conflicts (If Occur)
+---------------------------------------------
+CONFLICT INDICATORS IN FILE:
+  <<<<<<< HEAD
+  Your changes
+  =======
+  Their changes
+  >>>>>>> origin/main
+
+RESOLVE IN VS CODE:
+  1. VS Code highlights conflicts
+  2. Choose: "Accept Current Change" or "Accept Incoming Change" or "Accept Both"
+  3. Edit manually if needed
+  4. Remove conflict markers
+  5. Save file
+  6. Stage resolved file
+  7. Commit merge
+
+TERMINAL METHOD:
+  git add resolved-file.html
+  git commit -m "MERGE: Resolve conflict in kanban.html"
+
+
+STEP 7.3: Code Review Process (Optional)
+-----------------------------------------
+IF USING PULL REQUESTS:
+  1. Push to feature branch (not main)
+  2. Create Pull Request on GitHub.com
+  3. Request review from team member
+  4. Address feedback
+  5. Merge to main after approval
+
+DIRECT TO MAIN (Current Workflow):
+  - Suitable for solo developer
+  - Or small team with good communication
+  - Quick iterations
+
+================================================================================
+SECTION 8: TROUBLESHOOTING COMMON ISSUES
+================================================================================
+
+ISSUE 8.1: Cannot Push - "Rejected" Error
+------------------------------------------
+CAUSE: Remote has changes you don't have locally
+
+SOLUTION:
+  git pull origin main
+  # Resolve any conflicts
+  git push origin main
+
+
+ISSUE 8.2: Live Server Not Working
+-----------------------------------
+SYMPTOMS: Browser doesn't open or doesn't auto-refresh
+
+SOLUTION:
+  1. Check extension installed: Extensions → Search "Live Server"
+  2. Right-click HTML file (not in editor, in File Explorer)
+  3. Check firewall/antivirus not blocking port 5500
+  4. Try different port: Settings → Live Server → Port → 5501
+
+
+ISSUE 8.3: Git Not Recognized in VS Code
+-----------------------------------------
+SYMPTOMS: Source Control shows "No repository found"
+
+SOLUTION:
+  1. Verify git installed: Terminal → git --version
+  2. Check .git folder exists in project root
+  3. Reload VS Code: Ctrl+Shift+P → "Developer: Reload Window"
+  4. Check git.path in settings
+
+
+ISSUE 8.4: Changes Not Showing in Browser
+------------------------------------------
+CAUSE: Browser cache
+
+SOLUTION:
+  - Hard refresh: Ctrl+Shift+R (Chrome/Edge)
+  - Or: Ctrl+F5
+  - Or: Clear cache in DevTools (F12 → Network → Disable cache)
+  - Or: Restart Live Server
+
+
+ISSUE 8.5: Merge Conflict Too Complex
+--------------------------------------
+SOLUTION (Nuclear Option):
+  1. Backup your changes (copy files)
+  2. Abort merge: git merge --abort
+  3. Discard local changes: git reset --hard origin/main
+  4. Manually re-apply your changes from backup
+  5. Commit fresh
+
+BETTER SOLUTION:
+  - Commit frequently (smaller conflicts)
+  - Pull before making major changes
+  - Communicate with team about file edits
+
+
+ISSUE 8.6: Accidentally Committed Wrong Files
+----------------------------------------------
+UNDO LAST COMMIT (Keep Changes):
+  git reset --soft HEAD~1
+
+UNDO LAST COMMIT (Discard Changes):
+  git reset --hard HEAD~1  # DESTRUCTIVE - USE CAREFULLY
+
+REMOVE FILE FROM STAGING:
+  git restore --staged filename.html
+
+================================================================================
+SECTION 9: KEYBOARD SHORTCUTS QUICK REFERENCE
+================================================================================
+
+GENERAL:
+  Ctrl+P          Quick Open (file search)
+  Ctrl+Shift+P    Command Palette
+  Ctrl+B          Toggle Sidebar
+  Ctrl+`          Toggle Terminal
+  Ctrl+Tab        Switch between open files
+
+EDITING:
+  Ctrl+S          Save
+  Ctrl+Z          Undo
+  Ctrl+Shift+Z    Redo
+  Ctrl+F          Find
+  Ctrl+H          Replace
+  Ctrl+/          Toggle comment
+  Shift+Alt+F     Format document
+
+MULTI-CURSOR:
+  Alt+Click       Add cursor
+  Ctrl+D          Select next occurrence
+  Ctrl+U          Undo last cursor operation
+  Ctrl+Shift+L    Select all occurrences
+
+NAVIGATION:
+  Ctrl+G          Go to line
+  Ctrl+Home       Go to file start
+  Ctrl+End        Go to file end
+  F12             Go to definition
+
+SOURCE CONTROL:
+  Ctrl+Shift+G    Open Source Control
+  Ctrl+Enter      Commit (when in message box)
+
+DEBUGGING:
+  F5              Start debugging
+  F12             Open DevTools (browser)
+
+================================================================================
+SECTION 10: BEST PRACTICES SUMMARY
+================================================================================
+
+DAILY ROUTINE:
+  1. ☕ Start day: git pull origin main
+  2. 🔧 Make changes with Live Server running
+  3. 💾 Save frequently (enable Auto Save)
+  4. ✅ Test in browser (multiple sizes)
+  5. 📝 Commit logical units of work (clear messages)
+  6. ⬆️ Push to GitHub at end of session (or more often)
+  7. 🌐 Verify on GitHub Pages (if applicable)
+
+CODE QUALITY:
+  ✅ Format code before committing (Shift+Alt+F)
+  ✅ Test in browser before committing
+  ✅ Check console for errors (F12)
+  ✅ Write clear commit messages
+  ✅ Keep commits small and focused
+
+GIT HYGIENE:
+  ✅ Pull before starting work
+  ✅ Pull before pushing
+  ✅ Commit frequently
+  ✅ Never commit broken code
+  ✅ Don't commit sensitive data
+  ✅ Use .gitignore for temp files
+
+COLLABORATION:
+  ✅ Communicate about major changes
+  ✅ Resolve conflicts promptly
+  ✅ Review others' changes (GitHub commits)
+  ✅ Document complex changes in commit messages
+
+================================================================================
+SECTION 11: TIME PROJECT SPECIFIC WORKFLOW
+================================================================================
+
+FILE STRUCTURE:
+  kanban.html               Main application (2400+ lines)
+  kanban_backup.html        Backup before major changes
+  data/kanbanTasks.json     Task data (synced to GitHub)
+  Commands.txt              Project shortcuts
+  Requirements.txt          Feature specs
+  Design.txt                Design documentation
+  Instructions.txt          AI workflow rules
+  TESTING_PLAN.txt          Test procedures
+
+BEFORE MAJOR CHANGES:
+  1. Create backup: Copy kanban.html → kanban_backup.html
+  2. Document in Design.txt or Requirements.txt
+  3. Create feature branch (optional)
+  4. Test thoroughly before committing
+
+TESTING CHECKLIST (Kanban Changes):
+  [ ] Login works (R18, Maximus, admin)
+  [ ] Desktop drag-drop works
+  [ ] Mobile dropdowns work
+  [ ] Task CRUD (Create, Read, Update, Delete)
+  [ ] Session persistence (refresh page)
+  [ ] GitHub sync (if modified)
+  [ ] Admin panel (if modified)
+  [ ] 3-strike lockout (if modified)
+  [ ] No console errors
+
+COMMIT MESSAGE STANDARDS:
+  - FEAT: New feature implemented
+  - FIX: Bug resolved
+  - STYLE: CSS/UI changes
+  - UPDATE: File modified
+  - CREATE: New file added
+  - TEST: Testing/verification
+  - DOCS: Documentation updates
+
+DEPLOYMENT:
+  - Push to main → GitHub Pages auto-deploys
+  - Verify at: https://howcan66.github.io/Time/kanban.html
+  - Wait 1-2 minutes for deployment
+  - Hard refresh browser (Ctrl+Shift+R)
+
+================================================================================
+SECTION 12: ADVANCED WORKFLOWS
+================================================================================
+
+WORKING WITH BRANCHES:
+  # Create feature branch
+  git checkout -b feature/new-feature
+  
+  # Work on feature (commits)
+  git commit -m "FEAT: Part 1 of new feature"
+  
+  # Push branch to GitHub
+  git push origin feature/new-feature
+  
+  # Switch back to main
+  git checkout main
+  
+  # Merge feature to main
+  git merge feature/new-feature
+  
+  # Delete branch (after merge)
+  git branch -d feature/new-feature
+
+STASHING WORK IN PROGRESS:
+  # Save work without committing
+  git stash
+  
+  # Switch to main, pull, etc.
+  git checkout main
+  git pull
+  
+  # Restore stashed work
+  git stash pop
+
+VIEW COMMIT HISTORY:
+  # VS Code: Timeline view (bottom of File Explorer)
+  # GitLens: Hover over line → See who changed it
+  # Terminal: git log --oneline --graph
+
+REVERT TO PREVIOUS VERSION:
+  # Restore single file from last commit
+  git checkout HEAD -- filename.html
+  
+  # Restore from specific commit
+  git checkout <commit-hash> -- filename.html
+
+COMPARE CHANGES:
+  # VS Code: Click modified file in Source Control
+  # Terminal: git diff filename.html
+  # GitHub: Compare commits online
+
+================================================================================
+SECTION 13: RESOURCES & LINKS
+================================================================================
+
+PROJECT LINKS:
+  - Repository: https://github.com/howcan66/Time
+  - GitHub Pages: https://howcan66.github.io/Time/kanban.html
+  - Commits: https://github.com/howcan66/Time/commits/main
+  - Deployments: https://github.com/howcan66/Time/deployments
+
+VS CODE DOCUMENTATION:
+  - Official Docs: https://code.visualstudio.com/docs
+  - Keyboard Shortcuts: https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf
+  - Git Integration: https://code.visualstudio.com/docs/sourcecontrol/overview
+
+GIT DOCUMENTATION:
+  - Git Basics: https://git-scm.com/book/en/v2/Getting-Started-Git-Basics
+  - Git Commands: https://git-scm.com/docs
+  - Git Tutorial: https://www.atlassian.com/git/tutorials
+
+PROJECT FILES:
+  - Commands.txt (project shortcuts)
+  - Instructions.txt (AI workflow rules)
+  - GITHUB_SYNC_SETUP.txt (token setup)
+  - Time Setup_AI_script file.txt (detailed setup)
+  - Time Setup_Basic_script file.txt (quick reference)
+
+================================================================================
+END OF WAY OF WORKING - WEB DESIGN WITH VS CODE & GITHUB
+================================================================================
+
+QUICK START SUMMARY:
+  1. Open VS Code → Open project folder
+  2. Terminal → git pull origin main
+  3. Open HTML file → Right-click → Open with Live Server
+  4. Make changes → Save → Browser auto-refreshes
+  5. Test thoroughly (desktop + mobile views)
+  6. Source Control → Stage changes → Write message → Commit
+  7. Push to GitHub (cloud icon or ... → Push)
+  8. Verify on GitHub.com and GitHub Pages
+
+REMEMBER:
+  ☕ Start: git pull
+  💾 Save: Auto-save enabled
+  ✅ Test: Before committing
+  📝 Commit: Clear messages
+  ⬆️ Push: End of session
+  🌐 Verify: GitHub Pages deployed
+
+VERSION: 1.0
+DATE: February 1, 2026
+AUTHOR: AI Assistant
+LAST UPDATED: February 1, 2026
+================================================================================
