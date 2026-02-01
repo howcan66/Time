@@ -51,6 +51,8 @@
             height: 36px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
         }
         .nav-btn:hover { background: #5568d3; }
+        .nav-btn.logout-red { background: #dc2626; }
+        .nav-btn.logout-red:hover { background: #b91c1c; }
         
         /* HJ-ID1RS11: Show/hide button text based on screen size */
         .btn-icon { display: none; }
@@ -1283,7 +1285,7 @@
                     userDisplay.id = 'userDisplay';
                     userDisplay.style.cssText = 'font-size: 12px; color: #059669; padding: 5px 10px; background: #ecfdf5; border-radius: 5px; display: flex; align-items: center; gap: 10px;';
                     const roles = currentUser.roles ? currentUser.roles.join(', ') : currentUser.role || '';
-                    userDisplay.innerHTML = `👤 ${currentUser.username} (${roles}) <button onclick="logout()" style="background: #dc2626; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px;">Logout</button>`;
+                    userDisplay.innerHTML = `👤 ${currentUser.username} (${roles}) <button class="nav-btn logout-red" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>`;
                     headerLeft.appendChild(userDisplay);
                 }
                 
