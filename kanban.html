@@ -342,6 +342,9 @@
 
         .task-row2 { font-size: 13px; font-weight: 500; color: #333; margin-bottom: 5px; cursor: pointer; line-height: 1.3; }
         .task-row2:hover { color: #667eea; }
+        .task-row2.compact-hidden { display: none; }
+        .task-compact-toggle { font-size: 12px; color: #999; cursor: pointer; padding: 2px 4px; border-radius: 2px; }
+        .task-compact-toggle:hover { background: #f0f0f0; color: #333; }
 
         .task-row3 { display: flex; gap: 5px; align-items: center; }
         .move-select { flex: 1; padding: 3px 5px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; }
@@ -989,6 +992,7 @@
         ];
         let tasks = defaultTasks.map(task => ({ ...task }));
         let taskIdCounter = 24;
+        let compactViewTasks = localStorage.getItem('compactViewTasks') ? JSON.parse(localStorage.getItem('compactViewTasks')) : {}; // { taskId: true/false }
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
         // ENHANCED SCHEMA (HJ-ID1RS7) - email, roles array, active, lastLogin
@@ -2024,6 +2028,18 @@ ${projectUrl}`;
             }
         }
 
+        function toggleCompactView(taskId) {
+            // Toggle compact view for this task
+            compactViewTasks[taskId] = !compactViewTasks[taskId];
+            localStorage.setItem('compactViewTasks', JSON.stringify(compactViewTasks));
+            
+            // Re-render the task's column
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                renderColumn(task.column);
+            }
+        }
+
         // ===== GITHUB SYNC CONFIGURATION =====
         const GITHUB_CONFIG = {
             owner: 'howcan66',
@@ -2362,6 +2378,10 @@ ${projectUrl}`;
                 ? `<div class="task-assignee" style="font-size: 11px; color: #666; margin-top: 4px; padding: 2px 4px; background: #f0f0f0; border-radius: 3px; display: inline-block;">👤 ${task.assignee}</div>` 
                 : '';
             
+            // Compact view toggle (Improvement #13)
+            const isCompact = compactViewTasks[task.id] === true;
+            const toggleIcon = isCompact ? '▶️' : '▼';
+            
             return `
                 <div class="task-card" data-task-id="${task.id}" data-creator="${creator}" draggable="${deviceInfo.isDesktop || deviceInfo.isTablet}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <div class="task-row1">
@@ -2370,13 +2390,14 @@ ${projectUrl}`;
                         <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
                         <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
                         <div class="action-buttons">
+                            <button class="icon-btn task-compact-toggle" onclick="toggleCompactView('${task.id}')" title="Toggle compact view">${toggleIcon}</button>
                             <button class="icon-btn" onclick="viewTask('${task.id}')">👁️</button>
                             <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
                         </div>
                     </div>
-                    <div class="task-row2" onclick="viewTask('${task.id}')">${task.what}</div>
-                    ${assigneeDisplay}
-                    <div class="task-row3">
+                    <div class="task-row2 ${isCompact ? 'compact-hidden' : ''}" onclick="viewTask('${task.id}')">${task.what}</div>
+                    ${isCompact ? '' : assigneeDisplay}
+                    <div class="task-row3 ${isCompact ? 'compact-hidden' : ''}">
                         <select class="move-select" onchange="moveTask('${task.id}', this.value)">
                             <option value="">Move to...</option>
                             ${[1,2,3,4,5,6,7].map(i => `<option value="${i}" ${task.column===i?'selected':''}>${i}-${['Idea','Todo','Plan','Design','Test','Done','Cancel'][i-1]}</option>`).join('')}

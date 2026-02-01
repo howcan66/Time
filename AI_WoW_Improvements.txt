@@ -660,27 +660,53 @@ BENEFIT: HIGH (focus + usability)
 IMPROVEMENT #13: Task Details Toggle (Compact vs Full View)
 ===========================================================
 CURRENT STATE:
-  Task cards always show full details (what, description, etc.)
+  Task cards always show full details (title, description, etc.)
 
 PROPOSED SOLUTION:
   Add per-task toggle to show:
-    - Compact view (ID + Title only)
-    - Full view (all details)
+    - Compact view (ID + Title only, ▶️ icon)
+    - Full view (ID + Title + Description + actions, ▼ icon)
+
+WHERE TO CHANGE:
+  File: kanban.html
+  Location: Task card rendering (renderTaskCard function)
+  Button: New ▶️/▼ toggle button in action buttons
+
+HOW IT WORKS:
+  1. Each task has a toggle arrow button
+  2. Click ▶️ → Compact view (hides description, move controls, assignee)
+  3. Click ▼ → Full view (shows all details)
+  4. State saved to localStorage (persists on refresh)
+  5. Icon changes to show current state
 
 BENEFITS:
   ✅ Reduced clutter for quick scanning
   ✅ Faster board navigation
   ✅ Better mobile readability
+  ✅ Toggle per-task (don't affect other tasks)
+  ✅ State persists on page reload
 
 IMPLEMENTATION:
-  - Add toggle control on each task card
-  - Persist per-task view state (optional)
+  - Add compactViewTasks tracking object
+  - Store in localStorage
+  - Add CSS for hidden elements
+  - Add toggleCompactView() function
+  - Update renderTaskCard() to conditionally hide elements
   - Time required: 30 minutes
-  - Status: REQUIRES DESIGN DECISION
+  - Status: ✅ COMPLETED
+
+FEATURES ADDED:
+  - ▶️/▼ toggle button in action buttons
+  - Compact: Shows only ID + Title + Priority + Status
+  - Full: Shows all details including description, move controls, assignee
+  - localStorage persistence: survives page refresh
+  - Per-task control: each task toggles independently
 
 PRIORITY: MEDIUM
 EFFORT: MEDIUM (30 minutes)
-BENEFIT: HIGH (readability)
+BENEFIT: HIGH (readability + usability)
+
+STATUS: ✅ COMPLETED
 
 
 IMPROVEMENT #14: Larger Edit Icon on Task Cards
