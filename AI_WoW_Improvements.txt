@@ -808,6 +808,88 @@ ONGOING:
   2. Maintain documentation index as new files added
   3. Keep README.md updated with new features
 
+IMPROVEMENT #15: Admin Dashboard - User Selection Dropdown
+==========================================================
+CURRENT STATE:
+  Invitations tab uses free text email input field
+  No validation against existing users in validUsers array
+  Admin must manually type email addresses (prone to typos)
+
+PROPOSED SOLUTION:
+  Replace email text input with dropdown list of existing users
+  Allow selecting from validUsers array instead of typing
+
+WHERE TO CHANGE:
+  File: kanban.html
+  Location: Invitations tab form (near line 1448, openInvitationForm())
+  Element: #inviteEmail input field
+
+BENEFITS:
+  ✅ No typos in email addresses
+  ✅ Faster user selection (click vs type)
+  ✅ Consistent with existing users in system
+  ✅ Better data quality in invitations
+  ✅ Matches task assignment dropdown pattern
+
+IMPLEMENTATION:
+  - Change #inviteEmail from <input type="email"> to <select>
+  - Populate with validUsers array (map to email addresses)
+  - Update generateInvitation() to handle dropdown value
+  - Add validation to check selected user exists
+  - Time required: 15-20 minutes
+
+PRIORITY: MEDIUM-HIGH
+EFFORT: LOW (simple form change)
+BENEFIT: HIGH (improves data accuracy, UX consistency)
+
+STATUS: PROPOSED (ready for implementation)
+
+================================================================================
+
+IMPROVEMENT #16: Admin Logs - Add Column Headers & Grid Layout
+==============================================================
+CURRENT STATE:
+  Login Logs tab displays plain text entries without structure
+  No clear separation between timestamp, user, action, and details
+  Users must parse log entries mentally (hard to read)
+  Example: "[2026-01-29 10:15:23] | R18 | SUCCESS | Attempt #1"
+
+PROPOSED SOLUTION:
+  Add column headers with grid layout formatting
+  Display logs in structured table format with 4 columns:
+    🕐 Timestamp | 👤 User | 📋 Action | 📝 Details
+  Use background color for header row (visual distinction)
+  Align columns with consistent spacing
+  Show real adminLogs array (not sample data)
+
+WHERE TO CHANGE:
+  File: kanban.html
+  Location: renderLoginLogs() function (line 1390)
+  Current: Creates simple <div class="log-entry"> for each log
+  New: Creates grid layout with header row + data rows
+
+BENEFITS:
+  ✅ Much easier to scan and read logs
+  ✅ Professional appearance (table-like layout)
+  ✅ Clear distinction between columns
+  ✅ Supports future sorting/filtering per column
+  ✅ Shows real adminLogs array (not sample data)
+  ✅ Visual hierarchy with color & styling
+
+IMPLEMENTATION:
+  - Add header div with 4 columns: [Timestamp | User | Action | Details]
+  - Style header with background color (#f0f0f0) and bold text
+  - Parse each log entry to extract 4 columns
+  - Display in CSS grid with consistent widths
+  - Add visual separators (borders) between rows
+  - Time required: DONE (just implemented!)
+
+PRIORITY: HIGH
+EFFORT: LOW (formatting + CSS grid)
+BENEFIT: HIGH (improves readability & professionalism)
+
+STATUS: ✅ COMPLETED
+
 ================================================================================
 CONCLUSION
 ================================================================================
