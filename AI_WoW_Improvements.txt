@@ -1073,6 +1073,52 @@ DEPENDENCIES:
 STATUS: PROPOSED (ready for implementation)
 
 ================================================================================
+IMPROVEMENT #19: Task Edit Modal - Header Actions + Content Toggle
+=================================================================
+CURRENT STATE:
+  Save/Cancel buttons appear only at the bottom of the task edit modal
+  No quick actions in the header area
+  Task edit modal shows full content at all times
+
+PROPOSED SOLUTION:
+  Add Save + Cancel buttons in the modal header for faster access
+  Add a content toggle in the modal header:
+    - Compact: show only "What/Description"
+    - Full: show all fields
+  Keep existing footer buttons (optional) or mirror them in header
+
+UI BEHAVIOR:
+  Header shows: [Save] [Cancel] [Toggle Compact/Full]
+  Compact view hides advanced fields (Why/How/Who/When/Where, etc.)
+  Full view shows all fields as today
+  Toggle remembers last state (optional localStorage)
+
+WHERE TO IMPLEMENT:
+  File: kanban.html
+  Location: Task edit modal header and body sections
+  Add a toggle button in modal header
+  Add a CSS class (e.g., .task-modal-compact) to hide/show fields
+
+BENEFITS:
+  ✅ Faster Save/Cancel (no scrolling)
+  ✅ Cleaner editing experience for quick updates
+  ✅ Reduces visual clutter for simple edits
+  ✅ Consistent with task card compact toggle behavior
+
+IMPLEMENTATION STEPS:
+  1. Add Save/Cancel buttons to modal header
+  2. Add compact/full toggle button in modal header
+  3. Wrap optional fields with a class (e.g., .task-modal-advanced)
+  4. Toggle visibility via CSS class
+  5. Persist state in localStorage (optional)
+
+PRIORITY: MEDIUM
+EFFORT: MEDIUM (30-45 minutes)
+BENEFIT: HIGH (faster workflow + cleaner UI)
+
+STATUS: PROPOSED (ready for implementation)
+
+================================================================================
 CONCLUSION
 ================================================================================
 
