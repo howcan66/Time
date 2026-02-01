@@ -891,6 +891,76 @@ BENEFIT: HIGH (improves readability & professionalism)
 STATUS: ✅ COMPLETED
 
 ================================================================================
+
+IMPROVEMENT #17: Admin Dashboard - Assignment Change History Visualization
+==========================================================================
+CURRENT STATE:
+  Admin can only see current task assignments (who is assigned now)
+  No history of assignment changes
+  Cannot see who WAS assigned before
+  Cannot track responsibility changes over time
+  No audit trail for task responsibility transfers
+
+PROPOSED SOLUTION:
+  Create new "Assignment History" tab/section in Admin Panel
+  Display table with columns:
+    📅 Date | 📊 Project | 📌 Task ID | 📝 Task Name | 👤 Previous Assignee | ➜ | 👤 New Assignee | ⏱️ Changed By
+  Show all assignment changes chronologically
+  Color-code changes (e.g., highlight task ID, use arrows for transitions)
+  Allow filtering by project, task, or user
+
+EXAMPLE DISPLAY:
+  Date              Project       Task    Task Name           Previous     →    New        Changed By
+  ─────────────────────────────────────────────────────────────────────────────────────────
+  2/1/26 3:45 PM    Time-Proj     T-5     Login Screen        (unassigned) →   Joel       admin
+  2/1/26 3:16 PM    Time-Proj     T-8     User Assignment     (unassigned) →   Maximus    admin
+  2/1/26 2:30 PM    Time-Proj     T-12    API Documentation   R18         →   Maximus    admin
+
+WHERE TO IMPLEMENT:
+  File: kanban.html
+  Location: Add new tab in Admin Panel (5th tab after Invitations)
+  Label: "📊 Assignment History"
+  Data source: Parse adminLogs array for ASSIGN_TASK entries
+  Function: renderAssignmentHistory()
+
+DATA FLOW:
+  1. adminLogs array stores: "[timestamp] | user | ASSIGN_TASK | Task X assigned to Joel"
+  2. Extract ASSIGN_TASK entries only
+  3. Parse task ID and new assignee from details
+  4. Query tasks array to get task name and project
+  5. Display in formatted grid table
+
+BENEFITS:
+  ✅ Full audit trail of responsibility changes
+  ✅ Identify who changed assignments and when
+  ✅ Track task accountability history
+  ✅ Spot reassignment patterns (task bouncing between users)
+  ✅ Professional admin visibility
+  ✅ Supports accountability & team dynamics
+  ✅ Useful for project reviews & retrospectives
+
+IMPLEMENTATION STEPS:
+  1. Add 5th admin tab button: "📊 Assignment History"
+  2. Create renderAssignmentHistory() function
+  3. Parse adminLogs for ASSIGN_TASK entries
+  4. Extract: timestamp, task ID, new assignee, changed by user
+  5. Lookup task details (name, project) from tasks array
+  6. Display in grid format with 8 columns
+  7. Add basic filtering (optional: filter by project)
+  8. Time required: 30-45 minutes
+
+PRIORITY: MEDIUM-HIGH
+EFFORT: MEDIUM (parsing + grid display + filtering)
+BENEFIT: HIGH (accountability, audit trail, team visibility)
+
+DEPENDENCIES: 
+  - Requires adminLogs data (already implemented)
+  - Requires tasks array with project info (already exists)
+  - Requires ASSIGN_TASK log format (already using)
+
+STATUS: PROPOSED (ready for implementation)
+
+================================================================================
 CONCLUSION
 ================================================================================
 
