@@ -153,11 +153,15 @@
             gap: 8px;
             position: relative;
         }
+        .column-title { display: inline-block; }
         .collapse-icon { cursor: pointer; font-size: 16px; position: absolute; right: 8px; opacity: 0.7; padding: 2px 6px; border-radius: 3px; }
         .collapse-icon:hover { opacity: 1; background: rgba(255,255,255,0.3); }
+        .kanban-column.collapsed { flex: 0 0 60px; min-width: 60px; max-width: 60px; }
         .kanban-column.collapsed .column-content { display: none; }
         .kanban-column.collapsed .project-filter { display: none; }
         .kanban-column.collapsed .add-task-btn { display: none; }
+        .kanban-column.collapsed .column-header { justify-content: center; padding: 8px 6px; }
+        .kanban-column.collapsed .column-title { writing-mode: vertical-rl; transform: rotate(180deg); }
 
         .idea .column-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .todo .column-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
@@ -778,7 +782,7 @@
 
     <div class="kanban-container">
         <div class="kanban-column idea" data-column="1">
-            <div class="column-header">1 - 💡 Idea <span class="collapse-icon" onclick="toggleColumnCollapse(1)">▼</span></div>
+            <div class="column-header"><span class="column-title">1 - 💡 Idea</span><span class="collapse-icon" onclick="toggleColumnCollapse(1)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(1)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-1" onchange="setColumnProjectFilter(1, this.value)"></select>
@@ -787,7 +791,7 @@
             <div class="column-content" id="column-1"></div>
         </div>
         <div class="kanban-column todo" data-column="2">
-            <div class="column-header">2 - 📋 Todo <span class="collapse-icon" onclick="toggleColumnCollapse(2)">▼</span></div>
+            <div class="column-header"><span class="column-title">2 - 📋 Todo</span><span class="collapse-icon" onclick="toggleColumnCollapse(2)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(2)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-2" onchange="setColumnProjectFilter(2, this.value)"></select>
@@ -796,7 +800,7 @@
             <div class="column-content" id="column-2"></div>
         </div>
         <div class="kanban-column planning" data-column="3">
-            <div class="column-header">3 - 📊 Planning <span class="collapse-icon" onclick="toggleColumnCollapse(3)">▼</span></div>
+            <div class="column-header"><span class="column-title">3 - 📊 Planning</span><span class="collapse-icon" onclick="toggleColumnCollapse(3)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(3)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-3" onchange="setColumnProjectFilter(3, this.value)"></select>
@@ -805,7 +809,7 @@
             <div class="column-content" id="column-3"></div>
         </div>
         <div class="kanban-column design" data-column="4">
-            <div class="column-header">4 - 🎨 Design <span class="collapse-icon" onclick="toggleColumnCollapse(4)">▼</span></div>
+            <div class="column-header"><span class="column-title">4 - 🎨 Design</span><span class="collapse-icon" onclick="toggleColumnCollapse(4)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(4)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-4" onchange="setColumnProjectFilter(4, this.value)"></select>
@@ -814,7 +818,7 @@
             <div class="column-content" id="column-4"></div>
         </div>
         <div class="kanban-column test" data-column="5">
-            <div class="column-header">5 - 🧪 Test <span class="collapse-icon" onclick="toggleColumnCollapse(5)">▼</span></div>
+            <div class="column-header"><span class="column-title">5 - 🧪 Test</span><span class="collapse-icon" onclick="toggleColumnCollapse(5)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(5)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-5" onchange="setColumnProjectFilter(5, this.value)"></select>
@@ -823,7 +827,7 @@
             <div class="column-content" id="column-5"></div>
         </div>
         <div class="kanban-column done" data-column="6">
-            <div class="column-header">6 - ✅ Done <span class="collapse-icon" onclick="toggleColumnCollapse(6)">▼</span></div>
+            <div class="column-header"><span class="column-title">6 - ✅ Done</span><span class="collapse-icon" onclick="toggleColumnCollapse(6)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(6)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-6" onchange="setColumnProjectFilter(6, this.value)"></select>
@@ -832,7 +836,7 @@
             <div class="column-content" id="column-6"></div>
         </div>
         <div class="kanban-column cancelled" data-column="7">
-            <div class="column-header">7 - ❌ Cancelled <span class="collapse-icon" onclick="toggleColumnCollapse(7)">▼</span></div>
+            <div class="column-header"><span class="column-title">7 - ❌ Cancelled</span><span class="collapse-icon" onclick="toggleColumnCollapse(7)">▼</span></div>
             <button class="add-task-btn" onclick="openAddModal(7)">➕ Add Task</button>
             <div class="project-filter">
                 <select id="project-filter-7" onchange="setColumnProjectFilter(7, this.value)"></select>
