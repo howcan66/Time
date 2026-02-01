@@ -160,7 +160,7 @@
         .todo .column-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .planning .column-header { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         .design .column-header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .test .column-header { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .test .column-header { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; }
         .done .column-header { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
         .cancelled .column-header { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
 
@@ -173,7 +173,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 12px;
-            align-self: flex-end;
+            align-self: flex-start;
         }
         .add-task-btn:hover { background: #5568d3; }
 
@@ -306,7 +306,7 @@
             .move-select { font-size: 11px; padding: 4px 6px; }
         }
 
-        .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; justify-content: flex-end; align-items: center; }
+        .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; justify-content: flex-start; align-items: center; }
         .project-filter select { flex: 0 1 180px; padding: 4px 6px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; background: white; }
 
         .column-content { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
