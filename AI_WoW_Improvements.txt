@@ -961,6 +961,88 @@ DEPENDENCIES:
 STATUS: PROPOSED (ready for implementation)
 
 ================================================================================
+
+IMPROVEMENT #18: Admin Dashboard - Project Admin Functionality
+=============================================================
+CURRENT STATE:
+  Only system-wide admins can manage all projects
+  No project-specific admin roles
+  Cannot delegate project management to team leads
+  All project decisions require main admin involvement
+  Scalability issue for multi-project environments
+
+PROPOSED SOLUTION:
+  Add "Project Admin" role - can manage specific projects
+  Allow system admin to assign users as project admins
+  Project admins can:
+    ✅ Create/edit/delete tasks in their project(s)
+    ✅ Assign team members to their project tasks
+    ✅ View project-specific reports & logs
+    ✅ Manage project collaborators
+  Restrict access: Project admins can ONLY see their assigned projects
+
+WHERE TO IMPLEMENT:
+  File: kanban.html
+  Locations:
+    1. Add "Project Admin" checkbox to user roles (Admin Panel → Users)
+    2. Add project assignment interface (which projects they admin)
+    3. Modify admin panel tabs to show only assigned projects
+    4. Add project-specific filtering to logs
+    5. Restrict task/project operations by project admin rights
+
+NEW FORM FIELDS:
+  User Edit Form:
+    ☐ Project Admin (new role)
+    - Projects dropdown/multiselect → Which projects they admin
+
+USER DATA STRUCTURE UPDATE:
+  Current: { username, password, email, roles: [], active }
+  New: { username, password, email, roles: [], projectsAdmin: ['proj-1', 'proj-2'], active }
+
+ADMIN PANEL CHANGES:
+  1. Users tab: Add "projectsAdmin" field when editing
+  2. Logs tab: Add project filter
+  3. Add new "Project Admins" tab showing project ↔ admin assignments
+  4. View: Project Name | Admin User | Tasks Count | Last Activity
+
+BENEFITS:
+  ✅ Distributed project management responsibility
+  ✅ Scalable for larger teams with multiple projects
+  ✅ Reduces bottleneck on main admin
+  ✅ Clear project ownership & accountability
+  ✅ Team leads can self-manage their project
+  ✅ Maintains security (can't access other projects)
+  ✅ Better organization for multi-project workflows
+
+EXAMPLE WORKFLOW:
+  1. System admin: Create new project "Payment System"
+  2. System admin: Assign Joel as Project Admin for "Payment System"
+  3. Joel login → See only "Payment System" tasks in kanban
+  4. Joel can: Create tasks, assign team, view project logs
+  5. Joel cannot: See other projects or create system-wide roles
+
+IMPLEMENTATION STEPS:
+  1. Add "projectsAdmin" field to user data structure
+  2. Update saveUser() to capture project assignments
+  3. Add project admin multiselect in user edit form
+  4. Modify isAdmin() to check project-specific permissions
+  5. Add getProjectsForUser() function
+  6. Restrict task/project views based on projectsAdmin
+  7. Add Project Admins tab in Admin Panel
+  8. Time required: 45-60 minutes
+
+PRIORITY: MEDIUM
+EFFORT: MEDIUM-HIGH (role hierarchy, permission checks)
+BENEFIT: HIGH (scalability, team empowerment, cleaner management)
+
+DEPENDENCIES:
+  - Requires user role system (already exists)
+  - Requires projects array (already exists)
+  - Requires task association with projects (already exists)
+
+STATUS: PROPOSED (ready for implementation)
+
+================================================================================
 CONCLUSION
 ================================================================================
 
