@@ -161,12 +161,13 @@
         .add-task-btn {
             margin: 10px;
             padding: 8px;
-            background: #667eea;
-            color: white;
+            background: #e5e7eb;
+            color: #000;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 12px;
+            align-self: flex-end;
         }
         .add-task-btn:hover { background: #5568d3; }
 
@@ -299,8 +300,8 @@
             .move-select { font-size: 11px; padding: 4px 6px; }
         }
 
-        .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; }
-        .project-filter select { flex: 1; padding: 4px 6px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; background: white; }
+        .project-filter { display: flex; gap: 6px; margin: 0 10px 10px; justify-content: flex-end; align-items: center; }
+        .project-filter select { flex: 0 1 180px; padding: 4px 6px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; background: white; }
 
         .column-content { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
         .column-content::-webkit-scrollbar { width: 6px; }

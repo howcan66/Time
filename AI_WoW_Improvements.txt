@@ -599,6 +599,112 @@ PRIORITY: MEDIUM
 EFFORT: LOW (30 minutes)
 BENEFIT: HIGH (effectiveness multiplier)
 
+
+IMPROVEMENT #11: Swimlane Text Color (Black)
+=============================================
+CURRENT STATE:
+  Swimlane text color is hard to read in some views
+
+PROPOSED SOLUTION:
+  Set swimlane text color to black for maximum readability
+
+BENEFITS:
+  ✅ Clearer labels in all lighting conditions
+  ✅ Better accessibility and contrast
+  ✅ Reduced eye strain
+
+IMPLEMENTATION:
+  - Update swimlane label CSS color to #000 (black)
+  - Verify in desktop + mobile views
+  - Time required: 5 minutes
+  - Status: QUICK WIN
+
+PRIORITY: LOW
+EFFORT: LOW (5 minutes)
+BENEFIT: MEDIUM (readability)
+
+
+IMPROVEMENT #12: Swimlane Collapse/Expand Controls (Per Lane + Global)
+======================================================================
+CURRENT STATE:
+  No quick controls to collapse/expand swimlanes individually or all at once
+
+PROPOSED SOLUTION:
+  Add four compact controls near each column header:
+    1) Collapse this lane
+    2) Expand this lane
+    3) Collapse all lanes
+    4) Expand all lanes
+
+NOTES:
+  - Needs design discussion: radio buttons vs icon buttons
+  - Ensure mobile-friendly placement
+
+BENEFITS:
+  ✅ Faster focus on specific lanes
+  ✅ Clear overview when many tasks exist
+  ✅ Better navigation on small screens
+
+IMPLEMENTATION:
+  - Add header controls per column
+  - Add global actions (collapse all / expand all)
+  - Store state in localStorage (optional)
+  - Time required: 30-45 minutes
+  - Status: REQUIRES DESIGN DECISION
+
+PRIORITY: MEDIUM
+EFFORT: MEDIUM (30-45 minutes)
+BENEFIT: HIGH (focus + usability)
+
+
+IMPROVEMENT #13: Task Details Toggle (Compact vs Full View)
+===========================================================
+CURRENT STATE:
+  Task cards always show full details (what, description, etc.)
+
+PROPOSED SOLUTION:
+  Add per-task toggle to show:
+    - Compact view (ID + Title only)
+    - Full view (all details)
+
+BENEFITS:
+  ✅ Reduced clutter for quick scanning
+  ✅ Faster board navigation
+  ✅ Better mobile readability
+
+IMPLEMENTATION:
+  - Add toggle control on each task card
+  - Persist per-task view state (optional)
+  - Time required: 30 minutes
+  - Status: REQUIRES DESIGN DECISION
+
+PRIORITY: MEDIUM
+EFFORT: MEDIUM (30 minutes)
+BENEFIT: HIGH (readability)
+
+
+IMPROVEMENT #14: Larger Edit Icon on Task Cards
+===============================================
+CURRENT STATE:
+  Edit icon is small and hard to tap (mobile)
+
+PROPOSED SOLUTION:
+  Increase edit icon size and padding
+
+BENEFITS:
+  ✅ Easier clicking/tapping
+  ✅ Better accessibility
+
+IMPLEMENTATION:
+  - Increase icon font size
+  - Increase button padding
+  - Time required: 5 minutes
+  - Status: QUICK WIN
+
+PRIORITY: LOW
+EFFORT: LOW (5 minutes)
+BENEFIT: MEDIUM (usability)
+
 ================================================================================
 SECTION 3: IMPROVEMENT ROADMAP
 ================================================================================
@@ -608,6 +714,8 @@ QUICK WINS (Do This Week):
   ☐ Create DOCUMENTATION_INDEX.md (15 min)
   ☐ Create README.md (20 min)
   ☐ Create AI_Chat_Guide.txt (30 min)
+  ☐ Set swimlane text color to black (5 min)
+  ☐ Increase edit icon size (5 min)
   TOTAL TIME: 70 minutes (~1.2 hours)
   IMPACT: HIGH (professional, organized)
 
@@ -623,6 +731,8 @@ MEDIUM-TERM (Nice-to-Have):
   ☐ Set up GitHub Actions for testing (30 min, if familiar with it)
   ☐ Create config.json (10 min)
   ☐ Reorganize Commands.txt (60 min)
+  ☐ Add swimlane collapse/expand controls (30-45 min)
+  ☐ Add task details toggle (30 min)
   TOTAL TIME: 100 minutes (~1.7 hours)
   IMPACT: MEDIUM (quality, maintainability)
 
