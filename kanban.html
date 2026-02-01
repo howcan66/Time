@@ -995,7 +995,7 @@
         
         // PASSWORD PROTECTION (HJ-ID1RS5) - Valid Credentials (Updated 2026-01-29)
         // ENHANCED SCHEMA (HJ-ID1RS7) - email, roles array, active, lastLogin
-        let validUsers = [
+        let validUsers = localStorage.getItem('validUsers') ? JSON.parse(localStorage.getItem('validUsers')) : [
             { username: 'R18', password: 'R18', email: 'r18@time.local', roles: ['Project Manager'], active: true, lastLogin: null },
             { username: 'Maximus', password: 'Maximus', email: 'maximus@time.local', roles: ['Developer'], active: true, lastLogin: null },
             { username: 'Joel', password: 'Joel', email: 'joel@time.local', roles: ['Reviewer'], active: true, lastLogin: null },
@@ -1360,6 +1360,9 @@
                 logAdminAction('ADD_USER', `Added new user: ${username} (${roles.join(', ')})`);
             }
             
+            // Save validUsers to localStorage
+            localStorage.setItem('validUsers', JSON.stringify(validUsers));
+            
             closeUserForm();
             renderUserTable();
         }
@@ -1373,6 +1376,7 @@
             if (confirm(`Delete user "${user.username}"? This action cannot be undone.`)) {
                 validUsers.splice(idx, 1);
                 logAdminAction('DELETE_USER', `Deleted user: ${user.username}`);
+                localStorage.setItem('validUsers', JSON.stringify(validUsers));
                 renderUserTable();
             }
         }
@@ -1380,10 +1384,12 @@
         function resetPassword(idx) {
             const user = validUsers[idx];
             const newPassword = prompt(`Enter new password for "${user.username}":`);
-            if (newPassword) {
-                user.password = newPassword;
-                logAdminAction('RESET_PASSWORD', `Reset password for: ${user.username}`);
-                alert(`Password reset successfully for ${user.username}`);
+            if (newPassword && newPassword.trim() !== '') {
+                validUsers[idx].password = newPassword.trim();
+                logAdminAction('RESET_PASSWORD', `Reset password for user: ${user.username}`);
+                localStorage.setItem('validUsers', JSON.stringify(validUsers));
+                renderUserTable();
+                alert(`Password reset successfully for ${user.username}.`);
             }
         }
 
