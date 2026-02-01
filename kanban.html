@@ -732,6 +732,7 @@
             <div class="timestamp" id="timestamp">Loading...</div>
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
+                <select id="assigneeFilter" class="project-select" onchange="setAssigneeFilter(this.value)" style="margin-left: 8px;"></select>
                 <button class="project-btn" onclick="createProjectFlow()" title="Add new project"><span class="btn-text">➕ Project</span><span class="btn-icon">➕</span></button>
             </div>
         </div>
@@ -1012,6 +1013,7 @@
         ];
         let globalProjectFilter = 'all';
         let columnProjectFilters = { 1: 'all', 2: 'all', 3: 'all', 4: 'all', 5: 'all', 6: 'all', 7: 'all' };
+        let globalAssigneeFilter = 'all'; // Step 5: assignee filter
 
         // ===== PASSWORD PROTECTION (HJ-ID1RS5) =====
         async function verifyLogin() {
@@ -1703,6 +1705,19 @@ ${projectUrl}`;
                 });
                 taskAssigneeSelect.innerHTML = assigneeOptions;
             }
+
+            // Populate assignee filter dropdown (Step 5)
+            const assigneeFilterSelect = document.getElementById('assigneeFilter');
+            if (assigneeFilterSelect) {
+                let filterOptions = '<option value="all">All Tasks</option>';
+                filterOptions += '<option value="my">My Tasks</option>';
+                filterOptions += '<option value="unassigned">Unassigned</option>';
+                validUsers.forEach(user => {
+                    filterOptions += `<option value="${user.username}">${user.username} (${user.role})</option>`;
+                });
+                assigneeFilterSelect.innerHTML = filterOptions;
+                assigneeFilterSelect.value = globalAssigneeFilter;
+            }
         }
 
         function setGlobalProjectFilter(projectId) {
@@ -1712,6 +1727,11 @@ ${projectUrl}`;
             if (headerSelect && headerSelect.value !== projectId) headerSelect.value = projectId;
             const mobileProjectSelect = document.getElementById('mobileProjectFilter');
             if (mobileProjectSelect && mobileProjectSelect.value !== projectId) mobileProjectSelect.value = projectId;
+        }
+
+        function setAssigneeFilter(filterValue) {
+            globalAssigneeFilter = filterValue;
+            renderAllColumns();
         }
 
         function setColumnProjectFilter(columnNum, projectId) {
@@ -2295,6 +2315,13 @@ ${projectUrl}`;
             const columnTasks = tasks
                 .filter(t => t.column === columnNum)
                 .filter(t => activeFilter === 'all' || t.projectId === activeFilter)
+                .filter(t => {
+                    // Step 5: Assignee filter
+                    if (globalAssigneeFilter === 'all') return true;
+                    if (globalAssigneeFilter === 'my') return t.assignee === currentUser?.username;
+                    if (globalAssigneeFilter === 'unassigned') return !t.assignee;
+                    return t.assignee === globalAssigneeFilter;
+                })
                 .sort((a, b) => {
                     const projectDelta = getProjectPriority(a.projectId) - getProjectPriority(b.projectId);
                     if (projectDelta !== 0) return projectDelta;
