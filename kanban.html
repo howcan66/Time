@@ -2575,7 +2575,7 @@ ${projectUrl}`;
                             <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
                         </div>
                     </div>
-                    <div class="task-row2 ${isCompact ? 'compact-hidden' : ''}" onclick="viewTask('${task.id}')">${task.what}</div>
+                    <div class="task-row2" onclick="viewTask('${task.id}')">${task.what}</div>
                     ${hasDescription && showDescription && !isCompact ? `<div class="task-description">${task.whatDescription}</div>` : ''}
                     ${isCompact ? '' : assigneeDisplay}
                     <div class="task-row3 ${isCompact ? 'compact-hidden' : ''}">
