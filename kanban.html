@@ -792,7 +792,8 @@
 
     <div class="header">
         <div class="header-left">
-            <div class="project-title" title="Time Project - Kanban Board"><span class="title-full" style="display: inline-flex; align-items: center; gap: 8px; background: #3b82f6; padding: 4px 12px; border-radius: 8px; color: white; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><span style="font-size: 20px;">?</span><span style="color: #3b82f6; background: white; padding: 0 4px; border-radius: 4px;">|</span><span style="font-size: 20px; color: #ef4444;">!</span><span style="color: #3b82f6; background: white; padding: 0 4px; border-radius: 4px;">|</span><span style="font-size: 20px; color: #10b981;">✓</span></span><span class="title-short" style="display: inline-flex; align-items: center; gap: 6px; background: #3b82f6; padding: 4px 10px; border-radius: 8px; color: white; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><span style="font-size: 16px;">?</span><span style="color: #3b82f6; background: white; padding: 0 3px; border-radius: 3px;">|</span><span style="font-size: 16px; color: #ef4444;">!</span><span style="color: #3b82f6; background: white; padding: 0 3px; border-radius: 3px;">|</span><span style="font-size: 16px; color: #10b981;">✓</span></span></div>
+            <div class="project-title"><span class="title-full">⏰ Time Project - Kanban Board</span><span class="title-short">⏰ Time Kanban</span></div>
+            <div class="timestamp" id="timestamp">Loading...</div>
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
                 <select id="assigneeFilter" class="project-select" onchange="setAssigneeFilter(this.value)" style="margin-left: 8px;"></select>
@@ -1325,7 +1326,8 @@
                     const userDisplay = document.createElement('div');
                     userDisplay.id = 'userDisplay';
                     userDisplay.style.cssText = 'font-size: 12px; color: #059669; padding: 5px 10px; background: #ecfdf5; border-radius: 5px; display: flex; align-items: center; gap: 10px;';
-                    userDisplay.innerHTML = `👤 ${currentUser.username} <button class="nav-btn logout-red" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>`;
+                    const roles = currentUser.roles ? currentUser.roles.join(', ') : currentUser.role || '';
+                    userDisplay.innerHTML = `👤 ${currentUser.username} (${roles}) <button class="nav-btn logout-red" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>`;
                     headerLeft.appendChild(userDisplay);
                 }
                 
