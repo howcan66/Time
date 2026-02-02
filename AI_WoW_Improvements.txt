@@ -198,6 +198,41 @@ package-lock.json
 
 # IDEs
 *.sublime-project
+
+
+IMPROVEMENT #5: Mobile Tooltip Behavior for Buttons
+====================================================
+CURRENT STATE:
+  Tooltips rely on mouse hover (desktop-only behavior)
+  Mobile devices do not support hover
+
+PROPOSED SOLUTION:
+  Use tap-to-toggle tooltips for mobile and keep hover for desktop
+  Provide a fallback inline helper text for critical actions
+
+IMPLEMENTATION (BUTTON INSTRUCTIONS):
+  1) Use a tooltip trigger element (button/icon) with aria attributes:
+     - aria-expanded="false"
+     - aria-controls="tooltip-id"
+  2) On tap/click, toggle the tooltip visibility and aria-expanded
+  3) Close tooltip when tapping outside or on second tap
+  4) For mobile, ensure tooltip text is readable and not hover-only
+  5) For critical actions, add a short inline label under the icon
+
+RECOMMENDED MOBILE RULES:
+  ✅ Tap-to-open tooltip (no hover-only tooltips)
+  ✅ Visible close on blur/tap outside
+  ✅ Tooltip text max 1–2 lines
+  ✅ Avoid tiny targets (min 40px tap area)
+
+BENEFITS:
+  ✅ Works on touch devices
+  ✅ Improves accessibility
+  ✅ Reduces user confusion
+
+PRIORITY: MEDIUM
+EFFORT: LOW (15–30 minutes)
+BENEFIT: HIGH (mobile usability)
 *.sublime-workspace
 
 # OS Temp Files

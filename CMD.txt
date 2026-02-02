@@ -72,6 +72,7 @@ TPK-NIRS ID SYSTEM (New as of 2026-01-29):
   Format: TPK-v[VERSION]-[CATEGORY]-[PRIORITY]-[SEQUENCE]
   Example: TPK-v1-SEC-01-011 (Security, Critical, #11)
   Categories: SEC, ADM, EXP, COM, RES, ORG, TSK, DOC, CORE, TEST, BUG, FIX, REQ, EPIC
+
   Priorities: 01=CRITICAL, 02=HIGH, 03=MEDIUM, 04=LOW
   See: TPK_NIRS_PROPOSAL.txt for full specification
 
