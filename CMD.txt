@@ -11,7 +11,7 @@ QUICK COMMAND SHORTCUTS
 
 WORKFLOW COMMANDS:
   EX    - Execute (implement the changes)
-  PA    - Present Analysis (describe situation, propose action)
+  PA    - Please Analyze only (do not add/implement; ask questions; note if change is small)
   PE    - Present Execution (show what will be implemented) OR Please Execute
   PSC   - Please Show Changes (review before proceeding)
   PWF   - Propose Way Forward (recommend next steps)

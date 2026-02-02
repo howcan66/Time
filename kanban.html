@@ -34,7 +34,7 @@
         .project-title { font-size: 24px; font-weight: bold; color: #667eea; }
         .title-short { display: none; }
         .title-full { display: inline; }
-        .timestamp { font-size: 14px; color: #666; padding: 4px 10px; background: #f0f0f0; border-radius: 5px; }
+        .timestamp { display: none; /* font-size: 14px; color: #666; padding: 4px 10px; background: #f0f0f0; border-radius: 5px; */ }
         .project-controls { display: flex; align-items: center; gap: 6px; }
         .project-select { padding: 5px 8px; font-size: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; height: 36px; box-sizing: border-box; }
         .project-btn {
@@ -792,7 +792,7 @@
 
     <div class="header">
         <div class="header-left">
-            <div class="project-title"><span class="title-full">⏰ Time Project - Kanban Board</span><span class="title-short">⏰ Time Kanban</span></div>
+            <div class="project-title"><span class="title-full"><span style="display: inline-flex; gap: 4px; padding: 4px 8px; background: white; border-radius: 8px; border: 2px solid #3b82f6; align-items: center; vertical-align: middle;"><span style="font-size: 16px; color: #fbbf24;">?</span><span style="width: 2px; height: 20px; background: #3b82f6; border-radius: 1px;"></span><span style="font-size: 16px; color: #ef4444;">!</span><span style="width: 2px; height: 20px; background: #3b82f6; border-radius: 1px;"></span><span style="font-size: 16px; color: #10b981;">✓</span></span> KanBan</span><span class="title-short"><span style="display: inline-flex; gap: 3px; padding: 3px 6px; background: white; border-radius: 6px; border: 2px solid #3b82f6; align-items: center; vertical-align: middle;"><span style="font-size: 14px; color: #fbbf24;">?</span><span style="width: 1.5px; height: 16px; background: #3b82f6; border-radius: 1px;"></span><span style="font-size: 14px; color: #ef4444;">!</span><span style="width: 1.5px; height: 16px; background: #3b82f6; border-radius: 1px;"></span><span style="font-size: 14px; color: #10b981;">✓</span></span> KanBan</span></div>
             <div class="timestamp" id="timestamp">Loading...</div>
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
@@ -1327,7 +1327,7 @@
                     userDisplay.id = 'userDisplay';
                     userDisplay.style.cssText = 'font-size: 12px; color: #059669; padding: 5px 10px; background: #ecfdf5; border-radius: 5px; display: flex; align-items: center; gap: 10px;';
                     const roles = currentUser.roles ? currentUser.roles.join(', ') : currentUser.role || '';
-                    userDisplay.innerHTML = `👤 ${currentUser.username} (${roles}) <button class="nav-btn logout-red" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>`;
+                    userDisplay.innerHTML = `👤 ${currentUser.username} <button class="nav-btn logout-red" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span><span class="btn-icon">🚪</span></button>`;
                     headerLeft.appendChild(userDisplay);
                 }
                 
