@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Project - Enhanced Kanban Board</title>
+    <link rel="icon" href="CoolPortals_2026.PNG" type="image/png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -44,6 +45,7 @@
         }
         .project-btn:hover { background: #0e9f6e; }
         .project-btn.small { padding: 4px 6px; font-size: 11px; }
+        .tablet-column-select { display: none !important; }
         .nav-buttons { display: flex; gap: 6px; }
         .nav-btn {
             padding: 5px 12px; background: #667eea; color: white; border: none;
@@ -53,6 +55,11 @@
         .nav-btn:hover { background: #5568d3; }
         .nav-btn.logout-red { background: #dc2626; }
         .nav-btn.logout-red:hover { background: #b91c1c; }
+        
+        /* Hide red logout button on tablet and mobile */
+        @media (max-width: 1024px) {
+            .nav-btn.logout-red { display: none !important; }
+        }
         
         /* HJ-ID1RS11: Show/hide button text based on screen size */
         .btn-icon { display: none; }
@@ -75,27 +82,29 @@
             display: none;
             gap: 6px;
             align-items: center;
+            flex-wrap: wrap;
             z-index: 999;
             box-sizing: border-box;
         }
         .mobile-toolbar select {
             flex: 1;
-            padding: 6px 8px;
-            font-size: 13px;
+            padding: 4px 6px;
+            font-size: 11px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background: #fff;
-            height: 32px;
+            height: 26px;
         }
         .mobile-btn {
-            padding: 6px 10px;
+            padding: 2px 4px;
             background: #667eea;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 13px;
+            font-size: 11px;
             cursor: pointer;
-            height: 32px;
+            height: 26px;
+            min-width: 26px;
         }
         .mobile-btn.secondary { background: #10b981; }
         .mobile-btn.ghost { background: #6b7280; }
@@ -121,8 +130,8 @@
             display: flex;
             gap: 3px;
             padding: 12px;
-            height: calc(100vh - 60px);
-            margin-top: 60px;
+            height: calc(100vh - 75px);
+            margin-top: 75px;
             overflow-x: scroll;
             overflow-y: hidden;
             scroll-snap-type: x proximity;
@@ -193,12 +202,12 @@
         @media (max-width: 800px) {
             /* HJ-ID1RS11 Feature 12: Icon-only buttons, shorter selects, logout icon */
             .header { height: 55px; padding: 8px 10px; }
-            .header-left { gap: 8px; }
+            .header-left { gap: 2px; }
             .project-title { font-size: 14px; }
             .title-full { display: none; }
             .title-short { display: inline; }
             .timestamp { display: none !important; }
-            .project-controls { gap: 4px; }
+            .project-controls { gap: 2px; }
             .project-select { 
                 font-size: 11px; 
                 padding: 4px 6px; 
@@ -208,16 +217,17 @@
                 text-overflow: ellipsis;
             }
             .project-btn { 
-                font-size: 16px; 
-                padding: 4px 8px; 
-                height: 32px; 
-                min-width: 32px;
+                font-size: 14px; 
+                padding: 2px 4px; 
+                height: 26px; 
+                min-width: 26px;
             }
             .nav-btn { 
-                font-size: 16px; 
-                padding: 4px 8px; 
-                height: 32px;
-                min-width: 32px;
+                font-size: 11px; 
+                padding: 2px 4px; 
+                height: 26px;
+                min-width: 26px;
+                gap: 2px;
             }
             
             /* Icon-only buttons with hover text */
@@ -241,6 +251,17 @@
                 padding: 0px;
                 box-sizing: border-box;
                 -webkit-overflow-scrolling: touch;
+            }
+            /* Show scrollbar on mobile */
+            .kanban-container::-webkit-scrollbar {
+                height: 8px;
+            }
+            .kanban-container::-webkit-scrollbar-track {
+                background: #f0f0f0;
+            }
+            .kanban-container::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
             }
 
             .kanban-column { 
@@ -289,14 +310,33 @@
         }
 
         @media (max-width: 1024px) and (min-width: 801px) {
-            /* HJ-ID1RS11: Feature 9 - Tablet - hide timestamp, show short title, streamline gaps */
-            .header { height: 58px; padding: 9px 15px; }
-            .header-left { gap: 10px; }
-            .project-controls { gap: 5px; }
-            .nav-buttons { gap: 5px; }
+            /* HJ-ID1RS11: Feature 9 - Tablet - hide timestamp, show short title, fit all on top row */
+            .header { height: 80px; padding: 6px 8px; display: flex; flex-direction: column; justify-content: flex-start !important; }
+            .header-left { gap: 4px; align-items: center; justify-content: flex-start !important; width: 100%; }
+            .project-controls { gap: 3px; align-items: center; justify-content: flex-start !important; width: auto; }
+            .nav-buttons { gap: 3px; flex-wrap: nowrap; justify-content: flex-start !important; width: 100%; }
             .timestamp { display: none !important; }
             .title-full { display: none; }
-            .title-short { display: inline; }
+            .title-short { display: inline; font-size: 14px; }
+            
+            /* Tablet icon replacements - swap text with data-tablet-icon */
+            .nav-btn .btn-text { display: none; }
+            .nav-btn::after { content: attr(data-tablet-icon); font-size: 13px; }
+            .nav-btn { padding: 3px 5px; height: 30px; min-width: auto; }
+            
+            /* Tablet-only Jump to column - on second row */
+            .tablet-column-select { 
+                display: block !important;
+                width: 50%;
+                padding: 3px 5px;
+                font-size: 10px;
+                border: 1px solid #999;
+                border-radius: 3px;
+                background: #fff;
+                margin: 3px 0 0 0;
+                box-sizing: border-box;
+                flex-shrink: 0;
+            }
             
             .kanban-container {
                 display: flex;
@@ -307,7 +347,20 @@
                 gap: 3px;
                 padding: 8px;
             }
+            /* Show scrollbar on tablet */
+            .kanban-container::-webkit-scrollbar {
+                height: 8px;
+            }
+            .kanban-container::-webkit-scrollbar-track {
+                background: #f0f0f0;
+            }
+            .kanban-container::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+            }
             .kanban-column { min-width: 240px; }
+            .project-select { height: 30px; padding: 3px 5px; font-size: 10px; }
+            .project-btn { height: 30px; padding: 3px 5px; font-size: 9px; min-width: auto; }
             .column-header { font-size: 12px; padding: 8px; }
             .add-task-btn { padding: 6px; font-size: 12px; }
             .task-card { padding: 6px; margin-bottom: 6px; }
@@ -459,6 +512,7 @@
             <button class="login-btn" id="loginBtn" type="button" onclick="verifyLogin()">Login</button>
             <button class="login-btn" style="background: #6b7280; margin-top: 8px;" type="button" onclick="toggleDemoMode()" title="For testing only">Demo Mode</button>
             <button class="login-btn" style="background: #9333ea; margin-top: 8px; font-size: 12px; padding: 10px;" type="button" onclick="resetLoginLockout()" title="Clear lockout">🔓 Reset Lockout</button>
+            <button class="login-btn" id="deviceDisplay" style="background: #9ca3af; margin-top: 12px; cursor: default; font-size: 13px;" type="button" disabled title="Current device">Device: Unknown</button>
         </div>
     </div>
 
@@ -797,17 +851,27 @@
             <div class="project-controls">
                 <select id="projectFilter" class="project-select" onchange="setGlobalProjectFilter(this.value)"></select>
                 <select id="assigneeFilter" class="project-select" onchange="setAssigneeFilter(this.value)" style="margin-left: 8px;"></select>
+                <select id="tabletColumnSelect" class="tablet-column-select" onchange="scrollToColumn(this.value)" style="display: none;" title="Jump to column">
+                    <option value="">Go to...</option>
+                    <option value="1">1-Idea</option>
+                    <option value="2">2-Todo</option>
+                    <option value="3">3-Plan</option>
+                    <option value="4">4-Design</option>
+                    <option value="5">5-Test</option>
+                    <option value="6">6-Done</option>
+                    <option value="7">7-Cancel</option>
+                </select>
                 <button class="project-btn" onclick="createProjectFlow()" title="Add new project"><span class="btn-text">➕ Project</span><span class="btn-icon">➕</span></button>
             </div>
         </div>
         <div class="nav-buttons">
-            <button class="nav-btn" onclick="document.getElementById('docModal').classList.add('active')" title="Documentation & Setup"><span class="btn-text">📖 Docs</span></button>
-            <button class="nav-btn" onclick="document.getElementById('tokenModal').classList.add('active')" title="GitHub Sync Settings"><span class="btn-text">🔐 Token</span></button>
-            <button class="nav-btn" id="syncBtn" onclick="manualSync()" title="Sync with GitHub"><span class="btn-text">🔄 Sync</span></button>
-            <button class="nav-btn" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span></button>
-            <button class="nav-btn" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span></button>
-            <button class="nav-btn" onclick="exportAll()" title="Export all tasks to clipboard"><span class="btn-text">📋 Export All</span></button>
-            <button class="nav-btn" onclick="refreshTimestamp()" title="Refresh timestamp"><span class="btn-text">🔄 Refresh</span></button>
+            <button class="nav-btn" data-tablet-icon="ℹ️" onclick="document.getElementById('docModal').classList.add('active')" title="Documentation & Setup"><span class="btn-text">📖 Docs</span></button>
+            <button class="nav-btn" data-tablet-icon="🔑" onclick="document.getElementById('tokenModal').classList.add('active')" title="GitHub Sync Settings"><span class="btn-text">🔐 Token</span></button>
+            <button class="nav-btn" data-tablet-icon="⇄" id="syncBtn" onclick="manualSync()" title="Sync with GitHub"><span class="btn-text">🔄 Sync</span></button>
+            <button class="nav-btn" data-tablet-icon="🛠️" id="adminBtn" onclick="openAdminPanel()" style="display: none;" title="Admin Panel"><span class="btn-text">⚙️ Admin</span></button>
+            <button class="nav-btn" data-tablet-icon="⬇️" onclick="exportAll()" title="Export all tasks to clipboard"><span class="btn-text">📋 Export All</span></button>
+            <button class="nav-btn" data-tablet-icon="↻" onclick="refreshTimestamp()" title="Refresh timestamp"><span class="btn-text">🔄 Refresh</span></button>
+            <button class="nav-btn" data-tablet-icon="👋" onclick="logout()" title="Logout"><span class="btn-text">🚪 Logout</span></button>
         </div>
     </div>
 
@@ -1836,14 +1900,30 @@ ${projectUrl}`;
             const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
             
             deviceInfo = {
-                isDesktop: width > 800 && !supportsTouch && !hasCoarsePointer,
-                isTablet: width > 800 && (supportsTouch || hasCoarsePointer),
+                isDesktop: width > 1024,
+                isTablet: width > 800 && width <= 1024,
                 isMobile: width <= 800,
                 supportsTouch: supportsTouch,
                 width: width
             };
             
+            updateDeviceDisplay();
             updateDragDropState();
+        }
+
+        function updateDeviceDisplay() {
+            const deviceDisplay = document.getElementById('deviceDisplay');
+            if (deviceDisplay) {
+                if (deviceInfo.isDesktop) {
+                    deviceDisplay.textContent = 'Device: Desktop/Laptop';
+                } else if (deviceInfo.isTablet) {
+                    deviceDisplay.textContent = 'Device: Tablet';
+                } else if (deviceInfo.isMobile) {
+                    deviceDisplay.textContent = 'Device: Mobile';
+                } else {
+                    deviceDisplay.textContent = 'Device: Unknown';
+                }
+            }
         }
 
         function updateDragDropState() {
@@ -2230,10 +2310,16 @@ ${projectUrl}`;
         }
 
         function focusColumn(columnNum) {
-            // Collapse all others, expand this one
+            // Expand this column first (in case it's collapsed), then collapse all others
+            collapsedColumns[columnNum] = false;
+            applyColumnCollapseState(columnNum);
+            
+            // Collapse all others
             for (let i = 1; i <= 7; i++) {
-                collapsedColumns[i] = (i !== columnNum);
-                applyColumnCollapseState(i);
+                if (i !== columnNum) {
+                    collapsedColumns[i] = true;
+                    applyColumnCollapseState(i);
+                }
             }
             localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
             closeAllMenus();
@@ -2665,6 +2751,32 @@ ${projectUrl}`;
             for (let i = 1; i <= 7; i++) renderColumn(i);
             updateDragDropState();
             applyAllColumnCollapseStates();
+            autoCollapseByDevice();
+        }
+
+        function autoCollapseByDevice() {
+            // Check if this is first load (no saved collapse state) and device requires default collapse
+            const savedState = localStorage.getItem('collapsedColumns');
+            
+            // Only auto-collapse on first load (when no saved state exists)
+            if (savedState) return;
+            
+            // Tablet: collapse last 3 columns (5-Test, 6-Done, 7-Cancelled)
+            if (deviceInfo.isTablet) {
+                for (let i = 5; i <= 7; i++) {
+                    collapsedColumns[i] = true;
+                    applyColumnCollapseState(i);
+                }
+                localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
+            }
+            // Mobile: collapse last 6 columns (2-Todo through 7-Cancelled) - only Idea visible
+            else if (deviceInfo.isMobile) {
+                for (let i = 2; i <= 7; i++) {
+                    collapsedColumns[i] = true;
+                    applyColumnCollapseState(i);
+                }
+                localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
+            }
         }
 
         function exportAll() {
@@ -2702,8 +2814,11 @@ ${projectUrl}`;
             if (!parsed) return;
             currentColumn = parsed;
             const target = document.querySelector(`.kanban-column[data-column="${parsed}"]`);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+            const container = document.querySelector('.kanban-container');
+            if (target && container) {
+                // Scroll only horizontally within the container, don't use scrollIntoView
+                const scrollLeft = target.offsetLeft - container.offsetLeft - 10;
+                container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
             }
         }
 
@@ -2737,6 +2852,21 @@ ${projectUrl}`;
 
             const compactEnabled = localStorage.getItem('compactMode') === 'true';
             document.body.classList.toggle('compact-mode', compactEnabled);
+        }
+
+        function syncHeaderOffset() {
+            const header = document.querySelector('.header');
+            const container = document.querySelector('.kanban-container');
+            const toolbar = document.querySelector('.mobile-toolbar');
+            if (!header || !container) return;
+            const headerHeight = header.offsetHeight || 60;
+            const desiredGap = 0;
+            const newOffset = headerHeight + desiredGap;
+            container.style.marginTop = `${newOffset}px`;
+            container.style.height = `calc(100vh - ${newOffset}px)`;
+            if (toolbar) {
+                toolbar.style.top = `${newOffset}px`;
+            }
         }
         
         // RESTORE SESSION FROM LOCALSTORAGE ON PAGE LOAD
@@ -2788,6 +2918,7 @@ ${projectUrl}`;
         // Check for existing session before showing login
         document.addEventListener('DOMContentLoaded', initializeLoginState);
         document.addEventListener('DOMContentLoaded', initMobileEnhancements);
+        document.addEventListener('DOMContentLoaded', syncHeaderOffset);
         
         // Initialize
         detectDevice();
@@ -2795,6 +2926,7 @@ ${projectUrl}`;
             clearTimeout(window.resizeTimer);
             window.resizeTimer = setTimeout(detectDevice, 250);
         });
+        window.addEventListener('resize', syncHeaderOffset);
         updateTimestamp();
         setInterval(updateTimestamp, 1000);
         renderProjectDropdowns();
