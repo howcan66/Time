@@ -199,8 +199,8 @@
         }
         .add-task-btn:hover { background: #5568d3; }
 
-        @media (max-width: 800px) {
-            /* HJ-ID1RS11 Feature 12: Icon-only buttons, shorter selects, logout icon */
+        @media (max-width: 1023px) {
+            /* HJ-ID1RS11 Feature 12: Icon-only buttons, shorter selects, logout icon - Mobile (phones <1024px) */
             .header { height: 55px; padding: 8px 10px; }
             .header-left { gap: 2px; }
             .project-title { font-size: 14px; }
@@ -274,6 +274,18 @@
                 border-radius: 0px;
                 overflow: hidden;
             }
+            
+            /* Collapsed columns on mobile - 22px for better visibility on phones */
+            .kanban-column.collapsed { 
+                flex: 0 0 22px; 
+                min-width: 22px; 
+                max-width: 22px; 
+            }
+            .kanban-column.collapsed .column-header { 
+                padding: 4px 1px;
+                font-size: 10px;
+            }
+            
             .column-header { 
                 font-size: 11px; 
                 padding: 0px;
@@ -309,8 +321,8 @@
             .delete-btn, .icon-btn, .priority-btn { min-height: 30px; min-width: 30px; }
         }
 
-        @media (max-width: 1024px) and (min-width: 801px) {
-            /* HJ-ID1RS11: Feature 9 - Tablet - hide timestamp, show short title, fit all on top row */
+        @media (max-width: 1366px) and (min-width: 1024px) {
+            /* HJ-ID1RS11: Feature 9 - Tablet (iPads 1024-1366px) - hide timestamp, show short title, fit all on top row */
             .header { height: 80px; padding: 6px 8px; display: flex; flex-direction: column; justify-content: flex-start !important; }
             .header-left { gap: 4px; align-items: center; justify-content: flex-start !important; width: 100%; }
             .project-controls { gap: 3px; align-items: center; justify-content: flex-start !important; width: auto; }
@@ -359,6 +371,17 @@
                 border-radius: 4px;
             }
             .kanban-column { min-width: 240px; }
+            
+            /* Thinner collapsed columns on tablet for more visibility */
+            .kanban-column.collapsed { 
+                flex: 0 0 20px; 
+                min-width: 20px; 
+                max-width: 20px; 
+            }
+            .kanban-column.collapsed .column-header { 
+                padding: 6px 2px; 
+            }
+            
             .project-select { height: 30px; padding: 3px 5px; font-size: 10px; }
             .project-btn { height: 30px; padding: 3px 5px; font-size: 9px; min-width: auto; }
             .column-header { font-size: 12px; padding: 8px; }
@@ -394,16 +417,15 @@
         .task-card.dragging { opacity: 0.5; }
         .column-content.drag-over { background: rgba(102, 126, 234, 0.1); }
 
-        .compact-mode .task-card { padding: 6px; margin-bottom: 6px; }
-        .compact-mode .task-row1 { font-size: 10px; margin-bottom: 4px; }
-        .compact-mode .task-row2 { font-size: 12px; margin-bottom: 4px; }
-        .compact-mode .task-row3 { gap: 4px; }
+        /* Compact mode removed - cards are now consistently sized */
 
-        .task-row1 { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; font-size: 11px; }
+        .task-row1 { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-bottom: 5px; font-size: 11px; }
+        .task-info-left { display: flex; align-items: center; gap: 5px; flex-shrink: 1; min-width: 0; }
+        .navigation-group { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
         .task-id { color: #888; font-weight: bold; flex-shrink: 0; line-height: 1.1; }
         .task-id-line { display: block; }
-        .project-tag { font-size: 10px; color: #555; background: #f3f4f6; padding: 2px 6px; border-radius: 10px; }
-        .priority-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; margin-left: auto; }
+        .project-tag { font-size: 10px; color: #555; background: #f3f4f6; padding: 2px 6px; border-radius: 10px; flex-shrink: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .priority-btn { width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer; }
         .priority-1 { background: #22c55e; }
         .priority-2 { background: #3b82f6; }
         .priority-3 { background: #eab308; }
@@ -414,14 +436,12 @@
 
         .task-row2 { font-size: 13px; font-weight: 500; color: #333; margin-bottom: 5px; cursor: pointer; line-height: 1.3; }
         .task-row2:hover { color: #667eea; }
-        .task-row2.compact-hidden { display: none; }
-        .task-compact-toggle { font-size: 12px; color: #999; cursor: pointer; padding: 2px 4px; border-radius: 2px; }
-        .task-compact-toggle:hover { background: #f0f0f0; color: #333; }
+        /* Compact toggle removed for cleaner UI */
         .task-description { font-size: 12px; color: #666; margin-bottom: 5px; padding: 4px 6px; background: #f9fafb; border-radius: 4px; line-height: 1.4; font-style: italic; }
         .task-description.hidden { display: none; }
 
-        .task-row3 { display: flex; gap: 5px; align-items: center; }
-        .move-select { flex: 1; padding: 3px 5px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; }
+        .task-row3 { display: flex; gap: 5px; align-items: center; justify-content: flex-end; }
+        .move-select { padding: 3px 5px; font-size: 11px; border: 1px solid #ddd; border-radius: 3px; }
         .delete-btn { padding: 3px 8px; background: #ef4444; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 10px; }
         .delete-btn:hover { background: #dc2626; }
 
@@ -489,6 +509,77 @@
         .log-entry { padding: 5px 0; border-bottom: 1px solid #e5e7eb; }
         .log-entry:last-child { border-bottom: none; }
         .session-list { max-height: 400px; overflow-y: auto; }
+        
+        /* PA-002: Task Modal Enhancements */
+        .modal-header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* PA-003: Unified Cancel Button in Header */
+        .modal-header-cancel {
+            padding: 8px 12px;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.3s;
+            min-width: 100px;
+            white-space: nowrap;
+        }
+        .modal-header-cancel:hover { background: #4b5563; }
+        
+        /* Save Button in Header */
+        .modal-header-save {
+            padding: 8px 12px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.3s;
+            min-width: 100px;
+            white-space: nowrap;
+            margin-right: 8px;
+        }
+        .modal-header-save:hover { background: #059669; }
+        
+        /* Mobile: Show text on buttons */
+        @media (max-width: 800px) {
+            .modal-header-cancel, .modal-header-save {
+                padding: 6px 10px;
+                font-size: 12px;
+                min-height: 32px;
+                min-width: auto;
+            }
+        }
+        
+        .btn-toggle-fields {
+            width: 100%;
+            padding: 10px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin: 10px 0;
+        }
+        .btn-toggle-fields:hover { background: #5568d3; }
+        
+        @media (max-width: 800px) {
+            .btn-toggle-fields { min-height: 44px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
@@ -731,6 +822,7 @@
                 <button class="admin-tab" onclick="switchAdminTab('logs')">📋 Login Logs</button>
                 <button class="admin-tab" onclick="switchAdminTab('sessions')">🔒 Sessions</button>
                 <button class="admin-tab" onclick="switchAdminTab('invitations')">✉️ Invitations</button>
+                <button class="admin-tab" onclick="switchAdminTab('projects')">📁 Projects</button>
             </div>
 
             <!-- USERS TAB -->
@@ -763,6 +855,83 @@
             <div id="adminTab-invitations" class="admin-tab-content">
                 <button class="btn-primary" style="width: auto; margin-bottom: 15px;" onclick="openInvitationForm()">✉️ Send Invitation</button>
                 <div id="invitationTableContainer"></div>
+            </div>
+
+            <!-- PROJECTS TAB (PA-005) -->
+            <div id="adminTab-projects" class="admin-tab-content">
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 15px;">
+                    <button class="btn-primary" style="width: auto;" onclick="openProjectForm()">➕ Add Project</button>
+                    <button class="btn-secondary" style="width: auto;" onclick="renderProjectAdminTable()">🔄 Refresh</button>
+                </div>
+                <div id="projectTableContainer"></div>
+
+                <div id="projectFormContainer" style="margin-top: 20px; display: none; border-top: 1px solid #e5e7eb; padding-top: 15px;">
+                    <h3 id="projectFormTitle" style="margin-bottom: 12px; font-size: 14px;">Create Project</h3>
+                    <input type="hidden" id="projectFormId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <input type="text" id="projectFormName" placeholder="Project name">
+                        </div>
+                        <div class="form-group">
+                            <label>Prefix (3-5 uppercase)</label>
+                            <input type="text" id="projectFormPrefix" placeholder="TIME" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>Next Task Number</label>
+                            <input type="number" id="projectFormNextNumber" value="1" min="1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="projectFormPriority">
+                                <option value="1">1 (High)</option>
+                                <option value="2" selected>2 (Medium)</option>
+                                <option value="3">3 (Low)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Owner</label>
+                            <input type="text" id="projectFormOwner" placeholder="Owner username">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="projectFormStatus">
+                                <option value="Active" selected>Active</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Archived">Archived</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Members (comma-separated)</label>
+                            <input type="text" id="projectFormMembers" placeholder="admin, user1, user2">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Tags (comma-separated)</label>
+                            <input type="text" id="projectFormTags" placeholder="core, web">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="projectFormDescription" placeholder="Short project description" style="min-height: 60px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Settings</label>
+                        <div class="role-checkboxes" style="grid-template-columns: repeat(3, 1fr);">
+                            <label><input type="checkbox" id="projectFormAllowExternal"> Allow external members</label>
+                            <label><input type="checkbox" id="projectFormRequireApproval"> Require approval for tasks</label>
+                            <label><input type="checkbox" id="projectFormAutoArchive"> Auto-archive completed</label>
+                        </div>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="btn-primary" onclick="saveProjectFromAdmin()">Save Project</button>
+                        <button class="btn-secondary" onclick="closeProjectForm()">Cancel</button>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-buttons">
@@ -888,7 +1057,6 @@
             <option value="7">7 - Cancelled</option>
         </select>
         <button class="mobile-btn" onclick="openAddModal(currentColumn || 1)" title="Add new task">➕</button>
-        <button class="mobile-btn ghost" onclick="toggleCompactMode()" title="Toggle compact mode">🧩</button>
         <button class="mobile-btn secondary" onclick="exportAll()" title="Export tasks">📋</button>
     </div>
 
@@ -1025,17 +1193,18 @@
 
     <div id="taskModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header" id="modalTitle">Add New Task</div>
+            <div class="modal-header" id="modalTitle">
+                <span>Add New Task</span>
+                <button class="modal-close-btn" onclick="closeModal()" title="Close">✖</button>
+            </div>
             <form id="taskForm">
-                <div class="form-row">
-                    <div class="form-group" style="flex: 1;">
-                        <label>Task ID *</label>
-                        <input type="text" id="taskId" placeholder="Auto-generated or enter manually" required>
-                    </div>
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button type="button" onclick="generateTaskId()" style="height: 36px; width: 100%; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">🔄 Generate</button>
-                    </div>
+                <div class="form-group">
+                    <label>Project *</label>
+                    <select id="taskProject" onchange="autoGenerateTaskId()" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Task ID * (Auto-generated)</label>
+                    <input type="text" id="taskId" placeholder="Select project to generate ID" readonly required style="background: #f3f4f6;">
                 </div>
                 <div class="form-group">
                     <label>What (Task Title) * - 2 rows</label>
@@ -1045,53 +1214,60 @@
                     <label>What Description - 4 rows Scrollable</label>
                     <textarea id="taskWhatDescription" placeholder="Detailed description of the task..." rows="4" style="min-height: 100px; overflow-y: auto;"></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Feature Descriptions (FD)</label>
-                    <textarea id="taskFD" placeholder="Feature descriptions..."></textarea>
+                
+                <!-- PA-002: Toggle Button for Additional Fields -->
+                <div class="form-group" style="text-align: center; margin: 10px 0;">
+                    <button type="button" id="toggleAdditionalFields" class="btn-toggle-fields" onclick="toggleTaskFormFields()">
+                        <span id="toggleIcon">▼</span> Show All Fields
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>AI Analyse Summeries (AIS)</label>
-                    <textarea id="taskAIS" placeholder="AI analysis summaries..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Trouble Descriptions (TR)</label>
-                    <textarea id="taskTR" placeholder="Trouble descriptions..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>AI TR Analyses (AITRA)</label>
-                    <textarea id="taskAITRA" placeholder="AI trouble analysis..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Why (Reason/Purpose)</label>
-                    <textarea id="taskWhy" placeholder="Why is this needed?"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>How (Approach/Method)</label>
-                    <textarea id="taskHow" placeholder="How will you approach this?"></textarea>
-                </div>
-                <div class="form-row">
+                
+                <!-- PA-002: Additional Fields Container (hidden by default) -->
+                <div id="additionalFieldsContainer" style="display: none;">
                     <div class="form-group">
-                        <label>Who</label>
-                        <input type="text" id="taskWho" value="HJ">
+                        <label>Feature Descriptions (FD)</label>
+                        <textarea id="taskFD" placeholder="Feature descriptions..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label>When</label>
-                        <input type="date" id="taskWhen">
+                        <label>AI Analyse Summeries (AIS)</label>
+                        <textarea id="taskAIS" placeholder="AI analysis summaries..."></textarea>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Where</label>
-                    <input type="text" id="taskWhere" placeholder="Location/file...">
-                </div>
-                <div class="form-group">
-                    <label>Project</label>
-                    <select id="taskProject"></select>
-                </div>
-                <div class="form-group">
-                    <label>👤 Assign To (Optional)</label>
-                    <select id="taskAssignee">
-                        <option value="">-- Unassigned --</option>
-                    </select>
+                    <div class="form-group">
+                        <label>Trouble Descriptions (TR)</label>
+                        <textarea id="taskTR" placeholder="Trouble descriptions..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>AI TR Analyses (AITRA)</label>
+                        <textarea id="taskAITRA" placeholder="AI trouble analysis..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Why (Reason/Purpose)</label>
+                        <textarea id="taskWhy" placeholder="Why is this needed?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>How (Approach/Method)</label>
+                        <textarea id="taskHow" placeholder="How will you approach this?"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Who</label>
+                            <input type="text" id="taskWho" value="HJ">
+                        </div>
+                        <div class="form-group">
+                            <label>When</label>
+                            <input type="date" id="taskWhen">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Where</label>
+                        <input type="text" id="taskWhere" placeholder="Location/file...">
+                    </div>
+                    <div class="form-group">
+                        <label>👤 Assign To (Optional)</label>
+                        <select id="taskAssignee">
+                            <option value="">-- Unassigned --</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1182,7 +1358,7 @@
         ];
         let tasks = defaultTasks.map(task => ({ ...task }));
         let taskIdCounter = 24;
-        let compactViewTasks = localStorage.getItem('compactViewTasks') ? JSON.parse(localStorage.getItem('compactViewTasks')) : {}; // { taskId: true/false }
+        // Compact view removed - using consistent card layout
         let descriptionVisibility = localStorage.getItem('descriptionVisibility') ? JSON.parse(localStorage.getItem('descriptionVisibility')) : {}; // { taskId: true/false }
         let collapsedColumns = localStorage.getItem('collapsedColumns') ? JSON.parse(localStorage.getItem('collapsedColumns')) : {}; // { columnNum: true/false }
         
@@ -1227,9 +1403,46 @@
         let editingTaskId = null;
         let deviceInfo = {};
         let draggedTaskId = null;
+        // PA-005: Enhanced project structure with ID generation, access control, and admin features
         let projects = [
-            { id: 'proj-1', name: 'Time Project Kanban', priority: 1 },
-            { id: 'proj-2', name: 'Time Website Features', priority: 2 }
+            { 
+                id: 'proj-1', 
+                name: 'Time Project Kanban', 
+                prefix: 'TIME',
+                nextTaskNumber: 1,
+                priority: 1,
+                createdBy: 'admin',
+                createdDate: '2026-01-15',
+                owner: 'admin',
+                members: ['admin', 'R18', 'Maximus'],
+                description: 'Main kanban board for Time project',
+                status: 'Active',
+                tags: ['core', 'kanban'],
+                settings: {
+                    allowExternalMembers: false,
+                    requireApprovalForTasks: false,
+                    autoArchiveCompleted: false
+                }
+            },
+            { 
+                id: 'proj-2', 
+                name: 'Time Website Features', 
+                prefix: 'WEB',
+                nextTaskNumber: 1,
+                priority: 2,
+                createdBy: 'admin',
+                createdDate: '2026-01-15',
+                owner: 'admin',
+                members: ['admin'],
+                description: 'Website development and features',
+                status: 'Active',
+                tags: ['website'],
+                settings: {
+                    allowExternalMembers: false,
+                    requireApprovalForTasks: false,
+                    autoArchiveCompleted: false
+                }
+            }
         ];
         let globalProjectFilter = 'all';
         let columnProjectFilters = { 1: 'all', 2: 'all', 3: 'all', 4: 'all', 5: 'all', 6: 'all', 7: 'all' };
@@ -1420,6 +1633,7 @@
 
         // ===== ADMIN PANEL (HJ-ID1RS7) =====
         let editingUserId = null;
+        let editingProjectId = null;
         let adminLogs = [];
 
         function isAdmin() {
@@ -1445,6 +1659,7 @@
             renderUserTable();
             renderLoginLogs();
             renderSessionList();
+            renderProjectAdminTable();
         }
 
         function closeAdminPanel() {
@@ -1464,6 +1679,7 @@
             if (tabName === 'users') renderUserTable();
             if (tabName === 'logs') renderLoginLogs();
             if (tabName === 'sessions') renderSessionList();
+            if (tabName === 'projects') renderProjectAdminTable();
         }
 
         function renderUserTable() {
@@ -1702,6 +1918,181 @@
             container.innerHTML = html;
         }
 
+        // ===== PROJECT ADMIN (PA-005) =====
+        function renderProjectAdminTable() {
+            const container = document.getElementById('projectTableContainer');
+            if (!container) return;
+
+            if (!projects || projects.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">No projects available.</p>';
+                return;
+            }
+
+            let html = '<table class="user-table"><thead><tr>';
+            html += '<th>Name</th><th>Prefix</th><th>Next #</th><th>Owner</th><th>Status</th><th>Members</th><th>Actions</th>';
+            html += '</tr></thead><tbody>';
+
+            projects.forEach(project => {
+                const membersCount = project.members ? project.members.length : 0;
+                html += `<tr>
+                    <td><strong>${project.name}</strong></td>
+                    <td>${project.prefix || '—'}</td>
+                    <td>${project.nextTaskNumber || 1}</td>
+                    <td>${project.owner || '—'}</td>
+                    <td>${project.status || 'Active'}</td>
+                    <td>${membersCount}</td>
+                    <td class="user-actions">
+                        <button class="btn-edit" onclick="openProjectForm('${project.id}')">Edit</button>
+                        <button class="btn-delete" onclick="deleteProjectFromAdmin('${project.id}')">Delete</button>
+                    </td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function openProjectForm(projectId = null) {
+            const container = document.getElementById('projectFormContainer');
+            if (!container) return;
+            container.style.display = 'block';
+
+            editingProjectId = projectId;
+            const title = document.getElementById('projectFormTitle');
+            const project = projectId ? projects.find(p => p.id === projectId) : null;
+
+            document.getElementById('projectFormId').value = project ? project.id : '';
+            document.getElementById('projectFormName').value = project ? project.name : '';
+            document.getElementById('projectFormPrefix').value = project ? (project.prefix || '') : '';
+            document.getElementById('projectFormNextNumber').value = project ? (project.nextTaskNumber || 1) : 1;
+            document.getElementById('projectFormPriority').value = project ? (project.priority || 2) : 2;
+            document.getElementById('projectFormOwner').value = project ? (project.owner || '') : (currentUser ? currentUser.username : 'admin');
+            document.getElementById('projectFormStatus').value = project ? (project.status || 'Active') : 'Active';
+            document.getElementById('projectFormMembers').value = project && project.members ? project.members.join(', ') : '';
+            document.getElementById('projectFormTags').value = project && project.tags ? project.tags.join(', ') : '';
+            document.getElementById('projectFormDescription').value = project ? (project.description || '') : '';
+            document.getElementById('projectFormAllowExternal').checked = project ? !!(project.settings && project.settings.allowExternalMembers) : false;
+            document.getElementById('projectFormRequireApproval').checked = project ? !!(project.settings && project.settings.requireApprovalForTasks) : false;
+            document.getElementById('projectFormAutoArchive').checked = project ? !!(project.settings && project.settings.autoArchiveCompleted) : false;
+
+            if (title) title.textContent = project ? 'Edit Project' : 'Create Project';
+        }
+
+        function closeProjectForm() {
+            const container = document.getElementById('projectFormContainer');
+            if (container) container.style.display = 'none';
+            editingProjectId = null;
+        }
+
+        function parseCsvList(value) {
+            if (!value) return [];
+            return value
+                .split(',')
+                .map(v => v.trim())
+                .filter(v => v.length > 0);
+        }
+
+        function saveProjectFromAdmin() {
+            const name = document.getElementById('projectFormName').value.trim();
+            let prefix = document.getElementById('projectFormPrefix').value.trim().toUpperCase();
+            const nextTaskNumberRaw = parseInt(document.getElementById('projectFormNextNumber').value, 10);
+            const priority = parseInt(document.getElementById('projectFormPriority').value, 10) || 2;
+            const ownerInput = document.getElementById('projectFormOwner').value.trim();
+            const status = document.getElementById('projectFormStatus').value;
+            const members = parseCsvList(document.getElementById('projectFormMembers').value);
+            const tags = parseCsvList(document.getElementById('projectFormTags').value);
+            const description = document.getElementById('projectFormDescription').value.trim();
+            const settings = {
+                allowExternalMembers: document.getElementById('projectFormAllowExternal').checked,
+                requireApprovalForTasks: document.getElementById('projectFormRequireApproval').checked,
+                autoArchiveCompleted: document.getElementById('projectFormAutoArchive').checked
+            };
+
+            if (!name) {
+                alert('Project name is required.');
+                return;
+            }
+
+            if (!prefix) {
+                alert('Project prefix is required.');
+                return;
+            }
+
+            const validation = validateProjectPrefix(prefix, editingProjectId);
+            if (!validation.valid) {
+                alert(validation.error);
+                return;
+            }
+
+            const nextTaskNumber = Number.isFinite(nextTaskNumberRaw) && nextTaskNumberRaw > 0 ? nextTaskNumberRaw : 1;
+            const owner = ownerInput || (currentUser ? currentUser.username : 'admin');
+            if (owner && !members.includes(owner)) members.unshift(owner);
+
+            if (editingProjectId) {
+                const project = projects.find(p => p.id === editingProjectId);
+                if (!project) return;
+                project.name = name;
+                project.prefix = prefix;
+                project.nextTaskNumber = nextTaskNumber;
+                project.priority = priority;
+                project.owner = owner;
+                project.members = members;
+                project.status = status;
+                project.tags = tags;
+                project.description = description;
+                project.settings = settings;
+                logAdminAction('UPDATE_PROJECT', `Updated project ${project.name} (${project.id})`);
+            } else {
+                const newProject = {
+                    id: `proj-${Date.now()}`,
+                    name,
+                    prefix,
+                    nextTaskNumber,
+                    priority,
+                    createdBy: currentUser ? currentUser.username : 'admin',
+                    createdDate: new Date().toISOString().slice(0, 10),
+                    owner,
+                    members,
+                    description,
+                    status,
+                    tags,
+                    settings
+                };
+                projects.push(newProject);
+                logAdminAction('CREATE_PROJECT', `Created project ${newProject.name} (${newProject.id})`);
+            }
+
+            saveProjects();
+            renderProjectDropdowns();
+            renderProjectAdminTable();
+            renderAllColumns();
+            closeProjectForm();
+        }
+
+        function deleteProjectFromAdmin(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+
+            const relatedCount = tasks.filter(t => t.projectId === projectId).length;
+            const warning = relatedCount > 0
+                ? `This project has ${relatedCount} tasks. Deleting it will remove the project but leave tasks unassigned. Continue?`
+                : 'Delete this project?';
+            if (!confirm(warning)) return;
+
+            projects = projects.filter(p => p.id !== projectId);
+            if (globalProjectFilter === projectId) globalProjectFilter = 'all';
+            Object.keys(columnProjectFilters).forEach(key => {
+                if (columnProjectFilters[key] === projectId) columnProjectFilters[key] = 'all';
+            });
+
+            saveProjects();
+            renderProjectDropdowns();
+            renderProjectAdminTable();
+            renderAllColumns();
+            logAdminAction('DELETE_PROJECT', `Deleted project ${project.name} (${project.id})`);
+        }
+        // ===== END PROJECT ADMIN =====
+
         // ===== INVITATIONS (HJ-ID1RS10) =====
         let clientInvitations = [];
 
@@ -1900,9 +2291,9 @@ ${projectUrl}`;
             const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
             
             deviceInfo = {
-                isDesktop: width > 1024,
-                isTablet: width > 800 && width <= 1024,
-                isMobile: width <= 800,
+                isDesktop: width > 1366,
+                isTablet: width >= 1024 && width <= 1366,
+                isMobile: width < 1024,
                 supportsTouch: supportsTouch,
                 width: width
             };
@@ -2025,12 +2416,42 @@ ${projectUrl}`;
         function createProjectFlow() {
             const name = prompt('New project name?');
             if (!name) return;
+            let prefix = prompt('Project prefix (3-5 uppercase letters)?', '').trim().toUpperCase();
+            if (!prefix) return;
+            const validation = validateProjectPrefix(prefix);
+            if (!validation.valid) {
+                alert(validation.error);
+                return;
+            }
+
             let priorityInput = prompt('Project priority (1=High, 2=Medium, 3=Low):', '2');
             let priority = parseInt(priorityInput, 10);
             if (![1, 2, 3].includes(priority)) priority = 2;
+
             const id = `proj-${Date.now()}`;
-            projects.push({ id, name, priority });
+            const owner = currentUser ? currentUser.username : 'admin';
+            projects.push({
+                id,
+                name: name.trim(),
+                prefix,
+                nextTaskNumber: 1,
+                priority,
+                createdBy: owner,
+                createdDate: new Date().toISOString().slice(0, 10),
+                owner,
+                members: owner ? [owner] : [],
+                description: '',
+                status: 'Active',
+                tags: [],
+                settings: {
+                    allowExternalMembers: false,
+                    requireApprovalForTasks: false,
+                    autoArchiveCompleted: false
+                }
+            });
+            saveProjects();
             renderProjectDropdowns();
+            renderProjectAdminTable();
             renderAllColumns();
         }
 
@@ -2061,6 +2482,69 @@ ${projectUrl}`;
             return deduped;
         }
 
+        // PA-005: Generate sequential task ID based on assigned project
+        function generateTaskIdForProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project || !project.prefix) {
+                return `UNKNOWN-${Math.floor(Math.random() * 1000)}`;
+            }
+            
+            const paddedNumber = String(project.nextTaskNumber).padStart(3, '0');
+            const newId = `${project.prefix}-${paddedNumber}`;
+            
+            // Increment for next task
+            project.nextTaskNumber++;
+            saveProjects();
+            
+            return newId;
+        }
+
+        // PA-005: Validate project prefix (unique, 3-5 chars, uppercase)
+        function validateProjectPrefix(prefix, excludeProjectId = null) {
+            if (!/^[A-Z]{3,5}$/.test(prefix)) {
+                return { valid: false, error: 'Prefix must be 3-5 uppercase letters' };
+            }
+            
+            const existing = projects.find(p => p.prefix === prefix && p.id !== excludeProjectId);
+            if (existing) {
+                return { valid: false, error: `Prefix "${prefix}" already used by ${existing.name}` };
+            }
+            
+            return { valid: true };
+        }
+
+        // PA-005: Check if user has access to project
+        function hasProjectAccess(username, projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return false;
+            
+            if (project.owner === username) return true;
+            if (project.members && project.members.includes(username)) return true;
+            
+            const user = validUsers.find(u => u.username === username);
+            if (user && user.roles.includes('Admin')) return true;
+            
+            return false;
+        }
+
+        // PA-005: Save projects to localStorage
+        function saveProjects() {
+            localStorage.setItem('projects', JSON.stringify(projects));
+        }
+
+        // PA-005: Load projects from localStorage
+        function loadProjects() {
+            const saved = localStorage.getItem('projects');
+            if (saved) {
+                try {
+                    projects = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Failed to load projects:', e);
+                }
+            }
+        }
+
+        // Old random ID generator (deprecated - kept for backwards compatibility)
         function generateTaskId() {
             const prefixes = ['AI-TD', 'TPK-v1', 'HJ-ID1RS', 'NEW', 'EPIC'];
             const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
@@ -2069,13 +2553,45 @@ ${projectUrl}`;
             document.getElementById('taskId').value = newId;
         }
 
+        // PA-005: Auto-generate task ID when project is selected
+        function autoGenerateTaskId() {
+            const projectSelect = document.getElementById('taskProject');
+            const taskIdInput = document.getElementById('taskId');
+            
+            if (!projectSelect || !taskIdInput) return;
+            
+            const projectId = projectSelect.value;
+            if (!projectId || projectId === '') {
+                taskIdInput.value = '';
+                taskIdInput.placeholder = 'Select project to generate ID';
+                return;
+            }
+            
+            // Generate new ID based on selected project
+            const newId = generateTaskIdForProject(projectId);
+            taskIdInput.value = newId;
+        }
+
         function openAddModal(column) {
             currentColumn = column;
             editingTaskId = null;
-            document.getElementById('modalTitle').textContent = 'Add New Task';
+            document.getElementById('modalTitle').innerHTML = '<span>Add New Task</span><div style="display: flex; gap: 8px;"><button class="modal-header-save btn-primary" onclick="document.getElementById(\'taskForm\').requestSubmit()" title="Save Task">💾 Save</button><button class="modal-header-cancel btn-secondary" onclick="closeModal()" title="Close">❌ Cancel</button></div>';
             document.getElementById('taskForm').reset();
             document.getElementById('taskWho').value = 'HJ';
-            generateTaskId(); /* Auto-generate ID for new task */
+            // PA-005: Removed auto-generate - now happens when project is selected
+            
+            // PA-002: Restore toggle state from localStorage
+            const savedState = localStorage.getItem('taskFormExpanded') === 'true';
+            const container = document.getElementById('additionalFieldsContainer');
+            const toggleBtn = document.getElementById('toggleAdditionalFields');
+            if (savedState) {
+                container.style.display = 'block';
+                toggleBtn.innerHTML = '<span id="toggleIcon">▲</span> Hide Additional Fields';
+            } else {
+                container.style.display = 'none';
+                toggleBtn.innerHTML = '<span id="toggleIcon">▼</span> Show All Fields';
+            }
+            
             const taskProjectSelect = document.getElementById('taskProject');
             const columnFilter = columnProjectFilters[column] || 'all';
             const preferredProject = columnFilter !== 'all'
@@ -2097,7 +2613,7 @@ ${projectUrl}`;
             if (!task) return;
             editingTaskId = taskId;
             currentColumn = task.column;
-            document.getElementById('modalTitle').textContent = 'Edit Task';
+            document.getElementById('modalTitle').innerHTML = '<span>Edit Task</span><div style="display: flex; gap: 8px;"><button class="modal-header-save btn-primary" onclick="document.getElementById(\'taskForm\').requestSubmit()" title="Save Task">💾 Save</button><button class="modal-header-cancel btn-secondary" onclick="closeModal()" title="Close">❌ Cancel</button></div>';
             document.getElementById('taskId').value = task.id; /* Show existing ID for editing */
             document.getElementById('taskWhat').value = task.what;
             document.getElementById('taskWhatDescription').value = task.whatDescription || '';
@@ -2114,11 +2630,42 @@ ${projectUrl}`;
             document.getElementById('taskStatus').value = task.status;
             document.getElementById('taskProject').value = task.projectId || projects[0].id;
             document.getElementById('taskAssignee').value = task.assignee || '';
+            
+            // PA-002: Restore toggle state from localStorage
+            const savedState = localStorage.getItem('taskFormExpanded') === 'true';
+            const container = document.getElementById('additionalFieldsContainer');
+            const toggleBtn = document.getElementById('toggleAdditionalFields');
+            if (savedState) {
+                container.style.display = 'block';
+                toggleBtn.innerHTML = '<span id="toggleIcon">▲</span> Hide Additional Fields';
+            } else {
+                container.style.display = 'none';
+                toggleBtn.innerHTML = '<span id="toggleIcon">▼</span> Show All Fields';
+            }
+            
             document.getElementById('taskModal').classList.add('active');
         }
 
         function closeModal() {
             document.getElementById('taskModal').classList.remove('active');
+        }
+        
+        // PA-002: Toggle Additional Fields Function
+        function toggleTaskFormFields() {
+            const container = document.getElementById('additionalFieldsContainer');
+            const button = document.getElementById('toggleAdditionalFields');
+            
+            const isCurrentlyHidden = container.style.display === 'none';
+            
+            if (isCurrentlyHidden) {
+                container.style.display = 'block';
+                button.innerHTML = '<span id="toggleIcon">▲</span> Hide Additional Fields';
+                localStorage.setItem('taskFormExpanded', 'true');
+            } else {
+                container.style.display = 'none';
+                button.innerHTML = '<span id="toggleIcon">▼</span> Show All Fields';
+                localStorage.setItem('taskFormExpanded', 'false');
+            }
         }
 
         function viewTask(taskId) {
@@ -2236,17 +2783,7 @@ ${projectUrl}`;
             }
         }
 
-        function toggleCompactView(taskId) {
-            // Toggle compact view for this task
-            compactViewTasks[taskId] = !compactViewTasks[taskId];
-            localStorage.setItem('compactViewTasks', JSON.stringify(compactViewTasks));
-            
-            // Re-render the task's column
-            const task = tasks.find(t => t.id === taskId);
-            if (task) {
-                renderColumn(task.column);
-            }
-        }
+        // toggleCompactView removed - using consistent card layout
 
         function toggleDescriptionVisibility(taskId) {
             // Toggle description visibility for this task
@@ -2689,10 +3226,6 @@ ${projectUrl}`;
                 ? `<div class="task-assignee" style="font-size: 11px; color: #666; margin-top: 4px; padding: 2px 4px; background: #f0f0f0; border-radius: 3px; display: inline-block;">👤 ${task.assignee}</div>` 
                 : '';
             
-            // Compact view toggle (Improvement #13)
-            const isCompact = compactViewTasks[task.id] === true;
-            const toggleIcon = isCompact ? '▶️' : '▼';
-            
             // Description visibility toggle
             const showDescription = descriptionVisibility[task.id] !== false; // default: true
             const hasDescription = task.whatDescription && task.whatDescription.trim() !== '';
@@ -2700,21 +3233,24 @@ ${projectUrl}`;
             return `
                 <div class="task-card" data-task-id="${task.id}" data-creator="${creator}" draggable="${deviceInfo.isDesktop || deviceInfo.isTablet}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">
                     <div class="task-row1">
-                        <span class="task-id">${idDisplay}</span>
-                        <span class="project-tag">${projectName}</span>
-                        <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
-                        <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
-                        <div class="action-buttons">
-                            ${hasDescription ? `<button class="icon-btn" onclick="toggleDescriptionVisibility('${task.id}')" title="Toggle description">${showDescription ? '🔽' : '🔼'}</button>` : ''}
-                            <button class="icon-btn task-compact-toggle" onclick="toggleCompactView('${task.id}')" title="Toggle compact view">${toggleIcon}</button>
-                            <button class="icon-btn" onclick="viewTask('${task.id}')">👁️</button>
-                            <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
+                        <div class="task-info-left">
+                            <span class="task-id">${idDisplay}</span>
+                            <span class="project-tag">${projectName}</span>
+                        </div>
+                        <div class="navigation-group">
+                            <button class="priority-btn priority-${task.priority}" onclick="togglePriority('${task.id}')"></button>
+                            <span class="status-icon" onclick="toggleStatus('${task.id}')">${getStatusIcon(task.status)}</span>
+                            <div class="action-buttons">
+                                ${hasDescription ? `<button class="icon-btn" onclick="toggleDescriptionVisibility('${task.id}')" title="Toggle description">${showDescription ? '🔽' : '🔼'}</button>` : ''}
+                                <button class="icon-btn" onclick="viewTask('${task.id}')">👁️</button>
+                                <button class="icon-btn" onclick="editTask('${task.id}')">📝</button>
+                            </div>
                         </div>
                     </div>
                     <div class="task-row2" onclick="viewTask('${task.id}')">${task.what}</div>
-                    ${hasDescription && showDescription && !isCompact ? `<div class="task-description">${task.whatDescription}</div>` : ''}
-                    ${isCompact ? '' : assigneeDisplay}
-                    <div class="task-row3 ${isCompact ? 'compact-hidden' : ''}">
+                    ${hasDescription && showDescription ? `<div class="task-description">${task.whatDescription}</div>` : ''}
+                    ${assigneeDisplay}
+                    <div class="task-row3">
                         <select class="move-select" onchange="moveTask('${task.id}', this.value)">
                             <option value="">Move to...</option>
                             ${[1,2,3,4,5,6,7].map(i => `<option value="${i}" ${task.column===i?'selected':''}>${i}-${['Idea','Todo','Plan','Design','Test','Done','Cancel'][i-1]}</option>`).join('')}
@@ -2750,33 +3286,41 @@ ${projectUrl}`;
         function renderAllColumns() {
             for (let i = 1; i <= 7; i++) renderColumn(i);
             updateDragDropState();
-            applyAllColumnCollapseStates();
-            autoCollapseByDevice();
+            autoCollapseByDevice();  // Set device-specific collapse state first
+            applyAllColumnCollapseStates();  // Then apply it to the UI
         }
 
         function autoCollapseByDevice() {
-            // Check if this is first load (no saved collapse state) and device requires default collapse
+            // Auto-collapse based on device type (runs every time to handle device changes)
             const savedState = localStorage.getItem('collapsedColumns');
             
-            // Only auto-collapse on first load (when no saved state exists)
-            if (savedState) return;
+            console.log('autoCollapseByDevice called:', { 
+                savedState, 
+                isTablet: deviceInfo.isTablet, 
+                isMobile: deviceInfo.isMobile,
+                width: window.innerWidth 
+            });
+            
+            // Clear any existing saved state and apply device-specific defaults
+            collapsedColumns = {};
             
             // Tablet: collapse last 3 columns (5-Test, 6-Done, 7-Cancelled)
             if (deviceInfo.isTablet) {
+                console.log('Tablet detected (1024-1366px) - collapsing columns 5, 6, 7');
                 for (let i = 5; i <= 7; i++) {
                     collapsedColumns[i] = true;
-                    applyColumnCollapseState(i);
                 }
-                localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
             }
-            // Mobile: collapse last 6 columns (2-Todo through 7-Cancelled) - only Idea visible
+            // Mobile (<1024px, phones): collapse last 6 columns (2-Todo through 7-Cancelled) - only Idea visible
             else if (deviceInfo.isMobile) {
+                console.log('Mobile detected (<1024px) - collapsing columns 2-7');
                 for (let i = 2; i <= 7; i++) {
                     collapsedColumns[i] = true;
-                    applyColumnCollapseState(i);
                 }
-                localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
             }
+            
+            // Save to localStorage (but don't apply yet - renderAllColumns will call applyAllColumnCollapseStates)
+            localStorage.setItem('collapsedColumns', JSON.stringify(collapsedColumns));
         }
 
         function exportAll() {
@@ -2827,12 +3371,7 @@ ${projectUrl}`;
             if (container) container.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function toggleCompactMode() {
-            const current = localStorage.getItem('compactMode') === 'true';
-            const next = !current;
-            localStorage.setItem('compactMode', String(next));
-            document.body.classList.toggle('compact-mode', next);
-        }
+        // toggleCompactMode removed - using consistent card layout
 
         function initMobileEnhancements() {
             const container = document.querySelector('.kanban-container');
@@ -2919,6 +3458,7 @@ ${projectUrl}`;
         document.addEventListener('DOMContentLoaded', initializeLoginState);
         document.addEventListener('DOMContentLoaded', initMobileEnhancements);
         document.addEventListener('DOMContentLoaded', syncHeaderOffset);
+        document.addEventListener('DOMContentLoaded', loadProjects); // PA-005: Load projects from localStorage
         
         // Initialize
         detectDevice();
