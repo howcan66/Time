@@ -2,7 +2,977 @@
 CMD_AIPD_AIPN_SUGGESTIONS.txt
 TIME PROJECT KANBAN (TPK) - Command Reference AI Suggestions
 Created: 2026-01-29
+Last Updated: 2026-02-02
 Purpose: Circulate AI-proposed descriptions (AIPD) and notes (AIPN) for cmd_xlsx.csv
+================================================================================
+
+================================================================================
+SECTION 0: PA (PLEASE ADD/ANALYZE) - PENDING IMPROVEMENTS
+================================================================================
+
+PA-006: Right-Align All Navigation Elements in Task Cards
+==========================================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: MEDIUM
+EFFORT: 1 hour
+TYPE: UI Enhancement - Visual Alignment
+
+DESCRIPTION:
+  Right-align all navigation/action elements within task cards displayed on the
+  kanban board for better visual consistency and easier interaction. Currently
+  some elements are center-aligned or left-aligned, creating visual clutter.
+
+ELEMENTS TO RIGHT-ALIGN:
+  Row 1 (task-row1):
+    - Priority button (colored circle)
+    - Status icon (emoji indicators)
+    - Action buttons container:
+      * Description toggle (🔽/🔼)
+      * View button (👁️)
+      * Edit button (📝)
+  
+  Row 3 (task-row3):
+    - Move dropdown selector
+    - Delete button (🗑️)
+
+KEEP LEFT-ALIGNED:
+  - Task ID (task-id)
+  - Project tag (project-tag)
+  - Task title (task-row2)
+  - Task description
+  - Assignee display
+
+IMPLEMENTATION:
+  CSS changes to task-row1 and task-row3:
+  
+  .task-row1 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    justify-content: space-between; /* NEW: spread items */
+  }
+  
+  .task-row1 .navigation-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto; /* Push to right */
+  }
+  
+  .task-row3 {
+    display: flex;
+    justify-content: flex-end; /* Right-align controls */
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+HTML STRUCTURE UPDATE:
+  
+  Current task-row1:
+  <div class="task-row1">
+    <span class="task-id">...</span>
+    <span class="project-tag">...</span>
+    <button class="priority-btn">...</button>
+    <span class="status-icon">...</span>
+    <div class="action-buttons">...</div>
+  </div>
+  
+  Proposed task-row1:
+  <div class="task-row1">
+    <div class="task-info-left">
+      <span class="task-id">...</span>
+      <span class="project-tag">...</span>
+    </div>
+    <div class="navigation-group">
+      <button class="priority-btn">...</button>
+      <span class="status-icon">...</span>
+      <div class="action-buttons">...</div>
+    </div>
+  </div>
+
+BENEFITS:
+  ✅ Consistent visual alignment across all cards
+  ✅ Easier to locate action buttons (always in same position)
+  ✅ Cleaner separation between info and controls
+  ✅ Better touch targets on mobile (right side easier for right-handed users)
+  ✅ Professional, polished appearance
+
+RESPONSIVE BEHAVIOR:
+  - Desktop/Tablet: Full spacing maintained
+  - Mobile: Controls remain right-aligned with smaller gaps
+
+RELATED FILES:
+  - kanban.html (renderTaskCard function, CSS styles)
+
+DECISION: HOLD (awaiting approval)
+
+================================================================================
+
+PA-001: On-Hold Date Tracking for Task Cards
+==============================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: HIGH
+EFFORT: 2-3 hours
+TYPE: Feature Enhancement
+
+DESCRIPTION:
+  Add metadata tracking for when tasks are moved to "Cancelled" column (on-hold state).
+  Track who put task on hold, why, and when. Enable reporting on on-hold duration
+  and provide resume date tracking.
+
+NEW TASK FIELDS:
+  - onHoldDate: ISO timestamp when moved to column 7
+  - onHoldReason: Optional text explanation
+  - statusHistory: Array of all column movements with user/date
+  - resumedDate: Timestamp when moved back from on-hold
+  - resumedBy: Username who resumed task
+
+IMPLEMENTATION:
+  - Update moveTask() function to track history
+  - Add visual indicator badge on task cards showing "⏸️ On Hold: X days ago"
+  - Add prompt for on-hold reason when moving to Cancelled
+  - Store all status changes in statusHistory array
+  - Add formatRelativeDate() helper function
+
+BENEFITS:
+  ✅ Full audit trail of task lifecycle
+  ✅ Accountability tracking (who/when)
+  ✅ Identify bottlenecks (tasks stuck on hold)
+  ✅ Better reporting capabilities
+  ✅ Resume date tracking
+
+RELATED FILES:
+  - CODE_QUALITY_IMPROVEMENTS.txt (Section 7: Task Card Improvement #1)
+  - kanban.html (moveTask, renderTaskCard functions)
+
+NEXT STEPS:
+  1. Review and approve proposal
+  2. Implement moveTask() changes
+  3. Add UI indicator badge
+  4. Test on all devices
+  5. Update documentation
+
+DECISION: HOLD (awaiting approval)
+
+================================================================================
+
+PA-002: Task Edit Modal Enhancements
+=====================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: MEDIUM
+EFFORT: 1-2 hours
+TYPE: UI/UX Enhancement
+
+DESCRIPTION:
+  Improve task edit modal with close button in header and collapsible form sections.
+  Default view shows only essential fields (Task ID, What, What Description).
+  Toggle button reveals additional fields (FD, AIS, TR, AITRA, Why, How, Who, When, Where).
+
+CURRENT STATE:
+  - Modal header shows "Add New Task" or "Edit Task" text only
+  - All 15+ form fields always visible (overwhelming)
+  - No close button in header (must use Cancel button at bottom)
+  - Users must scroll through all fields even for simple edits
+
+PROPOSED CHANGES:
+
+1. ADD CLOSE BUTTON TO MODAL HEADER
+   Location: Top-right corner of modal header
+   Implementation:
+   <div class="modal-header" id="modalTitle">
+     <span>Edit Task</span>
+     <button class="modal-close-btn" onclick="closeModal()" title="Close">✖</button>
+   </div>
+   
+   CSS:
+   .modal-close-btn {
+     position: absolute;
+     right: 15px;
+     top: 12px;
+     background: none;
+     border: none;
+     font-size: 20px;
+     cursor: pointer;
+     color: #666;
+   }
+   .modal-close-btn:hover { color: #dc2626; }
+
+2. ADD TOGGLE BUTTON FOR ADDITIONAL FIELDS
+   Location: Below "What Description" field
+   Default State: Additional fields HIDDEN
+   Toggle Button Text: 
+     - "▼ Show All Fields" (when collapsed)
+     - "▲ Hide Additional Fields" (when expanded)
+   
+   Fields in DEFAULT VIEW (always visible):
+     ✅ Task ID
+     ✅ What (Task Title)
+     ✅ What Description
+     ✅ Priority
+     ✅ Status
+     ✅ Save/Cancel buttons
+   
+   Fields in EXPANDED VIEW (toggle to show):
+     - Feature Descriptions (FD)
+     - AI Analyse Summaries (AIS)
+     - Trouble Descriptions (TR)
+     - AI TR Analyses (AITRA)
+     - Why (Reason/Purpose)
+     - How (Approach/Method)
+     - Who
+     - When
+     - Where
+     - Project
+     - Assign To
+
+3. IMPLEMENTATION DETAILS
+
+   HTML Structure:
+   <div class="form-group">
+     <label>What Description - 4 rows Scrollable</label>
+     <textarea id="taskWhatDescription" ...></textarea>
+   </div>
+   
+   <!-- Toggle Button -->
+   <div class="form-group" style="text-align: center; margin: 10px 0;">
+     <button type="button" 
+             id="toggleAdditionalFields" 
+             class="btn-toggle-fields"
+             onclick="toggleTaskFormFields()">
+       <span id="toggleIcon">▼</span> Show All Fields
+     </button>
+   </div>
+   
+   <!-- Additional Fields Container (hidden by default) -->
+   <div id="additionalFieldsContainer" style="display: none;">
+     <!-- All optional fields go here -->
+   </div>
+
+   JavaScript Function:
+   let taskFormExpanded = false;
+   
+   function toggleTaskFormFields() {
+     const container = document.getElementById('additionalFieldsContainer');
+     const button = document.getElementById('toggleAdditionalFields');
+     const icon = document.getElementById('toggleIcon');
+     
+     taskFormExpanded = !taskFormExpanded;
+     
+     if (taskFormExpanded) {
+       container.style.display = 'block';
+       button.innerHTML = '<span id="toggleIcon">▲</span> Hide Additional Fields';
+     } else {
+       container.style.display = 'none';
+       button.innerHTML = '<span id="toggleIcon">▼</span> Show All Fields';
+     }
+     
+     // Save preference to localStorage
+     localStorage.setItem('taskFormExpanded', taskFormExpanded);
+   }
+   
+   // Restore state on modal open
+   function openAddModal(column) {
+     // ... existing code ...
+     const savedState = localStorage.getItem('taskFormExpanded') === 'true';
+     if (savedState) {
+       taskFormExpanded = true;
+       document.getElementById('additionalFieldsContainer').style.display = 'block';
+       document.getElementById('toggleAdditionalFields').innerHTML = 
+         '<span id="toggleIcon">▲</span> Hide Additional Fields';
+     }
+   }
+
+   CSS:
+   .btn-toggle-fields {
+     padding: 8px 16px;
+     background: #667eea;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+     font-size: 13px;
+     transition: background 0.3s;
+   }
+   .btn-toggle-fields:hover {
+     background: #5568d3;
+   }
+
+BENEFITS:
+  ✅ Faster task editing (fewer fields to skip)
+  ✅ Less overwhelming for quick edits
+  ✅ Cleaner, more focused UI
+  ✅ Header close button improves UX
+  ✅ State persists across sessions
+  ✅ Mobile-friendly (less scrolling)
+  ✅ Power users can still access all fields
+
+USER WORKFLOW:
+  1. Click "Edit Task" on any task card
+  2. Modal opens showing ONLY essential fields
+  3. Make quick edit to title/description
+  4. Click Save (or close button)
+  
+  OR for advanced edit:
+  1. Click "Edit Task"
+  2. Click "▼ Show All Fields" button
+  3. Edit any additional fields (FD, AIS, Why, How, etc.)
+  4. Click Save
+
+MOBILE OPTIMIZATION:
+  - Toggle button larger on mobile (min-height: 44px)
+  - Close button in header easier to tap than scrolling to Cancel
+  - Reduced initial form height fits better on small screens
+
+RELATED FILES:
+  - kanban.html (taskModal, openAddModal, editTask functions)
+
+NEXT STEPS:
+  1. Review and approve proposal
+  2. Implement header close button
+  3. Implement toggle button and container
+  4. Add localStorage persistence
+  5. Test on desktop/tablet/mobile
+  6. Update documentation
+
+DECISION: HOLD (awaiting approval)
+
+================================================================================
+
+PA-003: Unified Cancel Button Styling (Header & Footer)
+=========================================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: MEDIUM
+EFFORT: 30 minutes
+TYPE: UI/UX Consistency Enhancement
+
+DESCRIPTION:
+  Ensure Cancel button in modal header matches the Cancel button at the bottom.
+  Both buttons should use responsive styling:
+  - Desktop: "❌ Cancel" text visible
+  - Mobile: Icon-only or compact version
+  - Consistent styling, padding, colors across devices
+
+CURRENT STATE:
+  - Header has simple ✖ icon (close-only style)
+  - Bottom has "❌ Cancel" button with full styling
+  - Inconsistent appearance and behavior
+  - Desktop users see icon-only (unclear it's a cancel button)
+
+PROPOSED CHANGES:
+
+1. DESKTOP VERSION (Header):
+   Button text: "❌ Cancel"
+   Styling: Match bottom Cancel button
+   Style: .btn-secondary
+   Position: Moved to top-right of modal header
+   
+2. MOBILE VERSION (Header):
+   Button text: "❌" (icon-only) OR "Cancel"
+   Styling: Compact, smaller font
+   Height: 32px (match mobile standards)
+   
+3. CONSISTENT BEHAVIOR:
+   - Same onclick="closeModal()" handler
+   - Same hover effects
+   - Same responsive breakpoints
+   
+4. HTML STRUCTURE:
+   <div class="modal-header" id="modalTitle" style="display: flex; justify-content: space-between; align-items: center;">
+     <span>Add New Task</span>
+     <button class="btn-secondary modal-header-cancel" onclick="closeModal()" title="Close">❌ Cancel</button>
+   </div>
+   
+5. CSS STYLING:
+   .modal-header-cancel {
+     padding: 8px 12px;
+     font-size: 13px;
+     min-width: 100px;
+   }
+   
+   @media (max-width: 800px) {
+     .modal-header-cancel {
+       padding: 6px 8px;
+       font-size: 12px;
+       min-height: 32px;
+     }
+   }
+
+BENEFITS:
+  ✅ Consistent UI across modal
+  ✅ Clear button purpose (Cancel, not just close)
+  ✅ Better UX - user knows they can cancel from top
+  ✅ Matches modal bottom styling
+  ✅ Responsive across devices
+
+RELATED FILES:
+  - kanban.html (taskModal, editModal structures)
+  - CSS styling for .btn-secondary
+
+NEXT STEPS:
+  1. Review and approve proposal
+  2. Update modal header structure
+  3. Update CSS for header cancel button
+  4. Apply responsive styling
+  5. Test on desktop/tablet/mobile
+  6. Ensure consistency across all modals
+
+DECISION: HOLD (awaiting approval)
+
+================================================================================
+
+PA-004: Secure Task ID Editing with Authentication
+===================================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: MEDIUM
+EFFORT: 30-45 minutes
+TYPE: Security Enhancement
+
+DESCRIPTION:
+  Add authentication gate to Task ID editing. By default, Task ID field is read-only.
+  User must click "🔓 Unlock Task ID" button and enter credentials before editing.
+  Prevents accidental or unauthorized Task ID changes that break references/links.
+
+CURRENT STATE:
+  - Task ID can be edited freely in task edit modal
+  - No authentication required to change Task ID
+  - Generate button creates random IDs: AI-TD###, TPK-v1###, HJ-ID1RS###, NEW###, EPIC###
+  - Risk of accidental changes breaking task references
+  - No accountability for ID changes
+
+PROPOSED CHANGES:
+
+1. MAKE TASK ID READ-ONLY BY DEFAULT
+   <input type="text" id="taskId" placeholder="Auto-generated or enter manually" 
+          required readonly style="background: #f3f4f6; cursor: not-allowed;">
+
+2. ADD UNLOCK BUTTON
+   <div class="form-row">
+     <div class="form-group" style="flex: 1;">
+       <label>Task ID *</label>
+       <input type="text" id="taskId" placeholder="Auto-generated or enter manually" 
+              required readonly>
+     </div>
+     <div class="form-group">
+       <label>&nbsp;</label>
+       <button type="button" id="unlockTaskIdBtn" onclick="unlockTaskId()" 
+               style="height: 36px; width: 100%; background: #f59e0b; color: white; 
+                      border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+         🔓 Unlock
+       </button>
+     </div>
+     <div class="form-group">
+       <label>&nbsp;</label>
+       <button type="button" onclick="generateTaskId()" 
+               style="height: 36px; width: 100%; background: #667eea; color: white; 
+                      border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+         🔄 Generate
+       </button>
+     </div>
+   </div>
+
+3. AUTHENTICATION FUNCTION
+   function unlockTaskId() {
+     const username = prompt('Enter your username to unlock Task ID:');
+     if (!username) return;
+     
+     const password = prompt('Enter your password:');
+     if (!password) return;
+     
+     // Verify credentials
+     const user = validUsers.find(u => u.username === username && u.password === password);
+     
+     if (!user) {
+       alert('❌ Invalid credentials. Task ID remains locked.');
+       return;
+     }
+     
+     // Optional: Restrict to Admin or Task Assignee only
+     const task = editingTaskId ? tasks.find(t => t.id === editingTaskId) : null;
+     const isAdmin = user.roles && user.roles.includes('Admin');
+     const isAssignee = task && task.assignee === username;
+     
+     if (task && !isAdmin && !isAssignee) {
+       alert('❌ Only Admin or Task Assignee can unlock Task ID.');
+       return;
+     }
+     
+     // Unlock the field
+     const taskIdInput = document.getElementById('taskId');
+     taskIdInput.removeAttribute('readonly');
+     taskIdInput.style.background = 'white';
+     taskIdInput.style.cursor = 'text';
+     taskIdInput.focus();
+     
+     // Change button to lock
+     const unlockBtn = document.getElementById('unlockTaskIdBtn');
+     unlockBtn.innerHTML = '🔒 Lock';
+     unlockBtn.style.background = '#dc2626';
+     unlockBtn.onclick = lockTaskId;
+     
+     // Log action
+     console.log(`✓ Task ID unlocked by ${username}`);
+     logAdminAction('UNLOCK_TASK_ID', `User ${username} unlocked Task ID for ${task ? task.id : 'new task'}`);
+   }
+
+4. RE-LOCK FUNCTION
+   function lockTaskId() {
+     const taskIdInput = document.getElementById('taskId');
+     taskIdInput.setAttribute('readonly', 'readonly');
+     taskIdInput.style.background = '#f3f4f6';
+     taskIdInput.style.cursor = 'not-allowed';
+     
+     const unlockBtn = document.getElementById('unlockTaskIdBtn');
+     unlockBtn.innerHTML = '🔓 Unlock';
+     unlockBtn.style.background = '#f59e0b';
+     unlockBtn.onclick = unlockTaskId;
+   }
+
+5. AUTO-LOCK ON MODAL CLOSE
+   Update closeModal() function:
+   function closeModal() {
+     lockTaskId(); // Re-lock Task ID when closing
+     document.getElementById('taskModal').classList.remove('active');
+   }
+
+6. EDIT MODAL INITIALIZATION
+   Update editTask() to always start locked:
+   function editTask(taskId) {
+     // ... existing code ...
+     lockTaskId(); // Ensure Task ID is locked when opening edit modal
+   }
+
+SECURITY LEVELS (Optional):
+
+  LEVEL 1 (Basic): Anyone logged in can unlock with credentials
+  LEVEL 2 (Restricted): Only Admin can unlock
+  LEVEL 3 (Task Owner): Only Admin or Task Assignee can unlock
+
+BENEFITS:
+  ✅ Prevents accidental Task ID changes
+  ✅ Protects task references and links
+  ✅ Adds accountability (who changed what)
+  ✅ Security gate before critical edits
+  ✅ Audit trail via admin logs
+  ✅ Clear visual indication (locked/unlocked state)
+  ✅ Generate button still works (no auth required for new IDs)
+
+USER WORKFLOW:
+
+  Creating New Task:
+    1. Click "➕ Add Task"
+    2. Task ID field pre-filled (auto-generated)
+    3. Can click "🔄 Generate" to get new random ID (no lock needed)
+    4. Can manually type if field is unlocked
+    
+  Editing Existing Task:
+    1. Click "📝 Edit" on task card
+    2. Task ID field is READ-ONLY (locked)
+    3. To change: Click "🔓 Unlock" → Enter username/password
+    4. If verified → Field becomes editable
+    5. Make changes → Click Save
+    6. Modal closes → Auto re-locks for next edit
+
+MOBILE OPTIMIZATION:
+  - Unlock button visible and tappable (min-height: 44px)
+  - Prompt dialogs work on mobile browsers
+  - Visual locked state clear (gray background)
+
+RELATED FILES:
+  - kanban.html (taskModal, editTask, closeModal functions)
+  - AI_WoW_Improvements.txt (Improvement #20 source)
+
+NEXT STEPS:
+  1. Review and approve proposal
+  2. Update HTML structure (3-button layout)
+  3. Add unlockTaskId() and lockTaskId() functions
+  4. Update editTask() to initialize locked
+  5. Update closeModal() to auto re-lock
+  6. Test authentication flow
+  7. Test on desktop/tablet/mobile
+  8. Update documentation
+
+DECISION: HOLD (awaiting approval)
+
+================================================================================
+
+PA-005: Project-Based Task ID Generation & Project Admin
+==========================================================
+STATUS: Proposed - February 2, 2026
+PRIORITY: HIGH
+EFFORT: 4-6 hours
+TYPE: Feature Enhancement - ID Management & Project Administration
+
+DESCRIPTION:
+  Redesign Task ID generation to be project-based with sequential numbering.
+  Each project has its own ID series (e.g., TIME-001, KANB-001, WEB-001).
+  Task IDs auto-generate based on assigned project and cannot be changed in normal workflow.
+  Add Project Admin functionality for managing project settings, ID series, and access control.
+
+CURRENT STATE:
+  - Projects stored as simple objects: { id: 'proj-1', name: 'Time Project Kanban', priority: 1 }
+  - Task IDs randomly generated: AI-TD###, TPK-v1###, HJ-ID1RS###, NEW###, EPIC###
+  - No connection between project and Task ID
+  - No project administration beyond name/priority
+  - No access control per project
+  - Project creation via simple prompt: createProjectFlow()
+
+PROPOSED NEW SYSTEM:
+
+1. ENHANCED PROJECT DATA STRUCTURE
+   
+   let projects = [
+     {
+       id: 'proj-1',
+       name: 'Time Project Kanban',
+       prefix: 'TIME',           // NEW: ID prefix for tasks
+       nextTaskNumber: 42,        // NEW: Next sequential number
+       priority: 1,
+       createdBy: 'admin',        // NEW: Creator
+       createdDate: '2026-01-15', // NEW: Creation date
+       owner: 'admin',            // NEW: Project owner
+       members: ['admin', 'R18', 'Maximus'],  // NEW: Access list
+       description: 'Main kanban board for Time project', // NEW
+       status: 'Active',          // NEW: Active/Archived/On Hold
+       tags: ['core', 'kanban'],  // NEW: Project tags
+       settings: {                // NEW: Project settings
+         allowExternalMembers: false,
+         requireApprovalForTasks: false,
+         autoArchiveCompleted: false
+       }
+     }
+   ];
+
+2. TASK ID GENERATION RULES
+
+   A. When creating NEW task:
+      - User selects Project from dropdown
+      - System generates ID: {PROJECT_PREFIX}-{NEXT_NUMBER}
+      - Example: TIME-042, KANB-015, WEB-003
+      - Increment project's nextTaskNumber
+      - Task ID is IMMUTABLE (cannot be changed in normal workflow)
+   
+   B. ID Format:
+      {PREFIX}-{NUMBER}
+      - PREFIX: 3-5 uppercase letters (project identifier)
+      - NUMBER: 3-digit zero-padded sequential number
+      - Examples: TIME-001, TIME-042, KANB-015, WEB-003
+   
+   C. When switching project:
+      - If task NOT yet saved: Regenerate ID with new project prefix
+      - If task ALREADY saved: Show warning "Cannot change project - ID is locked to {OLD_PROJECT}"
+      - Admin override: Can force project change (requires password)
+
+3. PROJECT CREATION - TWO MODES
+
+   MODE A: Quick Add Project (Regular Users)
+   ──────────────────────────────────────────
+   Button: "➕ Project" (existing button)
+   
+   Simplified Form:
+   - Project Name *
+   - Project Prefix * (auto-suggested from name, e.g., "Time Kanban" → "TIMK")
+   - Priority (1-3)
+   - Description
+   
+   Auto-filled:
+   - createdBy: currentUser.username
+   - owner: currentUser.username
+   - members: [currentUser.username]
+   - nextTaskNumber: 1
+   - status: 'Active'
+   
+   MODE B: Admin Project Management (Admin Only)
+   ─────────────────────────────────────────────
+   Button: "⚙️ Admin Projects" (new button, next to Admin button)
+   
+   Full Admin Panel with tabs:
+   
+   Tab 1: Project List
+     - Table showing all projects
+     - Columns: Prefix | Name | Owner | Members | Tasks | Status | Actions
+     - Actions: Edit | Archive | Delete | View Tasks
+   
+   Tab 2: Create/Edit Project
+     Full form with all fields:
+     - Project Name *
+     - Project Prefix * (unique, 3-5 chars, uppercase)
+     - Description
+     - Owner (dropdown of users)
+     - Members (multi-select checkboxes)
+     - Priority (1-3)
+     - Status (Active/Archived/On Hold)
+     - Tags (comma-separated)
+     - Settings:
+       ☐ Allow external members
+       ☐ Require approval for new tasks
+       ☐ Auto-archive completed tasks
+     - Starting Task Number (default: 1)
+   
+   Tab 3: Access Control
+     - Manage who can create tasks in this project
+     - Bulk add/remove members
+     - Define project roles (Owner, Member, Viewer)
+   
+   Tab 4: Statistics
+     - Total tasks in project
+     - Tasks by column (Idea, Todo, Planning, etc.)
+     - Task completion rate
+     - Average time per task
+     - Active contributors
+
+4. UPDATED TASK FORM BEHAVIOR
+
+   A. Add Task Modal:
+      - Project dropdown shows at TOP (before Task ID)
+      - When project selected → Auto-generate ID
+      - Display: "Task ID will be: {PREFIX}-{NEXT_NUMBER}"
+      - Generate button REMOVED (no random IDs anymore)
+   
+   B. Edit Task Modal:
+      - Task ID field READ-ONLY (locked)
+      - Project dropdown DISABLED (cannot change project)
+      - Show message: "Project locked to: {PROJECT_NAME}"
+      - Admin override button: "🔓 Admin: Change Project" (requires password)
+
+5. IMPLEMENTATION DETAILS
+
+   JavaScript Functions:
+   
+   // Generate next task ID for a project
+   function generateTaskIdForProject(projectId) {
+     const project = projects.find(p => p.id === projectId);
+     if (!project) return 'UNKNOWN-000';
+     
+     const paddedNumber = String(project.nextTaskNumber).padStart(3, '0');
+     const newId = `${project.prefix}-${paddedNumber}`;
+     
+     // Increment for next task
+     project.nextTaskNumber++;
+     saveProjects(); // Persist to localStorage/GitHub
+     
+     return newId;
+   }
+   
+   // Validate project prefix (unique, 3-5 chars, uppercase)
+   function validateProjectPrefix(prefix) {
+     if (!/^[A-Z]{3,5}$/.test(prefix)) {
+       return { valid: false, error: 'Prefix must be 3-5 uppercase letters' };
+     }
+     
+     const existing = projects.find(p => p.prefix === prefix);
+     if (existing) {
+       return { valid: false, error: `Prefix "${prefix}" already used by ${existing.name}` };
+     }
+     
+     return { valid: true };
+   }
+   
+   // Check if user has access to project
+   function hasProjectAccess(username, projectId) {
+     const project = projects.find(p => p.id === projectId);
+     if (!project) return false;
+     
+     if (project.owner === username) return true;
+     if (project.members.includes(username)) return true;
+     
+     const user = validUsers.find(u => u.username === username);
+     if (user && user.roles.includes('Admin')) return true;
+     
+     return false;
+   }
+   
+   // Create new project (quick mode)
+   function createProjectQuick() {
+     const name = prompt('Project Name:');
+     if (!name) return;
+     
+     const suggestedPrefix = name.toUpperCase()
+       .replace(/[^A-Z]/g, '')
+       .substring(0, 4);
+     
+     const prefix = prompt('Project Prefix (3-5 uppercase letters):', suggestedPrefix);
+     if (!prefix) return;
+     
+     const validation = validateProjectPrefix(prefix);
+     if (!validation.valid) {
+       alert(`❌ ${validation.error}`);
+       return;
+     }
+     
+     const priority = parseInt(prompt('Priority (1=High, 2=Medium, 3=Low):', '2'));
+     
+     const newProject = {
+       id: `proj-${Date.now()}`,
+       name,
+       prefix,
+       nextTaskNumber: 1,
+       priority: priority || 2,
+       createdBy: currentUser.username,
+       createdDate: new Date().toISOString().split('T')[0],
+       owner: currentUser.username,
+       members: [currentUser.username],
+       description: '',
+       status: 'Active',
+       tags: [],
+       settings: {
+         allowExternalMembers: false,
+         requireApprovalForTasks: false,
+         autoArchiveCompleted: false
+       }
+     };
+     
+     projects.push(newProject);
+     saveProjects();
+     renderProjectDropdowns();
+     alert(`✅ Project "${name}" created with prefix "${prefix}"`);
+   }
+   
+   // Open Admin Project Panel
+   function openProjectAdmin() {
+     if (!isAdmin()) {
+       alert('❌ Admin access required');
+       return;
+     }
+     
+     document.getElementById('projectAdminModal').classList.add('active');
+     renderProjectAdminPanel();
+   }
+
+6. UI CHANGES REQUIRED
+
+   A. Header Changes:
+      - Keep existing "➕ Project" button (quick mode)
+      - Add new "⚙️ Projects" button (admin mode, only for admins)
+   
+   B. Task Form Changes:
+      - Reorder fields:
+        1. Project dropdown (at top)
+        2. Task ID (auto-generated, read-only)
+        3. What (Title)
+        4. What Description
+        5. ... rest of fields
+      
+      - Remove "🔄 Generate" button
+      - Add live preview: "Task ID will be: TIME-042"
+   
+   C. New Modal: Project Admin Panel
+      - Tabs: Projects | Create/Edit | Access | Stats
+      - Full project management interface
+
+7. DATA MIGRATION
+
+   Convert existing projects:
+   
+   Old format:
+   { id: 'proj-1', name: 'Time Project Kanban', priority: 1 }
+   
+   New format:
+   {
+     id: 'proj-1',
+     name: 'Time Project Kanban',
+     prefix: 'TIME',               // NEW - derived from name
+     nextTaskNumber: 50,            // NEW - count existing tasks + 1
+     priority: 1,
+     createdBy: 'admin',           // NEW - default to admin
+     createdDate: '2026-01-15',    // NEW - current date
+     owner: 'admin',               // NEW - default owner
+     members: ['admin', 'R18'],    // NEW - default members
+     description: '',              // NEW - empty
+     status: 'Active',             // NEW - default active
+     tags: [],                     // NEW - empty
+     settings: {                   // NEW - defaults
+       allowExternalMembers: false,
+       requireApprovalForTasks: false,
+       autoArchiveCompleted: false
+     }
+   }
+   
+   Migration function:
+   function migrateProjects() {
+     projects = projects.map(p => {
+       if (p.prefix) return p; // Already migrated
+       
+       return {
+         ...p,
+         prefix: p.name.toUpperCase().replace(/[^A-Z]/g, '').substring(0, 4),
+         nextTaskNumber: tasks.filter(t => t.projectId === p.id).length + 1,
+         createdBy: 'admin',
+         createdDate: new Date().toISOString().split('T')[0],
+         owner: 'admin',
+         members: ['admin'],
+         description: '',
+         status: 'Active',
+         tags: [],
+         settings: {
+           allowExternalMembers: false,
+           requireApprovalForTasks: false,
+           autoArchiveCompleted: false
+         }
+       };
+     });
+     saveProjects();
+   }
+
+BENEFITS:
+  ✅ Predictable, sequential Task IDs
+  ✅ Clear project ownership of tasks
+  ✅ Professional ID format (TIME-042 vs random AI-TD734)
+  ✅ Immutable IDs prevent reference breaking
+  ✅ Project-level access control
+  ✅ Full project administration for admins
+  ✅ Better task organization
+  ✅ Audit trail (who created project, when)
+  ✅ Project statistics and reporting
+  ✅ Scalable to many projects
+
+USER WORKFLOWS:
+
+  Workflow 1: Create Task (Regular User)
+    1. Click "➕ Add Task"
+    2. Select Project from dropdown
+    3. Task ID auto-generates: "TIME-042"
+    4. Fill in title, description
+    5. Click Save
+    6. Task created with immutable ID
+  
+  Workflow 2: Create Project (Regular User)
+    1. Click "➕ Project"
+    2. Enter name: "Website Redesign"
+    3. Suggested prefix: "WEBS" (editable)
+    4. Enter priority: 1
+    5. Click OK
+    6. Project created, user becomes owner
+  
+  Workflow 3: Manage Projects (Admin)
+    1. Click "⚙️ Projects"
+    2. View all projects in table
+    3. Click "Edit" on a project
+    4. Modify settings, members, access
+    5. Click Save
+    6. Changes applied
+
+RELATED FILES:
+  - kanban.html (projects array, task form, admin panel)
+  - localStorage/GitHub (projects persistence)
+
+NEXT STEPS:
+  1. Review and approve proposal
+  2. Create project data migration function
+  3. Update project structure
+  4. Implement generateTaskIdForProject()
+  5. Update task form (reorder, remove generate button)
+  6. Create Project Admin modal UI
+  7. Add "⚙️ Projects" button to header
+  8. Implement access control checks
+  9. Test project creation flow
+  10. Test task ID generation
+  11. Test admin panel
+  12. Update documentation
+
+DECISION: HOLD (awaiting approval)
+
 ================================================================================
 
 SECTION 1: AIPD (AI PROPOSE INTO DESCRIPTION) - REQUIRED ENTRIES
